@@ -1,0 +1,41 @@
+{
+  "name": "cloud_e2e_tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "debug": "npm run test:debug",
+    "docker-build": "docker build -t docker-pw",
+    "docker-run": "docker run --rm docker-pw",
+    "docker-run-interactive": "docker run --rm --network host --env-file .env.local --name gcp -it docker-pw /bin/bash",
+    "docker-test": "npm run test"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^7.5.0",
+    "chai": "^4.3.4",
+    "dotenv": "^16.4.5",
+    "pactum": "^3.3.1",
+    "playwright": "^1.26.0",
+    "tslog": "3.3.4"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@testdeck/mocha": "^0.3.3",
+    "@types/chai": "^4.2.16",
+    "@types/faker": "^6.6.9",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^20.12.4",
+    "faker": "^5.5.3",
+    "mocha": "^10.0.0",
+    "process-rerun": "^0.2.8",
+    "ts-node": "^10.9.1",
+    "ts-test-decorators": "^0.0.6",
+    "tsx": "^4.7.1",
+    "ws": "^8.16.0"
+  },
+  "engines": {
+    "node": "^18.0.0"
+  }
+}

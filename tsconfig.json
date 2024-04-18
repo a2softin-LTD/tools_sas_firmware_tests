@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "outDir": "built",
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["node"],
+    "allowJs": true,
+  },
+  "include": [
+    "specs",
+    "pages"
+  ],
+  "exclude": ["node_modules"],
+}

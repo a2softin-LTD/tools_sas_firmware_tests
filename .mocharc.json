@@ -1,0 +1,5 @@
+{
+  "timeout": 250000,
+  "reporter": "json",
+  "reporterOptions": ["output=./results.json"]
+}
