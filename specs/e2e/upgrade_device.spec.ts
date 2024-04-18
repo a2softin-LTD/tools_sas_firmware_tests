@@ -5,8 +5,8 @@ import { TestDataProvider } from "../../utils/TestDataProvider";
 import { HostnameController } from "../../api/controllers/HostnameController";
 import { Parsers } from "../../utils/Parsers";
 import { WebSocket } from 'ws';
-import { WS } from "../../utils/constants";
-import {connectToWebSocket} from "../../ws/client";
+import {FTP_URL, WS} from "../../utils/constants";
+import {handleResponse, sendMessage} from "../../ws/client";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -36,37 +36,54 @@ test.describe('API Login tests', () => {
         const insideGetHostnameData = await responseGetHostnameData.json();
 
         // 3. [WSS] 1. Connection to the device
-        const commands: Array<string> = ["open", "openPanelSession", "updatePanelFirmware"];
-        const messages: Array<string> = [];
         const wsUrl: string = WS["WSS_URL"](insideGetHostnameData.result, WS["PORT"], JwtToken);
-        const ftpUrl: string = "ftp://devfirmware.maks.systems:2221/v2/files/b7/22_61.bin";
-        const wsMessage1: string = `{"client": ${commands[1]}, "commandId": ${commandIndex++}, "data": ${serialNumber}}`;
-        const wsMessage2: string = `{"client": ${commands[2]}, "commandId": ${commandIndex++}, "data": "${ftpUrl}"}`;
-        messages.push(wsMessage1, wsMessage2);
+        const ftpUrl: string = FTP_URL;
 
-        const ws = new WebSocket(wsUrl, { perMessageDeflate: false });
+        await (async () => {
 
-        ws.on('error', console.error);
+            // Open the WebSocket connection
+            const ws = new WebSocket(wsUrl);
 
-        ws.on('open', function open() {
-            ws.send(wsMessage1);
-        });
+            // Handle WebSocket events
+            ws.onopen = () => {
+                console.log('WebSocket connection established');
 
-        ws.on('message', function message(data) {
-            console.log('received: %s', data);
-        });
+                // Send a series of messages to the WebSocket API
+                sendMessage(ws,
+                    {
+                                client: "openPanelSession",
+                                commandId: commandIndex++,
+                                data: serialNumber
+                            }
+                );
 
-        // try {
-        //     const websocket = await connectToWebSocket(wsUrl, messages);
-        //     expect(websocket.readyState,"Verify Trade Streaming connection").toBe(WebSocket.OPEN);
-        //     websocket.onmessage = (event) => {
-        //         const data = event.data;
-        //         console.log('Received message: ', data);
-        //     };
-        //
-        // } catch (error) {
-        //     console.error("WebSocket connection failed: ", error);
-        // }
+                sendMessage(ws,
+                    {
+                                client: "updatePanelFirmware",
+                                commandId: commandIndex++,
+                                data: ftpUrl
+                            }
+                );
+            };
+
+            ws.onmessage = (event: any) => {
+                console.log('Received message from WebSocket API:', event.data);
+                // Handle each message response
+                handleResponse(event.data);
+            };
+
+            ws.onerror = (error: any) => {
+                console.error('WebSocket error:', error);
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket connection closed');
+                // Close the browser once the WebSocket connection is closed
+            };
+
+            // Wait for the WebSocket connection to be established
+            await new Promise(resolve => setTimeout(resolve, 20000));
+        })();
     });
 
 });

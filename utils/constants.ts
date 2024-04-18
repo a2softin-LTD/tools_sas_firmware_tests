@@ -8,3 +8,5 @@ export const WS: object = {
     },
     PORT: 50100,
 }
+
+export const FTP_URL: string = "ftp://devfirmware.maks.systems:2221/v2/files/b7/22_61.bin";
