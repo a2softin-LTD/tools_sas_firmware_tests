@@ -6,16 +6,20 @@ import { LoginModel } from "../api/models/LoginModel";
 import * as process from "process";
 import { expect } from "playwright/test";
 
+/**
+ * 
+ */
 export class Auth {
 
     static async getAccessToken(
+        env: string,
         request: APIRequestContext,
         user: UserModel
     ): Promise<string> {
         const body: LoginModel = TestDataProvider.getUserData(user.email, user.passwordEncryptMD5);
         const response: APIResponse =await ApiBuilder.sendPostRequest(
             request,
-            process.env.LOGIN_URL,
+            process.env[env + "_LOGIN_URL"],
             '/login',
             body
         )

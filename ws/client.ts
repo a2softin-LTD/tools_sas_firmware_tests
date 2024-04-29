@@ -1,6 +1,6 @@
-// Function to send a message over WebSocket
-import {WebSocket} from "ws";
+import { WebSocket } from "ws";
 
+// Function to send a message over WebSocket
 export async function sendMessage(ws: WebSocket, message: any) {
     ws.send(JSON.stringify(message));
     console.log('Sent message to WebSocket API:', message);
@@ -11,8 +11,8 @@ export async function sendMessage(ws: WebSocket, message: any) {
 export async function handleResponse(responseData: string) {
     const response = JSON.parse(responseData);
     if (response.data) {
-        console.log('Received successful response:', response);
+        return response;
     } else {
-        console.error('Received error response:', response.error);
+        return response.error;
     }
 }
