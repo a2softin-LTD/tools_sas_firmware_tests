@@ -43,10 +43,6 @@ export class WsHandler {
             }
             this.openCallback = resolve;
         });
-        // return new Promise(resolve => {
-        //     console.log(resolve);
-        //     this.openCallback = resolve;
-        // })
     }
 
     id: number = 0;
@@ -130,10 +126,12 @@ export class WsHandler {
 
     private callSubscription(message: MaksSetupWsCallback) {
         if (!this.callbacks[message.commandId]) return;
+        console.log(message);
         if (message.error) {
-            this.callbacks[message.commandId].reject()
+            this.callbacks[message.commandId].reject(message.error);
         } else {
-            this.callbacks[message.commandId].resolve(message.data)
+            console.log()
+            this.callbacks[message.commandId].resolve(message.data);
         }
         delete this.callbacks[message.commandId];
     }
@@ -180,16 +178,13 @@ export class WsHandler {
                 ...subscribePoint,
                 callback: (data: any) => {
                     console.group();
-
-                    console.log(data);
-                    console.log(objectKey, structureKey, rootKey, awaitedValue);
-                    console.log(isNullOrUndefined(data[objectKey]) || data[objectKey] != awaitedValue);
-
+                        console.log(data);
+                        console.log(objectKey, structureKey, rootKey, awaitedValue);
+                        console.log(isNullOrUndefined(data[objectKey]) || data[objectKey] != awaitedValue);
                     console.groupEnd();
                     if (
                         isNullOrUndefined(data[objectKey]) || data[objectKey] != awaitedValue
                     ) return;
-
                     return resolve(true);
                 }
             });
