@@ -1,4 +1,5 @@
 export enum FirmwareVersionType {
     NEW = "NEW",
-    OLD = "OLD"
+    OLD = "OLD",
+    FAKE = "FAKE",
 }

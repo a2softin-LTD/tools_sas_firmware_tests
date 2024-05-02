@@ -34,7 +34,8 @@ export class WsHandler {
                 } else this.callSubscription(callback)
             };
             this.websocketInstance.onclose = err => {
-                if (err.code == 1000) {
+                // if (err.code == 1000) {
+                if (err.code) {
                     return this.activeSession = false;
                 }
                 if (this.activeSession) {
@@ -54,6 +55,7 @@ export class WsHandler {
 
     send<T>(command: string /*WsMethod*/, data?: any, awaitTime?: number, raceIgnored?: boolean) {
         return raceIgnored ? this.push<T>(command, data) :
+            // @ts-ignore
             Timeouts.race_error(this.push(command, data), awaitTime)
     }
 
@@ -83,7 +85,10 @@ export class WsHandler {
 
     update<T>(model: WsUpdateModel): Promise<boolean> {
         return Timeouts.race_error(new Promise((resolve, reject) => {
-            const subscribePoint: DropSubscriptionInterface = {method: model.subscribeMethod, field: model.subscribePart};
+            const subscribePoint: DropSubscriptionInterface = {
+                method: model.subscribeMethod,
+                field: model.subscribePart
+            };
             const {validityFunction} = model;
             this.createSubscription({
                 ...subscribePoint,
@@ -101,6 +106,7 @@ export class WsHandler {
             this.send(model.Method, model.data, null, true)
                 .catch(error => reject(error))
 
+            // @ts-ignore
         }), model.gsmTime || 60)
     }
 
@@ -178,9 +184,8 @@ export class WsHandler {
                 ...subscribePoint,
                 callback: (data: any) => {
                     console.group();
-                        console.log(data);
-                        console.log(objectKey, structureKey, rootKey, awaitedValue);
-                        console.log(isNullOrUndefined(data[objectKey]) || data[objectKey] != awaitedValue);
+                    console.log("data:", data, {objectKey, structureKey, rootKey, awaitedValue});
+                    console.log("Allowed:", !(isNullOrUndefined(data[objectKey]) || data[objectKey] != awaitedValue));
                     console.groupEnd();
                     if (
                         isNullOrUndefined(data[objectKey]) || data[objectKey] != awaitedValue

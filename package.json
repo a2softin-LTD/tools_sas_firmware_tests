@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "npx playwright test",
     "debug": "npm run test:debug",
     "docker-build": "docker build -t docker-pw",
     "docker-run": "docker run --rm docker-pw",
@@ -21,8 +22,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@testdeck/mocha": "0.1.2",
+    "ts-test-decorators": "^0.0.6",
     "@playwright/test": "^1.42.1",
-    "@testdeck/mocha": "^0.3.3",
     "@types/chai": "^4.2.16",
     "@types/faker": "^6.6.9",
     "@types/mocha": "^8.2.2",
@@ -31,7 +33,6 @@
     "mocha": "^10.0.0",
     "process-rerun": "^0.2.8",
     "ts-node": "^10.9.1",
-    "ts-test-decorators": "^0.0.6",
     "tsx": "^4.7.1",
     "ws": "^8.16.0"
   },
