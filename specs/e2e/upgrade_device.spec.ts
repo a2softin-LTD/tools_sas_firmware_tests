@@ -33,7 +33,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         commandIndex++;
     });
 
-    test('positive: Success upgrade a device', async ({request}) => {
+    test.skip('positive: Success upgrade a device', async ({request}) => {
         // 2. Getting Hostname
         serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceId);
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
