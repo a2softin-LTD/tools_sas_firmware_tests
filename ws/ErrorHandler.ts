@@ -22,8 +22,9 @@ export class ErrorHandler {
             case 324: return "Panel command parameter not changed";
             case 325: return "Panel command user pin code occupied";
             case 326: return "Panel command user email occupied";
-        }
 
+            case 999: return "Timeout was exceeded";
+        }
         return "";
     }
 }

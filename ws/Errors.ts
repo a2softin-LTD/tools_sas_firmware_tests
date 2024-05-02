@@ -20,6 +20,9 @@ export const ErrorDescriptions = {
     325: "Panel command user pin code occupied",
     326: "Panel command user email occupied",
 
-    999: "Timeut esceeded: possible reasons: "
+    999: "The timeout has been exceeded. Possible reasons:\n" +
+        "- no connection to the device\n" +
+        "- weak internet connection\n" +
+        "- there is no current firmware in the specified FTP path"
 } as const;
 

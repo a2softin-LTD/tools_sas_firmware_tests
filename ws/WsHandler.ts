@@ -34,7 +34,6 @@ export class WsHandler {
                 } else this.callSubscription(callback)
             };
             this.websocketInstance.onclose = err => {
-                // if (err.code == 1000) {
                 if (err.code) {
                     return this.activeSession = false;
                 }
@@ -61,7 +60,7 @@ export class WsHandler {
 
     private sendData(data) {
         if (!this.openCallback) return;
-        this.openCallback(true);
+        this.openCallback(data);
         this.openCallback = null;
     }
 

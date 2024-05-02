@@ -1,13 +1,13 @@
 import { APIResponse } from "@playwright/test";
 import { expect, test } from "playwright/test";
-import { Auth } from "../../auth/Auth";
+import {Auth } from "../../auth/Auth";
 import { TestDataProvider } from "../../utils/TestDataProvider";
 import { HostnameController } from "../../api/controllers/HostnameController";
 import { Parsers } from "../../utils/Parsers";
 import { WS } from "../../utils/path";
 import { WsMethod } from "../../ws/WsMethod";
 import { WsHandler } from "../../ws/WsHandler";
-import { firmwareVersionConfig } from "../../ws/FirmwareVersionConfig";
+import { firmwareVersionConfig, getAnotherVersionConfig } from "../../ws/FirmwareVersionConfig";
 import { FirmwareVersionType } from "../../ws/FirmwareVersionType";
 import { environmentConfig } from "../../ws/EnvironmentConfig";
 import { Environments } from "../../ws/Environments";
@@ -22,7 +22,6 @@ let commandIndex: number = 0;
 
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - positive scenarios', () => {
     const env = environmentConfig.get(Environments.QA);
-    const config = firmwareVersionConfig.get(FirmwareVersionType.NEW);
 
     test.beforeAll(async ({request}) => {
         // 1. Getting access token
@@ -53,10 +52,13 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 
         const wsInstance = new WsHandler(wsUrl, JwtToken);
         try {
-            await wsInstance.createSocket(serialNumber);
-            await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, config.url);
+            const initialData = await wsInstance.createSocket(serialNumber);
+            const allowedVersionConfig = getAnotherVersionConfig(initialData["create"]['panelSettings']['versionCode'])
+            console.log(`Install version: ${allowedVersionConfig.versionType}`)
+
+            await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, allowedVersionConfig.config.url);
             await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
-            await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", config.versionCode);
+            await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", allowedVersionConfig.config.versionCode);
         } catch (error) {
             if (error) {
                 ERROR = ErrorHandler.handleError(error);
@@ -145,16 +147,16 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
                     await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", config.versionCode);
                     return true;
                 }
-                , {awaitSeconds: 10, errorCode: 999});
+                , { awaitSeconds: 10, errorCode: 999 });
         } catch (error) {
             if (error) {
                 ERROR = ErrorHandler.handleError(error);
-                console.log(ERROR);
+                console.log(ErrorDescriptions["999"]);
             }
         }
         wsInstance.close();
 
-        expect(ERROR).toEqual(ErrorDescriptions["999"]);
+        expect(ERROR).toEqual("Timeout was exceeded");
     });
 
     test.skip('negative: incorrect Access token - Error: 401', async ({request}) => {
@@ -179,9 +181,9 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         try {
             wsInstance = new WsHandler(wsUrl, faker.datatype.uuid());
             await wsInstance.createSocket(serialNumber);
-            await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, config.url);
-            await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
-            await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", config.versionCode);
+            // await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, config.url);
+            // await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
+            // await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", config.versionCode);
             wsInstance.close();
         } catch (error) {
             if (error) {
