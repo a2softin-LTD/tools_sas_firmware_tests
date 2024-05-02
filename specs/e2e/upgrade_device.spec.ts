@@ -95,7 +95,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
             serialNumber
         );
 
-        expect(responseGetHostnameData.status()).toBe(200);
+        expect(responseGetHostnameData.status()).toBe(300);
 
         const insideGetHostnameData = await responseGetHostnameData.json();
 
