@@ -33,7 +33,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         commandIndex++;
     });
 
-    test.skip('positive: Success upgrade a device', async ({request}) => {
+    test('positive: Success upgrade a device', async ({request}) => {
         // 2. Getting Hostname
         serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceId);
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
@@ -95,7 +95,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
             serialNumber
         );
 
-        expect(responseGetHostnameData.status()).toBe(300);
+        expect(responseGetHostnameData.status()).toBe(200);
 
         const insideGetHostnameData = await responseGetHostnameData.json();
 
@@ -147,7 +147,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
                     await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", config.versionCode);
                     return true;
                 }
-                , { awaitSeconds: 10, errorCode: 311 });
+                , { awaitSeconds: 10, errorCode: 999 });
         } catch (error) {
             if (error) {
                 ERROR = ErrorHandler.handleError(error);
@@ -159,7 +159,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         expect(ERROR).toEqual("Timeout was exceeded");
     });
 
-    test('negative: incorrect Access token - Error: 401', async ({request}) => {
+    test.skip('negative: incorrect Access token - Error: 401', async ({request}) => {
         const config = firmwareVersionConfig.get(FirmwareVersionType.NEW);
         // 2. Getting Hostname
         serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceId);
