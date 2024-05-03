@@ -121,6 +121,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
     });
 
     test('negative: non-exist firmware FTP URL - Error: 999', async ({request}) => {
+        const TIMEOUT: number = 10;
         const config = firmwareVersionConfig.get(FirmwareVersionType.FAKE);
         // 2. Getting Hostname
         serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceId);
@@ -146,8 +147,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
                     await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
                     await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", config.versionCode);
                     return true;
-                }
-                , { awaitSeconds: 10, errorCode: 999 });
+                }, { awaitSeconds: TIMEOUT, errorCode: 999 });
         } catch (error) {
             if (error) {
                 ERROR = ErrorHandler.handleError(error);
