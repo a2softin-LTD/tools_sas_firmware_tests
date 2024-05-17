@@ -5,7 +5,9 @@ export const firmwareVersionConfig = new Map<FirmwareVersionType, {
     fake?: boolean,
     url: string
 }>()
-    .set(FirmwareVersionType.NEW, {versionCode: 2263, url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'})
+    .set(FirmwareVersionType.NEW, {versionCode: 2264, url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_64.bin'})
+    .set(FirmwareVersionType.OLD, {versionCode: 2261, url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'})
+    .set(FirmwareVersionType.OLD, {versionCode: 2261, url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_62.bin'})
     .set(FirmwareVersionType.OLD, {versionCode: 2261, url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_61.bin'})
     .set(FirmwareVersionType.FAKE, {
         versionCode: 1000,

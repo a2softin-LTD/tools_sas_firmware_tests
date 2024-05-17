@@ -73,7 +73,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 });
 
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negative scenarios', () => {
-    const env = environmentConfig.get(Environments.QA);
+    const env = environmentConfig.get(Environments.DEV);
 
     test.beforeAll(async ({request}) => {
         // 1. Getting access token

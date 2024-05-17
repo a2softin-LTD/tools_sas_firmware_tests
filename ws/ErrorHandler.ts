@@ -1,4 +1,3 @@
-
 export class ErrorHandler {
     static handleError(errorCode: number): string {
         switch (errorCode) {

@@ -14,7 +14,7 @@ export class TestDataProvider {
         passwordEncryptMD5: '5a2ddac0aeb60f6cd8c96ef2d3f6c394',
         id: 2870,
         asInvitations: [],
-        email: "d.pinchuk@itvsystems.com.ua",
+        email: "pinchuk.dap@gmail.com",
         preferredLanguage: "uk",
         alarmStationId: null
     }

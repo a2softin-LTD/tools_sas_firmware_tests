@@ -6,6 +6,3 @@ export const environmentModuleReleasePermissions: { [key: string]: boolean } = {
     alarmStationRolesEnabled: false,
     ZoneExtenderOutputControlEnabled: true
 };
-
-export const NEW_VERSION: number = 2261;
-export const OLD_VERSION: number = 2255;
