@@ -30,7 +30,8 @@ export class TestDataProvider {
         return body;
     }
 
-    static readonly DeviceIdOld: string = "00:08:B7:00:00:08";
-    static readonly DeviceId: string = "00:08:B7:10:02:04";
+    // static readonly DeviceId: string = "00:08:B7:00:00:08";
+    // static readonly DeviceId: string = "00:08:B7:10:02:04";
+    static readonly DeviceId: string = "00:08:B7:99:99:99";
 
 }

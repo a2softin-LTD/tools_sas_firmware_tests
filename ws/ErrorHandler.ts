@@ -23,6 +23,7 @@ export class ErrorHandler {
             case 326: return "Panel command user email occupied";
 
             case 999: return "Timeout was exceeded";
+            case 1001: return "Version is already installed"
         }
         return "";
     }
