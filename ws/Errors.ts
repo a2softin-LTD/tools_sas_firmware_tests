@@ -21,7 +21,8 @@ export const ErrorDescriptions = {
     326: "Panel command user email occupied",
 
     999: "The timeout has been exceeded. Possible reasons:\n" +
-        "- no connection to the device\n" +
+        "- no connection to the File Server\n" +
+        "- no connection to the Device (HUB)\n" +
         "- weak internet connection\n" +
         "- there is no current firmware in the specified FTP path"
 } as const;

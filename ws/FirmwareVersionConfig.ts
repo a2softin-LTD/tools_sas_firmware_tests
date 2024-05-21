@@ -1,23 +1,52 @@
-import { FirmwareVersionType } from "./FirmwareVersionType";
+import {FirmwareVersionType} from "./FirmwareVersionType";
 
-export const firmwareVersionConfig = new Map<FirmwareVersionType, {
+export interface IFirmwareVersionConfig {
     versionCode: number,
     fake?: boolean,
     url: string
-}>()
-    .set(FirmwareVersionType.NEW, {versionCode: 2264, url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_64.bin'})
-    .set(FirmwareVersionType.OLD, {versionCode: 2261, url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'})
-    .set(FirmwareVersionType.OLD, {versionCode: 2261, url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_62.bin'})
-    .set(FirmwareVersionType.OLD, {versionCode: 2261, url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_61.bin'})
+}
+
+export interface IFirmwareVersionView  {
+    versionType:FirmwareVersionType,
+    config:IFirmwareVersionConfig
+}
+
+export const firmwareVersionConfig = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
+    .set(FirmwareVersionType.NEW, {
+        versionCode: 2264,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_64.bin'})
+    .set(FirmwareVersionType.LAST, {
+        versionCode: 2263,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'
+    })
+    .set(FirmwareVersionType.PENULTIMATE, {
+        versionCode: 2262,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_62.bin'
+    })
+    .set(FirmwareVersionType.PRE_PENULTIMATE, {
+        versionCode: 2261,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_61.bin'
+    })
+    .set(FirmwareVersionType.OLD, {
+        versionCode: 2258,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_58.bin'})
     .set(FirmwareVersionType.FAKE, {
         versionCode: 1000,
-        fake: false,
-        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/10_00.bin'
+        fake: true,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/999_99.bin'
     });
 
-export const getAnotherVersionConfig = (versionCode: number) => {
+export const getAnotherVersionConfig = (versionCode: number):IFirmwareVersionView => {
     const allowedConfigs = Array.from(firmwareVersionConfig.entries())
         .filter(([_, cfg]) => !cfg.fake && cfg.versionCode != versionCode)
         .map(([versionType, config]) => ({versionType, config}))
     return allowedConfigs[0];
 }
+
+export const getAllVersionConfigs = ():IFirmwareVersionView[] => {
+    const allowedConfigs = Array.from(firmwareVersionConfig.entries())
+        .filter(([_, cfg]) => !cfg.fake)
+        .map(([versionType, config]) => ({versionType, config}))
+    return allowedConfigs;
+}
+
