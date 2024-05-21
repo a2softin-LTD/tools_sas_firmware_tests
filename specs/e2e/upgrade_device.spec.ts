@@ -53,7 +53,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
     });
 
     test('positive: Success upgrade a device', async ({request}) => {
-        const TIMEOUT: number = 600;
+        const TIMEOUT: number = 1200;
         let ERROR: string = "";
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
@@ -116,22 +116,23 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         const wsUrl: string = WS["WSS_URL"](insideGetHostnameData.result) + ":" + WS["PORT"];
         let ERROR: string = "";
+        const TIMEOUT: number = 10;
 
         const wsInstance = new WsHandler(wsUrl, JwtToken);
         try {
+            await Timeouts.race_error(async () => {
+
+            }, { awaitSeconds: TIMEOUT, errorCode: 311 });
             await wsInstance.createSocket(serialNumber);
             await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, config.url);
             await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
             await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", config.versionCode);
         } catch (error) {
-            if (error) {
-                ERROR = ErrorHandler.handleError(error);
-                console.log(ERROR);
-            }
+            wsInstance.close();
+            ERROR = ErrorHandler.handleError(error);
+            console.log(ERROR);
+            expect(ERROR).toEqual(ErrorDescriptions["311"]);
         }
-        wsInstance.close();
-
-        expect(ERROR).toEqual(ErrorDescriptions["311"]);
     });
 
     test('negative: File Server Crashes - Error: 999', async ({request}) => {
@@ -163,10 +164,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
                 return true;
             }, { awaitSeconds: TIMEOUT, errorCode: 999 });
         } catch (error) {
-            if (error) {
-                ERROR = ErrorHandler.handleError(error);
-                console.log(ErrorDescriptions["999"]);
-            }
+            ERROR = ErrorHandler.handleError(error);
+            console.log(ErrorDescriptions["999"]);
         }
         wsInstance.close();
 

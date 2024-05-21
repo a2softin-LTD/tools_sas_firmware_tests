@@ -9,7 +9,7 @@ export class Updater {
         try {
             const initialData = await wsInstance.createSocket(serialNumber);
             if (initialData["create"]['panelSettings']['versionCode'] == allowedVersionConfig.config.versionCode)
-                throw 1001
+                throw 1001;
             // const allowedVersionConfig = getAnotherVersionConfig(initialData["create"]['panelSettings']['versionCode'])
             console.log(`Install version: ${allowedVersionConfig.versionType}`)
 
