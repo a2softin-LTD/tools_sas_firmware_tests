@@ -24,6 +24,8 @@ export const ErrorDescriptions = {
         "- no connection to the File Server\n" +
         "- no connection to the Device (HUB)\n" +
         "- weak internet connection\n" +
-        "- there is no current firmware in the specified FTP path"
+        "- there is no current firmware in the specified FTP path",
+
+    401: "Unexpected server response: 401",
 } as const;
 

@@ -33,7 +33,8 @@ export class WsHandler {
                     this.sendToSubscribers(callback.data)
                 } else this.callSubscription(callback)
             };
-            this.websocketInstance.onclose = err => {
+            this.websocketInstance.onclose = (err) => {
+                console.log(err);
                 if (err.code) {
                     return this.activeSession = false;
                 }

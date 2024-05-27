@@ -54,6 +54,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 
     test('positive: Success upgrade a device', async ({request}) => {
         const TIMEOUT: number = 1200;
+        const PAUSE: number = 30000;
         let ERROR: string = "";
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
@@ -66,8 +67,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
                 const prevVersionList = versions.slice(1);//.reverse()
                 for (const version of prevVersionList) {
                     await new Promise((resolve, reject) => {
-                        console.log("Pause...............................................");
-                        setTimeout(resolve, 30000);
+                        console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+                        setTimeout(resolve, PAUSE);
                     });
                     await Updater.update(wsInstance, serialNumber, version);
                 }
@@ -169,7 +170,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
     });
 
     test.skip('negative: incorrect Access token - Error: 401', async ({request}) => {
-        const config = firmwareVersionConfig.get(FirmwareVersionType.NEW);
+        const TIMEOUT: number = 60;
+        const config = firmwareVersionConfig.get(FirmwareVersionType.FAKE);
         // 2. Getting Hostname
         serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceId);
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
@@ -186,22 +188,22 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         const wsUrl: string = WS["WSS_URL"](insideGetHostnameData.result) + ":" + WS["PORT"];
         let ERROR: string = "";
 
-        let wsInstance: WsHandler;
         try {
-            wsInstance = new WsHandler(wsUrl, faker.datatype.uuid());
-            await wsInstance.createSocket(serialNumber);
-            // await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, config.url);
-            // await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
-            // await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", config.versionCode);
-            wsInstance.close();
+            const wsInstance = new WsHandler(wsUrl, faker.datatype.uuid());
+            await Timeouts.race_error(async () => {
+                await wsInstance.createSocket(serialNumber);
+                await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, config.url);
+                await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
+                await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", config.versionCode);
+                return true;
+            }, { awaitSeconds: TIMEOUT, errorCode: 999 });
         } catch (error) {
-            if (error) {
-                ERROR = ErrorHandler.handleError(error);
-                console.log(ERROR);
-            }
+            ERROR = ErrorHandler.handleError(error);
+            console.log(ErrorDescriptions["401"]);
         }
+        wsInstance.close();
 
-        expect(ERROR).toEqual("");
+        expect(ERROR).toEqual(ErrorDescriptions["401"]);
     });
 
 });
