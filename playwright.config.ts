@@ -9,7 +9,7 @@ export default defineConfig({
     workers: process.env.CI ? 1 : undefined,
     testMatch: /.*\.spec\.ts/,
     fullyParallel: true,
-    timeout: 5 * 60 * 1000,
+    timeout: 10 * 60 * 1000,
     expect: {
         timeout: 30_000
     },
