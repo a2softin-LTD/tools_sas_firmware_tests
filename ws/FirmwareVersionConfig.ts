@@ -19,17 +19,17 @@ export const firmwareVersionConfig = new Map<FirmwareVersionType, IFirmwareVersi
         versionCode: 2263,
         url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'
     })
-    .set(FirmwareVersionType.NEW, {
-        versionCode: 2264,
-        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_64.bin'})
-    .set(FirmwareVersionType.LAST, {
-        versionCode: 2263,
-        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'
-    })
-    // .set(FirmwareVersionType.PENULTIMATE, {
-    //     versionCode: 2262,
-    //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_62.bin'
+    // .set(FirmwareVersionType.NEW, {
+    //     versionCode: 2264,
+    //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_64.bin'})
+    // .set(FirmwareVersionType.LAST, {
+    //     versionCode: 2263,
+    //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'
     // })
+    .set(FirmwareVersionType.PENULTIMATE, {
+        versionCode: 2262,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_62.bin'
+    })
     // .set(FirmwareVersionType.PRE_PENULTIMATE, {
     //     versionCode: 2261,
     //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_61.bin'
@@ -37,11 +37,11 @@ export const firmwareVersionConfig = new Map<FirmwareVersionType, IFirmwareVersi
     // .set(FirmwareVersionType.OLD, {
     //     versionCode: 2258,
     //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_58.bin'})
-    .set(FirmwareVersionType.FAKE, {
-        versionCode: 1000,
-        fake: true,
-        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/999_99.bin'
-    });
+    // .set(FirmwareVersionType.FAKE, {
+    //     versionCode: 1000,
+    //     fake: true,
+    //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/999_99.bin'
+    // });
 
 export const getAnotherVersionConfig = (versionCode: number):IFirmwareVersionView => {
     const allowedConfigs = Array.from(firmwareVersionConfig.entries())
