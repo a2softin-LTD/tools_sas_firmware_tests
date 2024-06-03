@@ -21,12 +21,12 @@ export const firmwareVersionConfig = new Map<FirmwareVersionType, IFirmwareVersi
         url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_64.bin'
     })
     .set(FirmwareVersionType.LAST, {
-        versionCode: 2263,
-        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'
+        versionCode: 2265,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_65.bin'
     })
     .set(FirmwareVersionType.PENULTIMATE, {
-        versionCode: 2262,
-        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_62.bin'
+        versionCode: 2264,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_64.bin'
     });
     // .set(FirmwareVersionType.PRE_PENULTIMATE, {
     //     versionCode: 2261,
