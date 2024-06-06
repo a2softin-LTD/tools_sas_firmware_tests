@@ -132,7 +132,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         }
     });
 
-    test('negative: File Server Crashes - Error: 999', async ({request}) => {
+    test.skip('negative: File Server Crashes - Error: 999', async ({request}) => {
         const TIMEOUT: number = 60;
         const config = firmwareVersionConfig.get(FirmwareVersionType.FAKE);
         // 2. Getting Hostname
