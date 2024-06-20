@@ -23,24 +23,24 @@ export const firmwareVersionConfig = new Map<FirmwareVersionType, IFirmwareVersi
 
 export const firmwareVersionConfigFiveLastVersions = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
     .set(FirmwareVersionType.NEWEST, {
+        versionCode: 2266,
+        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_66.bin'
+    })
+    .set(FirmwareVersionType.NEW, {
         versionCode: 2265,
         url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_65.bin'
     })
-    .set(FirmwareVersionType.NEW, {
+    .set(FirmwareVersionType.LAST, {
         versionCode: 2264,
         url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_64.bin'
     })
-    .set(FirmwareVersionType.LAST, {
+    .set(FirmwareVersionType.PENULTIMATE, {
         versionCode: 2263,
         url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'
     })
-    .set(FirmwareVersionType.PENULTIMATE, {
+    .set(FirmwareVersionType.PRE_PENULTIMATE, {
         versionCode: 2262,
         url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_62.bin'
-    })
-    .set(FirmwareVersionType.PRE_PENULTIMATE, {
-        versionCode: 2261,
-        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_61.bin'
     });
 
 export const getAnotherVersionConfig = (versionCode: number):IFirmwareVersionView => {
