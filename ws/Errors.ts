@@ -26,6 +26,8 @@ export const ErrorDescriptions = {
         "- weak internet connection\n" +
         "- there is no current firmware in the specified FTP path",
 
+    998: "Version is already installed",
+
     401: "Unexpected server response: 401",
 } as const;
 
