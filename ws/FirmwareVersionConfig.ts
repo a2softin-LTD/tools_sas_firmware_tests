@@ -13,33 +13,35 @@ export interface IFirmwareVersionView  {
 
 export const firmwareVersionConfig = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
     .set(FirmwareVersionType.NEWEST, {
+        versionCode: 2266,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_66.bin'
+    })
+    .set(FirmwareVersionType.NEW, {
         versionCode: 2265,
         url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_65.bin'
     })
+
+export const firmwareVersionConfigFiveLastVersions = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
+    .set(FirmwareVersionType.NEWEST, {
+        versionCode: 2266,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_66.bin'
+    })
     .set(FirmwareVersionType.NEW, {
+        versionCode: 2265,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_65.bin'
+    })
+    .set(FirmwareVersionType.LAST, {
         versionCode: 2264,
         url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_64.bin'
     })
-    // .set(FirmwareVersionType.LAST, {
-    //     versionCode: 2265,
-    //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_65.bin'
-    // })
-    // .set(FirmwareVersionType.PENULTIMATE, {
-    //     versionCode: 2264,
-    //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_64.bin'
-    // });
-    // .set(FirmwareVersionType.PRE_PENULTIMATE, {
-    //     versionCode: 2261,
-    //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_61.bin'
-    // })
-    // .set(FirmwareVersionType.OLD, {
-    //     versionCode: 2258,
-    //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_58.bin'})
-    // .set(FirmwareVersionType.FAKE, {
-    //     versionCode: 1000,
-    //     fake: true,
-    //     url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/999_99.bin'
-    // });
+    .set(FirmwareVersionType.PENULTIMATE, {
+        versionCode: 2263,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'
+    })
+    .set(FirmwareVersionType.PRE_PENULTIMATE, {
+        versionCode: 2262,
+        url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_62.bin'
+    });
 
 export const getAnotherVersionConfig = (versionCode: number):IFirmwareVersionView => {
     const allowedConfigs = Array.from(firmwareVersionConfig.entries())
@@ -49,6 +51,13 @@ export const getAnotherVersionConfig = (versionCode: number):IFirmwareVersionVie
 }
 
 export const getAllVersionConfigs = ():IFirmwareVersionView[] => {
+    const allowedConfigs = Array.from(firmwareVersionConfig.entries())
+        .filter(([_, cfg]) => !cfg.fake)
+        .map(([versionType, config]) => ({versionType, config}))
+    return allowedConfigs;
+}
+
+export const getAllVersionConfigsFiveLastVersions = ():IFirmwareVersionView[] => {
     const allowedConfigs = Array.from(firmwareVersionConfig.entries())
         .filter(([_, cfg]) => !cfg.fake)
         .map(([versionType, config]) => ({versionType, config}))
