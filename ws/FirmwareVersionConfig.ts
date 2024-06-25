@@ -16,7 +16,7 @@ export const firmwareVersionConfig = new Map<FirmwareVersionType, IFirmwareVersi
         versionCode: 2266,
         url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_66.bin'
     })
-    .set(FirmwareVersionType.OLDEST, {
+    .set(FirmwareVersionType.OLD, {
         versionCode: 2263,
         url: 'ftp://devfirmware.maks.systems:2221/v2/files/b7/22_63.bin'
     });

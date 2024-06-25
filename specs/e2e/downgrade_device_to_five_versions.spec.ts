@@ -5,19 +5,11 @@ import { TestDataProvider } from "../../utils/TestDataProvider";
 import { HostnameController } from "../../api/controllers/HostnameController";
 import { Parsers } from "../../utils/Parsers";
 import { WS } from "../../utils/path";
-import { WsMethod } from "../../ws/WsMethod";
 import { WsHandler } from "../../ws/WsHandler";
-import {
-    firmwareVersionConfig,
-    getAllVersionConfigs,
-    getAllVersionConfigsFiveLastVersions
-} from "../../ws/FirmwareVersionConfig";
-import { FirmwareVersionType } from "../../ws/FirmwareVersionType";
+import { getAllVersionConfigsFiveLastVersions } from "../../ws/FirmwareVersionConfig";
 import { environmentConfig } from "../../ws/EnvironmentConfig";
 import { Environments } from "../../ws/Environments";
-import { ErrorHandler } from "../../ws/ErrorHandler";
 import { ErrorDescriptions } from "../../ws/Errors";
-import { faker } from "@faker-js/faker";
 import { Timeouts } from "../../ws/Timeouts";
 import { Updater } from "../../ws/Updater";
 
