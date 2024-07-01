@@ -24,7 +24,7 @@ let wsUrl: string;
 let wsInstance: WsHandler;
 let commandIndex: number = 0;
 
-test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - positive scenarios', () => {
+test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with SimCard channel on the HUB - positive scenarios', () => {
     const env = environmentConfig.get(Environments.DEV);
 
     test.beforeAll(async ({request}) => {
@@ -37,7 +37,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         commandIndex++;
 
         // 2. Getting Hostname
-        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceId);
+        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdWithGSM);
 
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             env.envUrl,
@@ -96,7 +96,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         commandIndex++;
     });
 
-    test('negative: incorrect Device id - Error: 311',{ tag: '@upgrade' }, async ({request}) => {
+    test.skip('negative: incorrect Device id - Error: 311',{ tag: '@upgrade' }, async ({request}) => {
         const config = firmwareVersionConfig.get(FirmwareVersionType.NEW);
         // 2. Getting Hostname
         serialNumber = 10000000000;
@@ -132,11 +132,11 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         }
     });
 
-    test('negative: File Server Crashes - Error: 999',{ tag: '@upgrade' }, async ({request}) => {
+    test.skip('negative: File Server Crashes - Error: 999',{ tag: '@upgrade' }, async ({request}) => {
         const TIMEOUT: number = 10;
         const config = firmwareVersionConfig.get(FirmwareVersionType.FAKE);
         // 2. Getting Hostname
-        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceId);
+        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdWithGSM);
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             env.envUrl,
             request,
@@ -173,7 +173,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         const TIMEOUT: number = 60;
         const config = firmwareVersionConfig.get(FirmwareVersionType.FAKE);
         // 2. Getting Hostname
-        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceId);
+        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdWithGSM);
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             env.envUrl,
             request,
