@@ -12,14 +12,14 @@ export interface IFirmwareVersionView  {
 }
 
 export const firmwareVersionConfig = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
-    .set(FirmwareVersionType.NEWEST, {
-        versionCode: 2266,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_66.bin'
-    })
     .set(FirmwareVersionType.OLD, {
-        versionCode: 2267,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_67.bin'
+        versionCode: 2266,
+        url: 'https://devfirmware.maks.systems:8443/v2/files/b3/22_66.bin'
     })
+    // .set(FirmwareVersionType.NEWEST, {
+    //     versionCode: 2267,
+    //     url: 'http://devfirmware.maks.systems:8443/v2/files/b3/22_67.bin'
+    // })
     // .set(FirmwareVersionType.OLD, {
     //     versionCode: 2266,
     //     url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_66.bin'
