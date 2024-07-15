@@ -14,7 +14,6 @@ export default defineConfig({
         timeout: 30_000
     },
     globalSetup: "./globalSetup.js",
-    //outputDir: "./test-results",
     use: {
         headless: true,
         trace: "retain-on-failure",
