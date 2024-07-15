@@ -7,7 +7,6 @@ export default defineConfig({
         ['junit', { outputFile: 'test-results/test-results.xml' }],
     ],
     workers: process.env.CI ? 1 : undefined,
-    //testDir: 'specs',
     testMatch: /.*\.spec\.ts/,
     fullyParallel: true,
     timeout: 20 * 60 * 1000,
