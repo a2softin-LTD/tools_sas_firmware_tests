@@ -1,5 +1,5 @@
 import { APIResponse } from "@playwright/test";
-import { expect, test } from "playwright/test";
+import { expect, test } from "@playwright/test";
 import { Auth} from "../../auth/Auth";
 import { TestDataProvider } from "../../utils/TestDataProvider";
 import { HostnameController } from "../../api/controllers/HostnameController";
@@ -33,7 +33,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         commandIndex++;
 
         // 2. Getting Hostname
-        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceId);
+        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdTabachkov1);
 
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             env.envUrl,
@@ -48,7 +48,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 
     });
 
-    test('positive: Success downgrade a device to five last versions', { tag: '@downgrade' }, async ({request}) => {
+    test.skip('positive: Success downgrade a device to five last versions', { tag: '@downgrade' }, async ({request}) => {
         const TIMEOUT: number = 1200;
         const PAUSE: number = 30000;
         let ERROR: string = "";

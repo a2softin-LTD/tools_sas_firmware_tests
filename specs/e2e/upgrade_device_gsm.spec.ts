@@ -1,5 +1,5 @@
 import { APIResponse } from "@playwright/test";
-import { expect, test } from "playwright/test";
+import { expect, test } from "@playwright/test";
 import { Auth} from "../../auth/Auth";
 import { TestDataProvider } from "../../utils/TestDataProvider";
 import { HostnameController } from "../../api/controllers/HostnameController";
