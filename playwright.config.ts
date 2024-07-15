@@ -1,6 +1,6 @@
-import { defineConfig, devices } from '@playwright/test';
+import { PlaywrightTestConfig, devices } from '@playwright/test';
 
-export default defineConfig({
+const config: PlaywrightTestConfig = {
     reporter: [
         ['list'],
         ['html', { outputFolder: 'playwright-report', open: 'never' }],
@@ -9,14 +9,27 @@ export default defineConfig({
     workers: process.env.CI ? 1 : undefined,
     testMatch: /.*\.spec\.ts/,
     fullyParallel: true,
-    timeout: 20 * 60 * 1000,
+
+    /* Maximum time one test can run for. */
+    timeout: 2 * 60 * 1000,
     expect: {
+
+        /* Maximum time expect() should wait for the condition to be met. */
         timeout: 30_000
     },
+
+    /* Folder for test artifacts such as screenshots, videos, traces, etc. */
+    outputDir: './test-results/',
+
+    /* Retry on CI only */
+    retries: process.env.CI ? 2 : 0,
+    
     globalSetup: "./globalSetup.js",
     use: {
         headless: true,
         trace: "retain-on-failure",
         screenshot: "only-on-failure"
     }
-});
+};
+
+export default config;
