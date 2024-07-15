@@ -3,7 +3,7 @@ import { TestDataProvider } from "../utils/TestDataProvider";
 import { ApiBuilder } from "../api/builder/ApiBuilder";
 import { UserModel } from "../api/models/UserModel";
 import { LoginModel } from "../api/models/LoginModel";
-import { expect } from "playwright/test";
+import { expect } from "@playwright/test";
 
 /**
  * 
