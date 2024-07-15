@@ -7,6 +7,7 @@ const config: PlaywrightTestConfig = {
         ['junit', { outputFile: 'test-results/test-results.xml' }],
     ],
     workers: process.env.CI ? 1 : undefined,
+    testDir: 'spec',
     testMatch: /.*\.spec\.ts/,
     fullyParallel: true,
 
@@ -23,7 +24,7 @@ const config: PlaywrightTestConfig = {
 
     /* Retry on CI only */
     retries: process.env.CI ? 2 : 0,
-    
+
     globalSetup: "./globalSetup.js",
     use: {
         headless: true,
