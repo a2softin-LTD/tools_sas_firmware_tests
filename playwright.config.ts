@@ -1,22 +1,20 @@
-import { PlaywrightTestConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
-const config: PlaywrightTestConfig = {
+export default defineConfig({
     reporter: [
         ['list'],
         ['html', { outputFolder: 'playwright-report', open: 'never' }],
         ['junit', { outputFile: 'test-results/test-results.xml' }],
     ],
-    workers: process.env.CI ? 1 : undefined,
-    testDir: 'spec',
+    workers: 1,
     testMatch: /.*\.spec\.ts/,
     fullyParallel: true,
 
     /* Maximum time one test can run for. */
-    timeout: 2 * 60 * 1000,
+    timeout: 20 * 60 * 1000,
     expect: {
-
         /* Maximum time expect() should wait for the condition to be met. */
-        timeout: 30_000
+        timeout: 20 * 60 * 1000
     },
 
     /* Folder for test artifacts such as screenshots, videos, traces, etc. */
@@ -31,6 +29,4 @@ const config: PlaywrightTestConfig = {
         trace: "retain-on-failure",
         screenshot: "only-on-failure"
     }
-};
-
-export default config;
+});

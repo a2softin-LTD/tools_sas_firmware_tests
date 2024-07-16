@@ -7,7 +7,7 @@ import { Parsers } from "../../utils/Parsers";
 import { WS } from "../../utils/path";
 import { WsMethod } from "../../ws/WsMethod";
 import { WsHandler } from "../../ws/WsHandler";
-import { firmwareVersionConfig, getAllVersionConfigs } from "../../ws/FirmwareVersionConfig";
+import { firmwareVersionConfigB7, getAllVersionConfigsB7 } from "../../ws/FirmwareVersionConfig";
 import { FirmwareVersionType } from "../../ws/FirmwareVersionType";
 import { environmentConfig } from "../../ws/EnvironmentConfig";
 import { Environments } from "../../ws/Environments";
@@ -52,7 +52,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
 
     });
 
-    test('positive: Success upgrade a device', { tag: '@upgrade' }, async ({request}) => {
+    test('positive: Success upgrade a device', { tag: '@upgrade_' }, async ({request}) => {
         const TIMEOUT: number = 1200;
         const PAUSE: number = 30000;
         let ERROR: string = "";
@@ -60,7 +60,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.race_error(async () => {
-                const versions = getAllVersionConfigs()
+                const versions = getAllVersionConfigsB7()
                 const newVersion = versions[0]
                 await Updater.update(wsInstance, serialNumber, newVersion)
 
@@ -97,7 +97,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
     });
 
     test.skip('negative: incorrect Device id - Error: 311',{ tag: '@upgrade' }, async ({request}) => {
-        const config = firmwareVersionConfig.get(FirmwareVersionType.NEW);
+        const config = firmwareVersionConfigB7.get(FirmwareVersionType.NEW);
         // 2. Getting Hostname
         serialNumber = 10000000000;
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
@@ -134,7 +134,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
 
     test.skip('negative: File Server Crashes - Error: 999',{ tag: '@upgrade_' }, async ({request}) => {
         const TIMEOUT: number = 10;
-        const config = firmwareVersionConfig.get(FirmwareVersionType.FAKE);
+        const config = firmwareVersionConfigB7.get(FirmwareVersionType.FAKE);
         // 2. Getting Hostname
         serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdWithEthernet);
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
@@ -171,7 +171,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
 
     test.skip('negative: incorrect Access token - Error: 401',{ tag: '@upgrade' }, async ({request}) => {
         const TIMEOUT: number = 60;
-        const config = firmwareVersionConfig.get(FirmwareVersionType.FAKE);
+        const config = firmwareVersionConfigB7.get(FirmwareVersionType.FAKE);
         // 2. Getting Hostname
         serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdWithEthernet);
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
