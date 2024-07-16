@@ -16,10 +16,10 @@ export const firmwareVersionConfigB7 = new Map<FirmwareVersionType, IFirmwareVer
         versionCode: 2266,
         url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_66.bin'
     })
-    .set(FirmwareVersionType.NEW, {
-        versionCode: 2267,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_67.bin'
-    })
+    // .set(FirmwareVersionType.NEW, {
+    //     versionCode: 2267,
+    //     url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_67.bin'
+    // })
     // .set(FirmwareVersionType.OLDEST, {
     //     versionCode: 2266,
     //     url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_66.bin'
@@ -30,10 +30,10 @@ export const firmwareVersionConfigB3 = new Map<FirmwareVersionType, IFirmwareVer
         versionCode: 2266,
         url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_66.bin'
     })
-    .set(FirmwareVersionType.NEW, {
-        versionCode: 2267,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_67.bin'
-    })
+    // .set(FirmwareVersionType.NEW, {
+    //     versionCode: 2267,
+    //     url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_67.bin'
+    // })
     // .set(FirmwareVersionType.OLDEST, {
     //     versionCode: 2266,
     //     url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_66.bin'

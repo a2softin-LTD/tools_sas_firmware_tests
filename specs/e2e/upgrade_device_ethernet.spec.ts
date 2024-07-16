@@ -52,7 +52,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
 
     });
 
-    test('positive: Success upgrade a device', { tag: '@upgrade_' }, async ({request}) => {
+    test('positive: Success upgrade a device', { tag: '@no_upgrade' }, async ({request}) => {
         const TIMEOUT: number = 1200;
         const PAUSE: number = 30000;
         let ERROR: string = "";
@@ -96,7 +96,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         commandIndex++;
     });
 
-    test.skip('negative: incorrect Device id - Error: 311',{ tag: '@upgrade' }, async ({request}) => {
+    test.skip('negative: incorrect Device id - Error: 311',{ tag: '@no_upgrade' }, async ({request}) => {
         const config = firmwareVersionConfigB7.get(FirmwareVersionType.NEW);
         // 2. Getting Hostname
         serialNumber = 10000000000;
@@ -132,7 +132,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         }
     });
 
-    test.skip('negative: File Server Crashes - Error: 999',{ tag: '@upgrade_' }, async ({request}) => {
+    test.skip('negative: File Server Crashes - Error: 999',{ tag: '@no_upgrade' }, async ({request}) => {
         const TIMEOUT: number = 10;
         const config = firmwareVersionConfigB7.get(FirmwareVersionType.FAKE);
         // 2. Getting Hostname
@@ -169,7 +169,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         expect(ERROR).toEqual("Timeout was exceeded");
     });
 
-    test.skip('negative: incorrect Access token - Error: 401',{ tag: '@upgrade' }, async ({request}) => {
+    test.skip('negative: incorrect Access token - Error: 401',{ tag: '@no_upgrade' }, async ({request}) => {
         const TIMEOUT: number = 60;
         const config = firmwareVersionConfigB7.get(FirmwareVersionType.FAKE);
         // 2. Getting Hostname
