@@ -52,7 +52,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Si
 
     });
 
-    test.skip('positive: Success upgrade a device', { tag: '@no-upgrade' }, async ({request}) => {
+    test('positive: Success upgrade a device', { tag: '@upgrade' }, async ({request}) => {
         const TIMEOUT: number = 1200;
         const PAUSE: number = 30000;
         let ERROR: string = "";
