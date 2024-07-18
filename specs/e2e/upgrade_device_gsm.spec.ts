@@ -13,7 +13,6 @@ import { environmentConfig } from "../../ws/EnvironmentConfig";
 import { Environments } from "../../ws/Environments";
 import { ErrorHandler } from "../../ws/ErrorHandler";
 import { ErrorDescriptions } from "../../ws/Errors";
-import { faker } from "@faker-js/faker";
 import { Timeouts } from "../../ws/Timeouts";
 import { Updater } from "../../ws/Updater";
 
@@ -189,7 +188,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         let ERROR: string = "";
 
         try {
-            const wsInstance = new WsHandler(wsUrl, faker.datatype.uuid());
+            const wsInstance = new WsHandler(wsUrl, (Math.random() + 1).toString(36).substring(7));
             await Timeouts.race_error(async () => {
                 await wsInstance.createSocket(serialNumber);
                 await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, config.url);
