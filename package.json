@@ -12,13 +12,14 @@
     "docker-test": "npm run test"
   },
   "dependencies": {
-    "faker": "^6.6.6",
     "dotenv": "^16.4.5",
+    "faker": "^6.6.6",
     "mocha": "^10.6.0"
   },
   "author": "dpinchuk",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@playwright/test": "^1.45.2",
     "@testdeck/mocha": "0.1.2",
     "@types/chai": "^4.2.16",

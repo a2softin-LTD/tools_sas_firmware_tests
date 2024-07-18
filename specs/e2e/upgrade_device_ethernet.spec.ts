@@ -189,7 +189,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negat
         let ERROR: string = "";
 
         try {
-            const wsInstance = new WsHandler(wsUrl, faker.datatype.uuid());
+            const wsInstance = new WsHandler(wsUrl, faker.string.uuid());
             await Timeouts.race_error(async () => {
                 await wsInstance.createSocket(serialNumber);
                 await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, config.url);
