@@ -1,0 +1,70 @@
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="8.400262000000001">
+<testsuite name="specs\e2e\upgrade_device_gsm.spec.ts" timestamp="2024-07-16T08:39:54.682Z" hostname="" tests="1" failures="1" skipped="0" time="2.009" errors="0">
+<testcase name="[MPX] Automate firmware upgrade/downgrade testing for MPX with SimCard channel on the HUB - positive scenarios › positive: Success upgrade a device" classname="specs\e2e\upgrade_device_gsm.spec.ts" time="2.009">
+<failure message="upgrade_device_gsm.spec.ts:55:9 positive: Success upgrade a device" type="FAILURE">
+<![CDATA[  specs\e2e\upgrade_device_gsm.spec.ts:55:9 › [MPX] Automate firmware upgrade/downgrade testing for MPX with SimCard channel on the HUB - positive scenarios › positive: Success upgrade a device 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    Expected: ""
+    Received: "Panel unreachable"
+
+      79 |             ERROR = ErrorDescriptions[errorCode];
+      80 |         }
+    > 81 |         expect(ERROR).toEqual("");
+         |                       ^
+      82 |     });
+      83 |
+      84 | });
+
+        at C:\projects\sas_u-prox_api_tests\specs\e2e\upgrade_device_gsm.spec.ts:81:23
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\specs-e2e-upgrade_device_g-e44d3-ve-Success-upgrade-a-device\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\specs-e2e-upgrade_device_g-e44d3-ve-Success-upgrade-a-device\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[{ client: [32m'openPanelSession'[39m, commandId: [33m1[39m, data: [33m37429968904[39m }
+{ server: [32m'openPanelSession'[39m, commandId: [33m1[39m, data: [33mtrue[39m }
+{ server: [32m'openPanelSession'[39m, commandId: [33m1[39m, data: [33mtrue[39m }
+
+{
+  server: [32m'panelChanges'[39m,
+  data: {
+    create: {
+      panelSettings: [36m[Object][39m,
+      groups: [],
+      users: [36m[Array][39m,
+      sensors: [],
+      keyboards: [],
+      keyFobs: [],
+      repeaters: [],
+      relays: [],
+      reactions: [],
+      zoneExtenders: [],
+      alarmServer: [36m[Object][39m
+    }
+  }
+}
+Install version: OLD
+{
+  client: [32m'updatePanelFirmware'[39m,
+  commandId: [33m2[39m,
+  data: [32m'http://devfirmware.maks.systems:8080/v2/files/b7/22_66.bin'[39m
+}
+{ server: [32m'updatePanelFirmware'[39m, commandId: [33m2[39m, error: [33m311[39m }
+{ server: [32m'updatePanelFirmware'[39m, commandId: [33m2[39m, error: [33m311[39m }
+versionError OLD: Panel unreachable
+Panel unreachable
+
+[[ATTACHMENT|specs-e2e-upgrade_device_g-e44d3-ve-Success-upgrade-a-device\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>
