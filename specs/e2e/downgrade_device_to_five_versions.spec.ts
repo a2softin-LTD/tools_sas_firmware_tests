@@ -33,7 +33,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         commandIndex++;
 
         // 2. Getting Hostname
-        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdPin);
+        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdWithWiFi);
 
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             env.envUrl,
