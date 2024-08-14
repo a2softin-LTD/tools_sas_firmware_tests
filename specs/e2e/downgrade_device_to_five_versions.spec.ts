@@ -33,7 +33,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         commandIndex++;
 
         // 2. Getting Hostname
-        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdTabachkov1);
+        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdPin);
 
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             env.envUrl,
@@ -48,7 +48,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 
     });
 
-    test.skip('positive: Success downgrade a device to five last versions', { tag: '@downgrade' }, async ({request}) => {
+    test('positive: Success downgrade a device to five last versions', { tag: '@downgrade' }, async ({request}) => {
         const TIMEOUT: number = 1200;
         const PAUSE: number = 30000;
         let ERROR: string = "";
