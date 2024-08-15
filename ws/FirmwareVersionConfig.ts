@@ -43,15 +43,15 @@ export const firmwareVersionConfigFiveLastVersions = new Map<FirmwareVersionType
     .set(FirmwareVersionType.LAST, {
         versionCode: 2265,
         url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_65.bin'
-    });
+    })
     // .set(FirmwareVersionType.PENULTIMATE, {
     //     versionCode: 2264,
     //     url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_64.bin'
     // })
-    // .set(FirmwareVersionType.PRE_PENULTIMATE, {
-    //     versionCode: 2268,
-    //     url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_68.bin'
-    // });
+    .set(FirmwareVersionType.PRE_PENULTIMATE, {
+        versionCode: 2268,
+        url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_68.bin'
+    });
 
 export const getAnotherVersionConfig = (versionCode: number):IFirmwareVersionView => {
     const allowedConfigs = Array.from(firmwareVersionConfigB7.entries())
