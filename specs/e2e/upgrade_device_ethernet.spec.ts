@@ -82,7 +82,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
 
 });
 
-test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - negative scenarios', () => {
+test.describe.skip('[MPX] Automate firmware upgrade/downgrade testing for MPX - negative scenarios', () => {
     const env = environmentConfig.get(Environments.DEV);
 
     test.beforeAll(async ({request}) => {

@@ -10,3 +10,6 @@ results.json
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+*.html
+*.xml
+
