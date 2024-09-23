@@ -23,7 +23,7 @@ let wsUrl: string;
 let wsInstance: WsHandler;
 let commandIndex: number = 0;
 
-test.describe.skip('[MPX] Automate firmware upgrade/downgrade testing for MPX with Ethernet channel on the HUB - positive scenarios', () => {
+test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Ethernet channel on the HUB - positive scenarios', () => {
     const env = environmentConfig.get(Environments.DEV);
 
     test.beforeAll(async ({request}) => {
@@ -51,7 +51,7 @@ test.describe.skip('[MPX] Automate firmware upgrade/downgrade testing for MPX wi
 
     });
 
-    test.skip('positive: Success upgrade a device', { tag: '@upgrade' }, async ({request}) => {
+    test('positive: Success upgrade a device', { tag: '@upgrade' }, async ({request}) => {
         const TIMEOUT: number = 1200;
         const PAUSE: number = 30000;
         let ERROR: string = "";
