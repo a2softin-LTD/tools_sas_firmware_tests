@@ -1,18 +1,20 @@
-import { WebSocket } from "ws";
-import { WsMethod } from "./WsMethod";
-import { WsUpdateModel } from "./WsUpdateModel";
-import { DropSubscriptionInterface } from "./DropSubscriptionInterface";
-import { CreateSubscriptionInterface } from "./CreateSubscriptionInterface";
-import { MaksSetupWsCallback } from "./MaksSetupWsCallback";
-import { Timeouts } from "./Timeouts";
-import { isNullOrUndefined } from "node:util";
+import {WebSocket} from "ws";
+import {WsMethod} from "../src/domain/constants/ws-connection/ws-commands";
+import {WsUpdateModel} from "./WsUpdateModel";
+import {MaksSetupWsCallback} from "../src/domain/view/MaksSetupWsCallback";
+import {Timeouts} from "../src/utils/timeout.util";
+import {ICreateSubscriptionView, IDropSubscriptionView} from "../src/domain/view/subscription.view";
+import {isDefined} from "../src/utils/is-defined.util";
 
 export class WsHandler {
     private websocketInstance: WebSocket
     private openCallback: any;
     private activeSession: boolean;
 
-    constructor(private readonly serverUrl: string, private readonly activeJwtToken: string) {
+    constructor(
+        private readonly serverUrl: string,
+        private readonly activeJwtToken: string
+    ) {
     }
 
     createSocket(serial: number) {
@@ -56,7 +58,7 @@ export class WsHandler {
     send<T>(command: string /*WsMethod*/, data?: any, awaitTime?: number, raceIgnored?: boolean) {
         return raceIgnored ? this.push<T>(command, data) :
             // @ts-ignore
-            Timeouts.race_error(this.push(command, data), awaitTime)
+            Timeouts.raceError(this.push(command, data), awaitTime)
     }
 
     private sendData(data) {
@@ -84,8 +86,8 @@ export class WsHandler {
     }
 
     update<T>(model: WsUpdateModel): Promise<boolean> {
-        return Timeouts.race_error(new Promise((resolve, reject) => {
-            const subscribePoint: DropSubscriptionInterface = {
+        return Timeouts.raceError(new Promise((resolve, reject) => {
+            const subscribePoint: IDropSubscriptionView = {
                 method: model.subscribeMethod,
                 field: model.subscribePart
             };
@@ -110,13 +112,13 @@ export class WsHandler {
         }), model.gsmTime || 60)
     }
 
-    public removeSubscription(...subscriptionsInfo: DropSubscriptionInterface[]) {
+    public removeSubscription(...subscriptionsInfo: IDropSubscriptionView[]) {
         subscriptionsInfo.forEach(({method, field}) => {
             delete this.subs[field][method]
         })
     }
 
-    public createSubscription({field, method, callback}: CreateSubscriptionInterface) {
+    public createSubscription({field, method, callback}: ICreateSubscriptionView) {
         this.subs[field][method] = callback
     }
 
@@ -179,17 +181,16 @@ export class WsHandler {
                             objectKey: string /*keyof operationMode*/, awaitedValue: any) {
 
         return new Promise((resolve, reject) => {
-            const subscribePoint: DropSubscriptionInterface = {method: rootKey, field: structureKey} as any;
+            const subscribePoint: IDropSubscriptionView = {method: rootKey, field: structureKey} as any;
             this.createSubscription({
                 ...subscribePoint,
                 callback: (data: any) => {
+                    const allowed = isDefined(data[objectKey]) && data[objectKey] == awaitedValue;
                     console.group();
                     console.log("data:", data, {objectKey, structureKey, rootKey, awaitedValue});
-                    console.log("Allowed:", !(isNullOrUndefined(data[objectKey]) || data[objectKey] != awaitedValue));
+                    console.log("Allowed:", allowed);
                     console.groupEnd();
-                    if (
-                        isNullOrUndefined(data[objectKey]) || data[objectKey] != awaitedValue
-                    ) return;
+                    if (allowed) return;
                     return resolve(true);
                 }
             });

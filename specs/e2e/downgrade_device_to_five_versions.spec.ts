@@ -1,17 +1,16 @@
-import { APIResponse } from "@playwright/test";
-import { expect, test } from "@playwright/test";
-import { Auth} from "../../auth/Auth";
-import { TestDataProvider } from "../../utils/TestDataProvider";
-import { HostnameController } from "../../api/controllers/HostnameController";
-import { Parsers } from "../../utils/Parsers";
-import { WS } from "../../utils/path";
-import { WsHandler } from "../../ws/WsHandler";
-import { getAllVersionConfigsFiveLastVersions } from "../../ws/FirmwareVersionConfig";
-import { environmentConfig } from "../../ws/EnvironmentConfig";
-import { Environments } from "../../ws/Environments";
-import { ErrorDescriptions } from "../../ws/Errors";
-import { Timeouts } from "../../ws/Timeouts";
-import { Updater } from "../../ws/Updater";
+import {APIResponse, expect, test} from "@playwright/test";
+import {Auth} from "../../auth/Auth";
+import {TestDataProvider} from "../../utils/TestDataProvider";
+import {HostnameController} from "../../api/controllers/HostnameController";
+import {WsHandler} from "../../ws/WsHandler";
+import {getAllVersionConfigsFiveLastVersions} from "../../ws/FirmwareVersionConfig";
+import {environmentConfig} from "../../ws/EnvironmentConfig";
+import {Environments} from "../../src/domain/constants/environments";
+import {ErrorDescriptions} from "../../src/utils/errors/Errors";
+import {Timeouts} from "../../src/utils/timeout.util";
+import {Updater} from "../../ws/Updater";
+import {buildPanelWsUrl} from "../../src/utils/ws-url-builder.util";
+import {PanelConvertersUtil} from "../../src/utils/converters/panel-converters.util";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -33,7 +32,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         commandIndex++;
 
         // 2. Getting Hostname
-        serialNumber = await Parsers.serialToDec(TestDataProvider.DeviceIdWithWiFi);
+        serialNumber = PanelConvertersUtil.serialToDec(TestDataProvider.DeviceIdWithWiFi);
 
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             env.envUrl,
@@ -43,19 +42,19 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         expect(responseGetHostnameData.status()).toBe(200);
 
         insideGetHostnameData = await responseGetHostnameData.json();
-        wsUrl = WS["WSS_URL"](insideGetHostnameData.result) + ":" + WS["PORT"];
+        wsUrl = buildPanelWsUrl(insideGetHostnameData.result)
         wsInstance = new WsHandler(wsUrl, JwtToken);
 
     });
 
-    test('positive: Success downgrade a device to five last versions', { tag: '@downgrade' }, async ({request}) => {
+    test('positive: Success downgrade a device to five last versions', {tag: '@downgrade'}, async ({request}) => {
         const TIMEOUT: number = 1200;
         const PAUSE: number = 30000;
         let ERROR: string = "";
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
-            await Timeouts.race_error(async () => {
+            await Timeouts.raceError(async () => {
                 const versions = getAllVersionConfigsFiveLastVersions()
                 const newVersion = versions[0]
                 await Updater.update(wsInstance, serialNumber, newVersion)
@@ -68,7 +67,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
                     });
                     await Updater.update(wsInstance, serialNumber, version);
                 }
-            }, { awaitSeconds: TIMEOUT, errorCode: 999 });
+            }, {awaitSeconds: TIMEOUT, errorCode: 999});
         } catch (error) {
             const errorCode: string = Object.keys(ErrorDescriptions).find(key => ErrorDescriptions[key] === error.error);
             console.log(ErrorDescriptions[errorCode]);
