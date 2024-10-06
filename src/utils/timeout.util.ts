@@ -1,3 +1,5 @@
+import {Observable, take, throwError, timeout} from "rxjs";
+
 type PromiseFn = (...params: any[]) => Promise<any>;
 
 export class Timeouts {
@@ -17,4 +19,15 @@ export class Timeouts {
             setTimeout(resolve, ms);
         });
     }
+
+    static decorateTimeoutError$<T>(observable: Observable<T>, timeoutMinutes: number = 60, error: any = -1) {
+        return observable
+            .pipe(
+                take(1),
+                timeout({
+                    each: (timeoutMinutes || 60) * 1000,
+                    with: () => throwError(() => error)
+                }),
+            )
+    };
 }

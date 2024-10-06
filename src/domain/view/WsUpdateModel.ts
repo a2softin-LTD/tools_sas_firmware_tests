@@ -1,8 +1,8 @@
-import { WsMethod } from "../src/domain/constants/ws-connection/ws-commands";
-import { PanelData } from "../src/domain/entity/setup-session/PanelData";
+import { WsMethod } from "../constants/ws-connection/ws-commands";
+import { PanelData } from "../entity/setup-session/PanelData";
 
 export interface WsUpdateModel {
-    Method?: WsMethod,
+    method?: WsMethod,
     data?: any,
     subscribePart: keyof PanelData
     subscribeMethod: "create" | "update" | "delete",

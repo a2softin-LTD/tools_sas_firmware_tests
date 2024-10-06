@@ -1,6 +1,6 @@
 import {WebSocket} from "ws";
 import {WsMethod} from "../src/domain/constants/ws-connection/ws-commands";
-import {WsUpdateModel} from "./WsUpdateModel";
+import {WsUpdateModel} from "../src/domain/view/WsUpdateModel";
 import {MaksSetupWsCallback} from "../src/domain/view/MaksSetupWsCallback";
 import {Timeouts} from "../src/utils/timeout.util";
 import {ICreateSubscriptionView, IDropSubscriptionView} from "../src/domain/view/subscription.view";
@@ -105,7 +105,7 @@ export class WsHandler {
                 }
             });
 
-            this.send(model.Method, model.data, null, true)
+            this.send(model.method, model.data, null, true)
                 .catch(error => reject(error))
 
             // @ts-ignore
