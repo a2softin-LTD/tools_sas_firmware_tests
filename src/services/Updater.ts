@@ -1,4 +1,4 @@
-import { WsHandler } from "./WsHandler";
+import { WsHandler } from "../src/services/WsHandler";
 import { IFirmwareVersionView } from "./FirmwareVersionConfig";
 import { WsMethod } from "../src/domain/constants/ws-connection/ws-commands";
 import { ErrorHandler } from "../src/utils/errors/ErrorHandler";

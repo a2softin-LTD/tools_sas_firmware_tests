@@ -3,7 +3,7 @@ import {Auth} from "../../auth/Auth";
 import {TestDataProvider} from "../../utils/TestDataProvider";
 import {HostnameController} from "../../api/controllers/HostnameController";
 import {WsMethod} from "../../src/domain/constants/ws-connection/ws-commands";
-import {WsHandler} from "../../ws/WsHandler";
+import {WsHandler} from "../../src/services/WsHandler";
 import {firmwareVersionConfigB3, getAllVersionConfigsB3} from "../../ws/FirmwareVersionConfig";
 import {FirmwareVersionType} from "../../src/domain/constants/firmware-version.types";
 import {environmentConfig} from "../../ws/EnvironmentConfig";
@@ -11,7 +11,7 @@ import {Environments} from "../../src/domain/constants/environments";
 import {ErrorHandler} from "../../src/utils/errors/ErrorHandler";
 import {ErrorDescriptions} from "../../src/utils/errors/Errors";
 import {Timeouts} from "../../src/utils/timeout.util";
-import {Updater} from "../../ws/Updater";
+import {Updater} from "../../src/services/Updater";
 import {buildPanelWsUrl} from "../../src/utils/ws-url-builder.util";
 import {PanelConvertersUtil} from "../../src/utils/converters/panel-converters.util";
 

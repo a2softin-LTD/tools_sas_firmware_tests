@@ -1,10 +1,10 @@
 import {WebSocket} from "ws";
-import {WsMethod} from "../src/domain/constants/ws-connection/ws-commands";
-import {WsUpdateModel} from "../src/domain/view/WsUpdateModel";
-import {MaksSetupWsCallback} from "../src/domain/view/MaksSetupWsCallback";
-import {Timeouts} from "../src/utils/timeout.util";
-import {ICreateSubscriptionView, IDropSubscriptionView} from "../src/domain/view/subscription.view";
-import {isDefined} from "../src/utils/is-defined.util";
+import {WsMethod} from "../domain/constants/ws-connection/ws-commands";
+import {WsUpdateModel} from "../domain/view/WsUpdateModel";
+import {MaksSetupWsCallback} from "../domain/view/MaksSetupWsCallback";
+import {Timeouts} from "../utils/timeout.util";
+import {ICreateSubscriptionView, IDropSubscriptionView} from "../domain/view/subscription.view";
+import {isDefined} from "../utils/is-defined.util";
 
 export class WsHandler {
     private websocketInstance: WebSocket
