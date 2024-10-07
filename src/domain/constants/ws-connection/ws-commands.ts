@@ -40,3 +40,11 @@ export enum WsMethod {
 
     SCAN_WIFI_AP = "scanWiFiAccessPoints"
 }
+
+export enum ControlPanelSessionCommands {
+    OPEN_PANEL_SESSION = "openPanelSession",
+    PANEL_CHANGES = 'panelStateChanges',
+    ARM_AWAY = 'executePanelArm',
+    DISARM = 'executePanelDisarm',
+    ARM_STAY = 'executePanelArmStay',
+}

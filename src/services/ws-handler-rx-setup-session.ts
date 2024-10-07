@@ -8,7 +8,7 @@ import {WsUpdateModel} from "../domain/view/WsUpdateModel";
 import {SessionTypeEnum} from "../domain/constants/ws-connection/session-type.enum";
 import {isDefined} from "../utils/is-defined.util";
 
-export class RxWsHandlerComposite {
+export class WsHandlerRxSetupSession {
     private websocketInstance: WebSocket
     private activeSession: boolean;
     private readonly createConnectionObserver$ = new Subject<PanelParsedInfo>()

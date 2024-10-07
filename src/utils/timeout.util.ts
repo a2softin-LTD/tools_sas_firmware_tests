@@ -13,9 +13,10 @@ export class Timeouts {
         })]);
     }
 
-    static async pause(ms: number) {
+    static async pause(ms: number, message?: string) {
         new Promise((resolve, reject) => {
-            console.log("Pause...............................................");
+            console.log(`Pause ${ms / 1000}sec...............................................`);
+
             setTimeout(resolve, ms);
         });
     }

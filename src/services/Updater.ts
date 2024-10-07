@@ -1,7 +1,7 @@
-import { WsHandler } from "../src/services/WsHandler";
-import { IFirmwareVersionView } from "./FirmwareVersionConfig";
-import { WsMethod } from "../src/domain/constants/ws-connection/ws-commands";
-import { ErrorHandler } from "../src/utils/errors/ErrorHandler";
+import { WsHandler } from "./WsHandler";
+import { IFirmwareVersionView } from "../../ws/FirmwareVersionConfig";
+import { WsMethod } from "../domain/constants/ws-connection/ws-commands";
+import { ErrorHandler } from "../utils/errors/ErrorHandler";
 
 
 export class Updater {
