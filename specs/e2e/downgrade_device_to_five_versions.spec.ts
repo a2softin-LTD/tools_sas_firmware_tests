@@ -50,7 +50,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
     test('positive: Success downgrade a device to five last versions', {tag: '@downgrade'}, async ({request}) => {
         const TIMEOUT: number = 1200;
         const PAUSE: number = 30000;
-        let ERROR: string = "";
+        let ERROR: string = '';
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
@@ -73,7 +73,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
             console.log(ErrorDescriptions[errorCode]);
             ERROR = ErrorDescriptions[errorCode];
         }
-        expect(ERROR).toEqual("");
+        expect(ERROR).toEqual('');
     });
 
 });

@@ -60,7 +60,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Wi
     test('positive: Success upgrade a device', { tag: '@upgrade' }, async ({request}) => {
         const TIMEOUT: number = 1200;
         const PAUSE: number = 30000;
-        let ERROR: string = "";
+        let ERROR: string = '';
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
@@ -83,7 +83,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Wi
             console.log(ErrorDescriptions[errCode]);
             ERROR = ErrorDescriptions[errCode];
         }
-        expect(ERROR).toEqual("");
+        expect(ERROR).toEqual('');
     });
 
 });
@@ -117,7 +117,7 @@ test.describe.skip('[MPX] Automate firmware upgrade/downgrade testing for MPX - 
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         const wsUrl: string = buildPanelWsUrl(insideGetHostnameData.result);
-        let ERROR: string = "";
+        let ERROR: string = '';
         const TIMEOUT: number = 10;
 
         const wsInstance = new WsHandler(wsUrl, JwtToken);
@@ -154,7 +154,7 @@ test.describe.skip('[MPX] Automate firmware upgrade/downgrade testing for MPX - 
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         const wsUrl: string = buildPanelWsUrl(insideGetHostnameData.result);
-        let ERROR: string = "";
+        let ERROR: string = '';
 
         const wsInstance = new WsHandler(wsUrl, JwtToken);
         try {
@@ -191,7 +191,7 @@ test.describe.skip('[MPX] Automate firmware upgrade/downgrade testing for MPX - 
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         const wsUrl: string = buildPanelWsUrl(insideGetHostnameData.result);
-        let ERROR: string = "";
+        let ERROR: string = '';
 
         try {
             const wsInstance = new WsHandler(wsUrl, (Math.random() + 1).toString(36).substring(7));
