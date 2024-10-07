@@ -54,7 +54,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
-            await Timeouts.race_error(async () => {
+            await Timeouts.raceError(async () => {
                 const versions = getAllVersionConfigsFiveLastVersions('B7')
                 const newVersion = versions[0]
                 await Updater.update(wsInstance, serialNumber, newVersion)

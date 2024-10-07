@@ -1,4 +1,4 @@
-import {Observable, take, throwError, timeout} from "rxjs";
+import { Observable, take, throwError, timeout } from "rxjs";
 
 type PromiseFn = (...params: any[]) => Promise<any>;
 
