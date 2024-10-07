@@ -73,6 +73,7 @@ export class SetupSessionRxUpdater {
 
                 switchMap(() => {
                     //  create control session
+                    wsControlInstance.initSocket()
                     return wsControlInstance.createSession$(serialNumber)
                 }),
                 switchMap(() => {
@@ -81,14 +82,9 @@ export class SetupSessionRxUpdater {
                 }),
 
                 switchMap(() => {
-                    //todo - implement logic for update firmware on arm panel N times
+                    //todo - implement logic for update firmware on arm panel N times. MB user 'keepPanelSession' command (increase session time)
                     return of(true)
                 }),
-
-
-                switchMap(() =>
-                    wsSetupInstance.send$(WsMethod.UPDATE_PANEL_FIRMWARE, allowedVersionConfig.config.url)
-                ),
 
 
                 switchMap(() => {

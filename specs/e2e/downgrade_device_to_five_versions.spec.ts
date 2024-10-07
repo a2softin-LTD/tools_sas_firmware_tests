@@ -32,7 +32,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         commandIndex++;
 
         // 2. Getting Hostname
-        serialNumber = PanelConvertersUtil.serialToDec(TestDataProvider.DeviceIdWithWiFi);
+        serialNumber = PanelConvertersUtil.serialToDec(TestDataProvider.DeviceIdWithEthernet);
 
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             env.envUrl,
@@ -54,8 +54,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
-            await Timeouts.raceError(async () => {
-                const versions = getAllVersionConfigsFiveLastVersions()
+            await Timeouts.race_error(async () => {
+                const versions = getAllVersionConfigsFiveLastVersions('B7')
                 const newVersion = versions[0]
                 await Updater.update(wsInstance, serialNumber, newVersion)
 
