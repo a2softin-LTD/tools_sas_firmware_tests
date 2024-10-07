@@ -36,6 +36,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Wi
 
         // 2. Getting Hostname
         serialNumber = PanelConvertersUtil.serialToDec(TestDataProvider.DeviceIdWithWiFi);
+        console.log('DeviceId -> WiFi');
 
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             env.envUrl,
