@@ -59,7 +59,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Si
 
     test('positive: Success upgrade a device', { tag: '@upgrade' }, async ({request}) => {
         const TIMEOUT: number = 1200;
-        const PAUSE: number = 30000;
+        const PAUSE: number = 60000;
         let ERROR: string = '';
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
