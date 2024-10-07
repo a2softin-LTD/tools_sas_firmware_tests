@@ -36,7 +36,13 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Si
 
         // 2. Getting Hostname
         serialNumber = PanelConvertersUtil.serialToDec(TestDataProvider.DeviceIdWithGSM);
-        console.log('DeviceId -> GSM');
+        console.log('****************************************************************************************************');
+        console.log('****************************************************************************************************');
+        console.log();
+        console.log('***************************************** DeviceId -> GSM ******************************************');
+        console.log();
+        console.log('****************************************************************************************************');
+        console.log('****************************************************************************************************');
 
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             env.envUrl,
