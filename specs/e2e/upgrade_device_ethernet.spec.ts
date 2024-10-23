@@ -57,17 +57,17 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
 
     });
 
-    test('positive: Success upgrade a device', { tag: '@upgrade' }, async ({request}) => {
+    test('positive: Success upgrade a device', { tag: '@upgrade' }, async () => {
         const TIMEOUT: number = 1200;
-        const PAUSE: number = 60000;
+        const PAUSE: number = 240000;
         let ERROR: string = '';
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.raceError(async () => {
-                const versions = getAllVersionConfigsB7()
-                const newVersion = versions[0]
-                await Updater.update(wsInstance, serialNumber, newVersion)
+                const versions = getAllVersionConfigsB7();  
+                const newVersion = versions[0];
+                await Updater.update(wsInstance, serialNumber, newVersion);
 
                 const prevVersionList = versions.slice(1);//.reverse()
                 for (const version of prevVersionList) {
