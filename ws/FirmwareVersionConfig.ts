@@ -32,6 +32,10 @@ export const firmwareVersionConfigB3 = new Map<FirmwareVersionType, IFirmwareVer
     });
 
 export const firmwareVersionConfigFiveLastVersionsB7 = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
+    .set(FirmwareVersionType.OLDEST, {
+        versionCode: 2264,
+        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_64.bin'
+    })
     .set(FirmwareVersionType.OLD, {
         versionCode: 2267,
         url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_67.bin'
@@ -44,10 +48,6 @@ export const firmwareVersionConfigFiveLastVersionsB7 = new Map<FirmwareVersionTy
         versionCode: 2271,
         url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_71.bin'
     })
-    // .set(FirmwareVersionType.PENULTIMATE, {
-    //     versionCode: 2264,
-    //     url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_64.bin'
-    // })
     .set(FirmwareVersionType.PRE_PENULTIMATE, {
         versionCode: 2272,
         url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_72.bin'
@@ -66,10 +66,6 @@ export const firmwareVersionConfigFiveLastVersionsB3 = new Map<FirmwareVersionTy
         versionCode: 2271,
         url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_71.bin'
     })
-    // .set(FirmwareVersionType.PENULTIMATE, {
-    //     versionCode: 2264,
-    //     url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_64.bin'
-    // })
     .set(FirmwareVersionType.PRE_PENULTIMATE, {
         versionCode: 2272,
         url: 'http://devfirmware.maks.systems:8080/v2/files/b3/22_72.bin'

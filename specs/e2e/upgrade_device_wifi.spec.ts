@@ -4,7 +4,7 @@ import { TestDataProvider } from "../../utils/TestDataProvider";
 import { HostnameController } from "../../api/controllers/HostnameController";
 import { WsMethod } from "../../src/domain/constants/ws-connection/ws-commands";
 import { WsHandler } from "../../src/services/WsHandler";
-import { firmwareVersionConfigB3, getAllVersionConfigsB3 } from "../../ws/FirmwareVersionConfig";
+import {firmwareVersionConfigB3, getAllVersionConfigsB7} from "../../ws/FirmwareVersionConfig";
 import { FirmwareVersionType } from "../../src/domain/constants/firmware-version.types";
 import { environmentConfig } from "../../ws/EnvironmentConfig";
 import { Environments } from "../../src/domain/constants/environments";
@@ -65,7 +65,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Wi
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.raceError(async () => {
-                const versions = getAllVersionConfigsB3();
+                const versions = getAllVersionConfigsB7();
                 const newVersion = versions[0]
                 await Updater.update(wsInstance, serialNumber, newVersion);
 
