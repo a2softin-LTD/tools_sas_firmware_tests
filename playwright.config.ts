@@ -6,7 +6,7 @@ export default defineConfig({
         ['html', { outputFolder: 'playwright-report', open: 'never' }],
         ['junit', { outputFile: 'test-results/test-results.xml' }],
     ],
-    workers: 3,
+    workers: 2,
     testMatch: /.*\.spec\.ts/,
     fullyParallel: true,
 

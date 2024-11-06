@@ -68,7 +68,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
                 const versions = getAllVersionConfigsB7();  
                 const newVersion = versions[0];
                 await Updater.update(wsInstance, serialNumber, newVersion);
-
+                
                 const prevVersionList = versions.slice(1);//.reverse()
                 for (const version of prevVersionList) {
                     await new Promise((resolve, reject) => {
