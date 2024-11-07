@@ -14,71 +14,71 @@ export interface IFirmwareVersionView  {
 export const firmwareVersionConfigB7 = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
     .set(FirmwareVersionType.OLDEST, {
         versionCode: 2271,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_71.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b7/22_71.bin'
     })
     .set(FirmwareVersionType.OLD, {
         versionCode: 2272,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_72.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b7/22_72.bin'
     }).set(FirmwareVersionType.NEW, {
         versionCode: 2273,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_73.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b7/22_73.bin'
     });
 
 export const firmwareVersionConfigB3 = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
     .set(FirmwareVersionType.OLDEST, {
         versionCode: 2271,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_71.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b3/22_71.bin'
     })
     .set(FirmwareVersionType.OLD, {
         versionCode: 2272,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_72.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b3/22_72.bin'
     }).set(FirmwareVersionType.NEW, {
         versionCode: 2273,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_73.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b3/22_73.bin'
     });
 
 export const firmwareVersionConfigFiveLastVersionsB7 = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
     .set(FirmwareVersionType.OLDEST, {
         versionCode: 2267,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_67.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b7/22_67.bin'
     })
     .set(FirmwareVersionType.OLD, {
         versionCode: 2269,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_69.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b7/22_69.bin'
     })
     .set(FirmwareVersionType.NEW, {
         versionCode: 2271,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_71.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b7/22_71.bin'
     })
     .set(FirmwareVersionType.LAST, {
         versionCode: 2272,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_72.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b7/22_72.bin'
     })
     .set(FirmwareVersionType.PRE_PENULTIMATE, {
         versionCode: 2273,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_73.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b7/22_73.bin'
     });
 
 export const firmwareVersionConfigFiveLastVersionsB3 = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
     .set(FirmwareVersionType.OLDEST, {
         versionCode: 2267,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_67.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b3/22_67.bin'
     })
     .set(FirmwareVersionType.OLD, {
         versionCode: 2269,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_69.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b3/22_69.bin'
     })
     .set(FirmwareVersionType.NEW, {
         versionCode: 2271,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_71.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b3/22_71.bin'
     })
     .set(FirmwareVersionType.LAST, {
         versionCode: 2272,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_72.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b3/22_72.bin'
     })
     .set(FirmwareVersionType.PRE_PENULTIMATE, {
         versionCode: 2273,
-        url: 'http://devfirmware.maks.systems:8080/v2/files/b7/22_73.bin'
+        url: 'http://dev-file.maks.systems:8080/v2/files/b3/22_73.bin'
     });
 
 export const getAnotherVersionConfig = (versionCode: number):IFirmwareVersionView => {
