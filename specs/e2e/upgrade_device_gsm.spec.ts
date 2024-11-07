@@ -22,7 +22,7 @@ let wsUrl: string;
 let wsInstance: WsHandler;
 let commandIndex: number = 0;
 
-test.describe.skip('[MPX] Automate firmware upgrade/downgrade testing for MPX with SimCard channel on the HUB - positive scenarios', () => {
+test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with SimCard channel on the HUB - positive scenarios', () => {
     const env = environmentConfig.get(Environments.DEV);
 
     test.beforeAll(async ({request}) => {
