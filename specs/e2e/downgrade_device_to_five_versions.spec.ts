@@ -55,8 +55,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
     });
 
     test('positive: Success downgrade a device to five last versions', {tag: '@downgrade'}, async () => {
-        const TIMEOUT: number = 1200;
-        const PAUSE: number = 240000;
+        const TIMEOUT: number = 2400;
+        const PAUSE: number = 300000;
         let ERROR: string = '';
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets

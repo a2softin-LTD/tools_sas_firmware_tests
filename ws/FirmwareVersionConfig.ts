@@ -32,7 +32,8 @@ export const firmwareVersionConfigB3 = new Map<FirmwareVersionType, IFirmwareVer
     .set(FirmwareVersionType.OLD, {
         versionCode: 2272,
         url: 'http://dev-file.maks.systems:8080/v2/files/b3/22_72.bin'
-    }).set(FirmwareVersionType.NEW, {
+    })
+    .set(FirmwareVersionType.NEW, {
         versionCode: 2273,
         url: 'http://dev-file.maks.systems:8080/v2/files/b3/22_73.bin'
     });
