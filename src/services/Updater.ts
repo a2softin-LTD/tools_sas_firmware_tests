@@ -11,7 +11,7 @@ export class Updater {
             if (initialData["create"]['panelSettings']['versionCode'] == allowedVersionConfig.config.versionCode)
                 throw 1001;
             // const allowedVersionConfig = getAnotherVersionConfig(initialData["create"]['panelSettings']['versionCode'])
-            console.log(`Install version: ${allowedVersionConfig.versionType}`)
+            console.log(`Install the version: ${allowedVersionConfig.versionType}`)
 
             await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, allowedVersionConfig.config.url);
             await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);

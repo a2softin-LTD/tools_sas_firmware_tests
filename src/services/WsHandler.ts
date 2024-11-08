@@ -28,7 +28,7 @@ export class WsHandler {
             };
             this.websocketInstance.onmessage = (message) => {
                 const callback = JSON.parse(message.data);
-                console.log(callback);
+                //console.log(callback);
 
                 if (callback.server === WsMethod.GET_PANEL_CHANGES) {
                     this.sendData(callback.data);
@@ -80,7 +80,7 @@ export class WsHandler {
                 resolve,
                 reject
             });
-            console.log(body);
+            //console.log(body);
             this.websocketInstance.send(JSON.stringify(body));
         })
     }
@@ -134,11 +134,11 @@ export class WsHandler {
 
     private callSubscription(message: MaksSetupWsCallback) {
         if (!this.callbacks[message.commandId]) return;
-        console.log(message);
+        //console.log(message);
         if (message.error) {
             this.callbacks[message.commandId].reject(message.error);
         } else {
-            console.log()
+            //console.log()
             this.callbacks[message.commandId].resolve(message.data);
         }
         delete this.callbacks[message.commandId];

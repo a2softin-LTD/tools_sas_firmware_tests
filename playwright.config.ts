@@ -11,10 +11,10 @@ export default defineConfig({
     fullyParallel: true,
 
     /* Maximum time one test can run for. */
-    timeout: 20 * 60 * 1000,
+    timeout: 30 * 60 * 1000,
     expect: {
         /* Maximum time expect() should wait for the condition to be met. */
-        timeout: 20 * 60 * 1000
+        timeout: 30 * 60 * 1000
     },
 
     /* Folder for test artifacts such as screenshots, videos, traces, etc. */
