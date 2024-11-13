@@ -1,5 +1,5 @@
 import {WebSocket} from "ws";
-import {ControlPanelSessionCommands, WsMethod} from "../domain/constants/ws-connection/ws-commands";
+import {ControlPanelSessionCommands} from "../domain/constants/ws-connection/ws-commands";
 import {MaksSetupWsCallback} from "../domain/view/MaksSetupWsCallback";
 import {Timeouts} from "../utils/timeout.util";
 import {ICreateSubscriptionView, IDropSubscriptionView} from "../domain/view/subscription.view";
@@ -24,7 +24,10 @@ export class WsControlHandler {
 
             this.websocketInstance = new WebSocket(this.serverUrl + '/api1?token=' + this.activeJwtToken);
             this.websocketInstance.onopen = () => {
-                this.send(ControlPanelSessionCommands.OPEN_PANEL_SESSION, serial)
+                this.send(ControlPanelSessionCommands.OPEN_PANEL_SESSION, {
+                    serial,
+                    region: "international"
+                })
                     .catch(error => {
                         reject(error)
                     });
@@ -33,13 +36,12 @@ export class WsControlHandler {
                 const callback = JSON.parse(message.data);
                 //console.log(callback);
 
-                if (callback.server === WsMethod.GET_PANEL_CHANGES) {
+                if (callback.server === ControlPanelSessionCommands.PANEL_CHANGES) {
                     this.sendData(callback.data);
                     this.sendToSubscribers(callback.data)
                 } else this.callSubscription(callback)
             };
             this.websocketInstance.onclose = (err) => {
-                console.log(err);
                 if (err.code) {
                     return this.activeSession = false;
                 }

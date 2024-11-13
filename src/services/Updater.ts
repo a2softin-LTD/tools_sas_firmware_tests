@@ -37,12 +37,11 @@ export class Updater {
         console.log("armPanel", initialData);
         const groups = initialData.create?.groups
         const firstGroupIndex = groups[0].index
+        console.log("firstGroupIndex", firstGroupIndex);
 
         await wsInstance.update({
             subscribeMethod: "update", subscribePart: 'groups',
-            validityFunction: (model: IControlPanelUpdateBlock) => {
-
-                const groups = model.groups
+            validityFunction: (groups: IControlPanelUpdateBlock["groups"]) => {
                 if (!groups?.length) return false
                 const armedGroupExist = Boolean(
                     groups.filter(el => el.states.includes(ArmStatesEnum.ArmedAway))
@@ -54,7 +53,7 @@ export class Updater {
             method: ControlPanelSessionCommands.ARM_AWAY,
             data: {groups: [firstGroupIndex]}
         })
-
+        console.log("wsInstance success!!!");
         wsInstance.close()
     }
 
@@ -68,9 +67,7 @@ export class Updater {
 
         await wsInstance.update({
             subscribeMethod: "update", subscribePart: 'groups',
-            validityFunction: (model: IControlPanelUpdateBlock) => {
-
-                const groups = model.groups
+            validityFunction: (groups: IControlPanelUpdateBlock["groups"]) => {
                 if (!groups?.length) return false
                 const disarmedGroupExist = Boolean(
                     groups.filter(el => el.states.includes(ArmStatesEnum.Disarm))
