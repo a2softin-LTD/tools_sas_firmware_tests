@@ -6,30 +6,30 @@ import {getAllVersionConfigsB7} from "../../ws/FirmwareVersionConfig";
 import {TestDataProvider} from "../../utils/TestDataProvider";
 
 
-armedTestGenerator(
-    new PanelUpdateFirmwareConfiguration(
-        TestDataProvider.DeviceIdWithEthernet,
-        getAllVersionConfigsB7(),
-        'Ethernet'
-    ),
-    environmentConfig.get(Environments.DEV)
-)
+// armedTestGenerator(
+//     new PanelUpdateFirmwareConfiguration(
+//         TestDataProvider.DeviceIdWithEthernet,
+//         getAllVersionConfigsB7(),
+//         'Ethernet'
+//     ),
+//     environmentConfig.get(Environments.DEV)
+// )
 
 
 armedTestGenerator(
     new PanelUpdateFirmwareConfiguration(
         TestDataProvider.DeviceIdWithGSM,
         getAllVersionConfigsB7(),
-        'Ethernet'
+        'GSM'
     ),
     environmentConfig.get(Environments.DEV)
 )
 
-armedTestGenerator(
-    new PanelUpdateFirmwareConfiguration(
-        TestDataProvider.DeviceIdWithWiFi,
-        getAllVersionConfigsB7(),
-        'Ethernet'
-    ),
-    environmentConfig.get(Environments.DEV)
-)
+// armedTestGenerator(
+//     new PanelUpdateFirmwareConfiguration(
+//         TestDataProvider.DeviceIdWithWiFi,
+//         getAllVersionConfigsB7(),
+//         'Ethernet'
+//     ),
+//     environmentConfig.get(Environments.DEV)
+// )

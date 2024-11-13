@@ -1,4 +1,4 @@
-import {BehaviorSubject, filter, map, Observable, Subject, switchMap, take} from "rxjs";
+import {BehaviorSubject, filter, map, Observable, of, Subject, switchMap, take} from "rxjs";
 import {WsMethod} from "../domain/constants/ws-connection/ws-commands";
 import {MaksSetupWsCallback} from "../domain/view/MaksSetupWsCallback";
 import {Timeouts} from "../utils/timeout.util";
@@ -36,7 +36,7 @@ export class WsHandlerRxSetupSession {
 
 
     initSocket() {
-        if (this.activeSession) return;
+        if (this.activeSession) return of(true);
         this.websocketInstance = new WebSocket(this.buildServerUrl());
         this.websocketInstance.onclose = err => {
             this.close()
@@ -46,6 +46,9 @@ export class WsHandlerRxSetupSession {
             if (this.activeSession) {
                 this.activeSession = false
             }
+        }
+        this.websocketInstance.onopen = () => {
+            console.log('open');
         }
         this.websocketInstance.onmessage = (message) => {
             const callback = JSON.parse(message.data);

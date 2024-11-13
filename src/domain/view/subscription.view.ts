@@ -1,13 +1,13 @@
 import {PanelUpdateBLock} from "../entity/setup-session/PanelUpdateBLock";
 import {PanelParsedInfo} from "../entity/setup-session/PanelParsedInfo";
 
-export interface IDropSubscriptionView {
-    field: keyof PanelUpdateBLock,
+export interface IDropSubscriptionView<type = PanelUpdateBLock> {
+    field: keyof type,
     method: keyof PanelParsedInfo
 }
 
-export interface ICreateSubscriptionView extends IDropSubscriptionView {
+export interface ICreateSubscriptionView<type = PanelUpdateBLock> extends IDropSubscriptionView<type> {
     callback: (any) => any
-    field: keyof PanelUpdateBLock,
+    field: keyof type,
     method: keyof PanelParsedInfo
 }

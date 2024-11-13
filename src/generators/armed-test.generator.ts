@@ -4,14 +4,13 @@ import {Auth} from "../../auth/Auth";
 import {TestDataProvider} from "../../utils/TestDataProvider";
 import {HostnameController} from "../../api/controllers/HostnameController";
 import {buildPanelWsUrl} from "../utils/ws-url-builder.util";
-import {WsHandlerRxSetupSession} from "../services/ws-handler-rx-setup-session";
-import {lastValueFrom} from "rxjs";
 import {checkGroupArmUtil} from "../utils/check-group-arm.util";
-import {WsHandlerRxControlSession} from "../services/ws-handler-rx-control-session";
-import {SetupSessionRxUpdater} from "../services/rx-session-updater";
 import {Timeouts} from "../utils/timeout.util";
 import {ErrorDescriptions} from "../utils/errors/Errors";
 import {PanelUpdateFirmwareConfiguration} from "../domain/constants/update-firmware.configuration";
+import {WsHandler} from "../services/WsHandler";
+import {Updater} from "../services/Updater";
+import {WsControlHandler} from "../services/WsControlHandler";
 
 export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env: IServerAddresses) {
 
@@ -19,11 +18,13 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
     let JwtToken: string;
     let insideGetHostnameData;
     let wsUrl: string;
-    let setupInstance: WsHandlerRxSetupSession;
-    let controlInstance: WsHandlerRxControlSession;
+    let setupInstance: WsHandler;
+    // let setupInstance: WsHandlerRxSetupSession;
+    // let controlInstance: WsHandlerRxControlSession;
+    let controlInstance: WsControlHandler;
     let notFirstTest = false
 
-    test.describe('update armed panel', () => {
+    test.describe(`update armed panel ${config.panelSerialNumber}`, () => {
 
         // const env = environmentConfig.get(Environments.DEV);
 
@@ -54,15 +55,19 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
 
             insideGetHostnameData = await responseGetHostnameData.json();
             wsUrl = buildPanelWsUrl(insideGetHostnameData.result);
-            setupInstance = new WsHandlerRxSetupSession(wsUrl, JwtToken);
-            controlInstance = new WsHandlerRxControlSession(wsUrl, JwtToken)
+            // setupInstance = new WsHandlerRxSetupSession(wsUrl, JwtToken);
+            setupInstance = new WsHandler(wsUrl, JwtToken);
+            controlInstance = new WsControlHandler(wsUrl, JwtToken)
 
             notFirstTest = false
         })
 
         test.beforeAll(async () => {
-            const state = await lastValueFrom(setupInstance.createSession$(serialNumber))
-            setupInstance.close()
+            // setupInstance.initSocket()
+            // const state = await lastValueFrom(setupInstance.createSession$(serialNumber))
+            const state = await setupInstance.createSocket(serialNumber)
+            console.log("state", state);
+            // setupInstance.close()
             const initialSessionState = state.create
             if (!initialSessionState.groups.length) {
                 throw 'wrong configuration restart panel'
@@ -81,10 +86,10 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
                 throw 'user dont have permissions for  arm/disarm panel'
             }
 
-
             const hasArmedGroups = initialSessionState.groups.some(checkGroupArmUtil)
+            console.log("hasArmedGroups", hasArmedGroups);
             if (!hasArmedGroups) {
-                await lastValueFrom(SetupSessionRxUpdater.armPanel$(controlInstance, serialNumber))
+                await Updater.armPanel(controlInstance, serialNumber)
             }
         })
 
@@ -100,14 +105,17 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
 
 
         config.firmwareList.forEach((version => {
-            test('positive: Success upgrade a device', {tag: '@upgrade'}, async () => {
+            test(`positive: Success upgrade a device ${config.panelSerialNumber} to version ${version.config.versionCode},  - Test ID: ${new Date().toISOString()}`, async () => {
+                // setupInstance.initSocket()
+                // const state = await lastValueFrom(setupInstance.createSession$(serialNumber))
                 const TIMEOUT: number = 2400;
                 let ERROR: string = '';
 
                 // 3. [WSS] Connection and sending necessary commands to the device via web sockets
                 try {
                     await Timeouts.raceError(async () => {
-                        lastValueFrom(SetupSessionRxUpdater.updateFirmware$(setupInstance, serialNumber, version))
+                        Updater.update(setupInstance, serialNumber, version)
+                        // lastValueFrom(SetupSessionRxUpdater.updateFirmware$(setupInstance, serialNumber, version))
                     }, {awaitSeconds: TIMEOUT, errorCode: 999});
 
                 } catch (error) {
@@ -115,15 +123,15 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
                     console.log(ErrorDescriptions[errorCode]);
                     ERROR = ErrorDescriptions[errorCode];
                 }
+                setupInstance.close()
+
                 expect(ERROR).toEqual('');
             });
         }))
 
 
         test.afterAll(async () => {
-            await lastValueFrom(
-                SetupSessionRxUpdater.disarmPanel$(controlInstance, serialNumber)
-            )
+            await Updater.disarmPanel(controlInstance, serialNumber)
         })
     })
 

@@ -1,7 +1,9 @@
-import { WsHandler } from "./WsHandler";
-import { IFirmwareVersionView } from "../../ws/FirmwareVersionConfig";
-import { WsMethod } from "../domain/constants/ws-connection/ws-commands";
-import { ErrorHandler } from "../utils/errors/ErrorHandler";
+import {WsHandler} from "./WsHandler";
+import {IFirmwareVersionView} from "../../ws/FirmwareVersionConfig";
+import {ControlPanelSessionCommands, WsMethod} from "../domain/constants/ws-connection/ws-commands";
+import {ErrorHandler} from "../utils/errors/ErrorHandler";
+import {WsControlHandler} from "./WsControlHandler";
+import {ArmStatesEnum, IControlPanelUpdateBlock} from "../domain/entity/control-session/control-panel-data";
 
 
 export class Updater {
@@ -28,5 +30,58 @@ export class Updater {
                 };
             }
         }
+    }
+
+    static async armPanel(wsInstance: WsControlHandler, serialNumber: number) {
+        const initialData = await wsInstance.createSocket(serialNumber);
+        console.log("armPanel", initialData);
+        const groups = initialData.create?.groups
+        const firstGroupIndex = groups[0].index
+
+        await wsInstance.update({
+            subscribeMethod: "update", subscribePart: 'groups',
+            validityFunction: (model: IControlPanelUpdateBlock) => {
+
+                const groups = model.groups
+                if (!groups?.length) return false
+                const armedGroupExist = Boolean(
+                    groups.filter(el => el.states.includes(ArmStatesEnum.ArmedAway))
+                        .some(el => el.index == firstGroupIndex)
+                )
+
+                return armedGroupExist
+            },
+            method: ControlPanelSessionCommands.ARM_AWAY,
+            data: {groups: [firstGroupIndex]}
+        })
+
+        wsInstance.close()
+    }
+
+    static async disarmPanel(wsInstance: WsControlHandler, serialNumber: number) {
+        const initialData = await wsInstance.createSocket(serialNumber);
+        const groups = initialData.create?.groups
+        const armedGroups = groups
+            .filter(el => el.states.includes(ArmStatesEnum.ArmedAway))
+        if (!armedGroups.length) return true
+        const firstGroupIndex = armedGroups[0].index
+
+        await wsInstance.update({
+            subscribeMethod: "update", subscribePart: 'groups',
+            validityFunction: (model: IControlPanelUpdateBlock) => {
+
+                const groups = model.groups
+                if (!groups?.length) return false
+                const disarmedGroupExist = Boolean(
+                    groups.filter(el => el.states.includes(ArmStatesEnum.Disarm))
+                        .some(el => el.index == firstGroupIndex)
+                )
+                return disarmedGroupExist
+            },
+            method: ControlPanelSessionCommands.DISARM,
+            data: {groups: [firstGroupIndex]}
+        })
+
+        wsInstance.close()
     }
 }
