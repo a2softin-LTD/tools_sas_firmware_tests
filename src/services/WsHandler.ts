@@ -1,6 +1,6 @@
 import {WebSocket} from "ws";
 import {WsMethod} from "../domain/constants/ws-connection/ws-commands";
-import {WsUpdateModel} from "../domain/view/WsUpdateModel";
+import {WsUpdateModel} from "../domain/entity/setup-session/WsUpdateModel";
 import {MaksSetupWsCallback} from "../domain/view/MaksSetupWsCallback";
 import {Timeouts} from "../utils/timeout.util";
 import {ICreateSubscriptionView, IDropSubscriptionView} from "../domain/view/subscription.view";

@@ -4,7 +4,7 @@ import {MaksSetupWsCallback} from "../domain/view/MaksSetupWsCallback";
 import {Timeouts} from "../utils/timeout.util";
 import {PanelParsedInfo} from "../domain/entity/setup-session/PanelParsedInfo";
 import {PanelUpdateBLock} from "../domain/entity/setup-session/PanelUpdateBLock";
-import {WsUpdateModel} from "../domain/view/WsUpdateModel";
+import {WsUpdateModel} from "../domain/entity/setup-session/WsUpdateModel";
 import {SessionTypeEnum} from "../domain/constants/ws-connection/session-type.enum";
 import {isDefined} from "../utils/is-defined.util";
 

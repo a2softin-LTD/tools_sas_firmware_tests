@@ -4,6 +4,7 @@ import {catchError, map, of, switchMap, tap, throwError} from "rxjs";
 import {ControlPanelSessionCommands, WsMethod} from "../domain/constants/ws-connection/ws-commands";
 import {ErrorHandler} from "../utils/errors/ErrorHandler";
 import {WsHandlerRxControlSession} from "./ws-handler-rx-control-session";
+import {ArmStatesEnum, IControlPanelUpdateBlock} from "../domain/entity/control-session/control-panel-data";
 
 export class SetupSessionRxUpdater {
     static updateFirmware$(wsInstance: WsHandlerRxSetupSession, serialNumber: number, allowedVersionConfig: IFirmwareVersionView) {
@@ -47,6 +48,71 @@ export class SetupSessionRxUpdater {
                         }))
                     }
 
+                })
+            )
+    }
+
+    static armPanel$(wsControlInstance: WsHandlerRxControlSession, serialNumber: number) {
+        wsControlInstance.initSocket()
+        return wsControlInstance.createSession$(serialNumber)
+            .pipe(
+                map((c) => c.create?.groups),
+                switchMap((groups) => {
+                    const firstGroupIndex = groups[0].index
+                    // todo -  arm 1st group of panel. add subscription checker
+                    return wsControlInstance.update$({
+                        subscribeMethod: "update", subscribePart: 'groups',
+                        validityFunction: (model: IControlPanelUpdateBlock) => {
+
+                            const groups = model.groups
+                            if (!groups?.length) return false
+                            const armedGroupExist = Boolean(
+                                groups.filter(el => el.states.includes(ArmStatesEnum.ArmedAway))
+                                    .some(el => el.index == firstGroupIndex)
+                            )
+
+                            return armedGroupExist
+                        },
+                        method: ControlPanelSessionCommands.ARM_AWAY,
+                        data: {groups: [firstGroupIndex]}
+                    })
+                }),
+                tap(() => {
+                    wsControlInstance.close()
+                })
+            )
+    }
+
+
+    static disarmPanel$(wsControlInstance: WsHandlerRxControlSession, serialNumber: number) {
+        wsControlInstance.initSocket()
+        return wsControlInstance.createSession$(serialNumber)
+            .pipe(
+                map((c) => c.create?.groups),
+                switchMap((groups) => {
+                    const armedGroups = groups
+                        .filter(el => el.states.includes(ArmStatesEnum.ArmedAway))
+                    if (!armedGroups.length) return of(true)
+                    const firstGroupIndex = armedGroups[0].index
+                    return wsControlInstance.update$({
+                        subscribeMethod: "update", subscribePart: 'groups',
+                        validityFunction: (model: IControlPanelUpdateBlock) => {
+
+                            const groups = model.groups
+                            if (!groups?.length) return false
+                            const disarmedGroupExist = Boolean(
+                                groups.filter(el => el.states.includes(ArmStatesEnum.Disarm))
+                                    .some(el => el.index == firstGroupIndex)
+                            )
+
+                            return disarmedGroupExist
+                        },
+                        method: ControlPanelSessionCommands.DISARM,
+                        data: {groups: [firstGroupIndex]}
+                    })
+                }),
+                tap(() => {
+                    wsControlInstance.close()
                 })
             )
     }

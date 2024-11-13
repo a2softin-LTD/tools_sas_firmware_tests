@@ -1,9 +1,11 @@
+import {IPanelGroup, IPanelUser} from "./PanelData";
+
 export interface PanelUpdateBLock {
     panelSettings?: any,
-    users?: any[]
+    users?: IPanelUser[]
     sensors?: any[]
     keyboards?: any[]
-    groups?: any[]
+    groups?: IPanelGroup[]
     keyFobs?: any[]
     repeaters?: any[]
     zoneExtenders?: any[]

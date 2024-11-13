@@ -1,17 +1,17 @@
 import {BehaviorSubject, filter, map, Observable, Subject, switchMap, take} from "rxjs";
-import {ControlPanelSessionCommands, WsMethod} from "../domain/constants/ws-connection/ws-commands";
+import {ControlPanelSessionCommands} from "../domain/constants/ws-connection/ws-commands";
 import {MaksSetupWsCallback} from "../domain/view/MaksSetupWsCallback";
 import {Timeouts} from "../utils/timeout.util";
 import {PanelParsedInfo} from "../domain/entity/setup-session/PanelParsedInfo";
-import {PanelUpdateBLock} from "../domain/entity/setup-session/PanelUpdateBLock";
-import {WsUpdateModel} from "../domain/view/WsUpdateModel";
 import {SessionTypeEnum} from "../domain/constants/ws-connection/session-type.enum";
 import {isDefined} from "../utils/is-defined.util";
+import {IControlPanelParsedInfo, IControlPanelUpdateBlock} from "../domain/entity/control-session/control-panel-data";
+import {IControlSessionUpdateModel} from "../domain/entity/control-session/control-session-update.model";
 
 export class WsHandlerRxControlSession {
     private websocketInstance: WebSocket
     private activeSession: boolean;
-    private readonly createConnectionObserver$ = new Subject<PanelParsedInfo>()
+    private readonly createConnectionObserver$ = new Subject<IControlPanelParsedInfo>()
     private readonly commandSubscriber$ = new BehaviorSubject<MaksSetupWsCallback>({} as any);
     private readonly subscriber$ = new BehaviorSubject<{ method: string, field: string, data: any }>({} as any)
 
@@ -95,7 +95,7 @@ export class WsHandlerRxControlSession {
         return subscription
     }
 
-    update$<T>(model: WsUpdateModel) {
+    update$<T>(model: IControlSessionUpdateModel) {
         return Timeouts.decorateTimeoutError$(
             this.push$(model.method, model.data)
                 .pipe(
@@ -142,7 +142,7 @@ export class WsHandlerRxControlSession {
     }
 
     awaitState$<T>(
-        rootKey: keyof PanelParsedInfo, structureKey: keyof PanelUpdateBLock,
+        rootKey: keyof PanelParsedInfo, structureKey: keyof IControlPanelUpdateBlock,
         objectKey?: string /*keyof operationMode*/,
         awaitedValue?: any
     ) {
@@ -164,7 +164,7 @@ export class WsHandlerRxControlSession {
     }
 
     generateSubscription$<T>(
-        rootKey: keyof PanelParsedInfo, structureKey: keyof PanelUpdateBLock,
+        rootKey: keyof PanelParsedInfo, structureKey: keyof IControlPanelUpdateBlock,
     ): Observable<T> {
         return this.subscriber$.asObservable().pipe(
             filter((cfg, index) => rootKey == cfg.method && cfg.field == structureKey),
