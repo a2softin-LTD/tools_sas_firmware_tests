@@ -22,7 +22,10 @@ git clone git@github.com:a2softin-LTD/tools_sas_firmware_tests.git
 ```
 $env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:FIRMWARE_VERSIONS="http://dev-file.maks.systems:7070/v2/files/b7/22_74.bin,http://dev-file.maks.systems:7070/v2/files/b7/22_73.bin"; npx playwright test --grep "@tabachkov"
 ```
-
+- Linux:
+```
+TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${DEVICE_ID_HEX}" FIRMWARE_VERSIONS="http://dev-file.maks.systems:7070/v2/files/b7/22_74.bin,http://dev-file.maks.systems:7070/v2/files/b7/22_73.bin" npx playwright test --grep "@tabachkov"
+```
 
 where:
 - ENV: string = {**"dev"** **by default**, "qa", "prod"}
