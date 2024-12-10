@@ -1,5 +1,4 @@
 import { FirmwareVersionType } from "../src/domain/constants/firmware-version.types";
-import { FIRMWARE_VERSION_URLS } from "../index";
 
 export interface IFirmwareVersionConfig {
     versionCode: number,

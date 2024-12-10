@@ -3,7 +3,7 @@ import { Auth } from "../../auth/Auth";
 import { TestDataProvider } from "../../utils/TestDataProvider";
 import { HostnameController } from "../../api/controllers/HostnameController";
 import { WsHandler } from "../../src/services/WsHandler";
-import { getAllVersionConfigsFiveLastVersions } from "../../ws/FirmwareVersionConfig";
+import {FIRMWARE_VERSION } from "../../ws/FirmwareVersionConfig";
 import { environmentConfig } from "../../ws/EnvironmentConfig";
 import { Environments } from "../../src/domain/constants/environments";
 import { ErrorDescriptions } from "../../src/utils/errors/Errors";
@@ -11,6 +11,7 @@ import { Timeouts } from "../../src/utils/timeout.util";
 import { Updater } from "../../src/services/Updater";
 import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
+import { FIRMWARE_VERSION_URLS } from "../../index";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -54,7 +55,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 
     });
 
-    test('positive: Success downgrade a device to five last versions', {tag: '@downgrade'}, async () => {
+    test('positive: Success downgrade a device to five last versions', { tag: '@downgrade' }, async () => {
         const TIMEOUT: number = 2400;
         const PAUSE: number = 300000;
         let ERROR: string = '';
@@ -62,8 +63,11 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.raceError(async () => {
-                const versions = getAllVersionConfigsFiveLastVersions('B7')
-                const newVersion = versions[0]
+                const versions = FIRMWARE_VERSION(FIRMWARE_VERSION_URLS);
+                const newVersion = versions[0];
+
+                console.log(newVersion.config.url);
+
                 await Updater.update(wsInstance, serialNumber, newVersion);
                 await new Promise((resolve, reject) => {
                     console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
