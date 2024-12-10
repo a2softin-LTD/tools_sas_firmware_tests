@@ -89,6 +89,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
             console.log(ErrorDescriptions[errorCode]);
             ERROR = ErrorDescriptions[errorCode];
         }
+
+        // 4. Happy pass if there are no errors
         expect(ERROR).toEqual('');
     });
 
