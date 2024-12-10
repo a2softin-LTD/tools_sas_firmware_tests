@@ -1,4 +1,4 @@
-import {Environments} from "../src/domain/constants/environments";
+import { Environments } from "../src/domain/constants/environments";
 
 export const environmentConfig = new Map<Environments, { loginUrl: string, envUrl: string }>()
     .set(Environments.DEV, {

@@ -115,33 +115,19 @@ export const getAllVersionConfigsFiveLastVersions = (deviceVersion: string):IFir
         .map(([versionType, config]) => ({versionType, config}));
 }
 
-let ver = (url: string) => url.slice(url.length - 9, -4).replace('_','');
-
-export const FIRMWARE_VERSION_CONFIG = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
-    .set(FirmwareVersionType.LAST, {
-        versionCode: Number(ver(FIRMWARE_VERSION_URLS.split(',')[0])),
-        url: FIRMWARE_VERSION_URLS.split(',')[0]
-    })
-    .set(FirmwareVersionType.PRE_PENULTIMATE, {
-        versionCode: Number(ver(FIRMWARE_VERSION_URLS.split(',')[1])),
-        url: FIRMWARE_VERSION_URLS.split(',')[1]
-    })
-    .set(FirmwareVersionType.OLD, {
-        versionCode: Number(ver(FIRMWARE_VERSION_URLS.split(',')[2])),
-        url: FIRMWARE_VERSION_URLS.split(',')[2]
-    })
-    .set(FirmwareVersionType.OLDEST, {
-        versionCode: Number(ver(FIRMWARE_VERSION_URLS.split(',')[3])),
-        url: FIRMWARE_VERSION_URLS.split(',')[3]
-    })
-    .set(FirmwareVersionType.NEW, {
-        versionCode: Number(ver(FIRMWARE_VERSION_URLS.split(',')[4])),
-        url: FIRMWARE_VERSION_URLS.split(',')[4]
-    });
-
-export const GET_FIVE_LAST_VERSIONS = ():IFirmwareVersionView[] => {
-    return Array.from(FIRMWARE_VERSION_CONFIG.entries())
+export const FIRMWARE_VERSION = (versions: string) => {
+    const versionList: string[] = versions.split(',');
+    let n: number = 0;
+    const versionsMap: Map<FirmwareVersionType, IFirmwareVersionConfig> = new Map<FirmwareVersionType, IFirmwareVersionConfig>();
+    for (const version of versionList) {
+        const versionNumber: number = Number(version.slice(version.length - 9, -4).replace('_',''));
+        versionsMap.set(FirmwareVersionType[String(n)], {
+            versionCode: versionNumber,
+            url: version
+        })
+        n++;
+    }
+    return Array.from(versionsMap.entries())
         .filter(([_, cfg]) => !cfg.fake)
         .map(([versionType, config]) => ({versionType, config}));
 }
-

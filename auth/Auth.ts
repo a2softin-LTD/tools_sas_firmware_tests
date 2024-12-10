@@ -5,9 +5,6 @@ import { UserModel } from "../api/models/UserModel";
 import { LoginModel } from "../api/models/LoginModel";
 import { expect } from "@playwright/test";
 
-/**
- * 
- */
 export class Auth {
 
     static async getAccessToken(
@@ -15,7 +12,7 @@ export class Auth {
         request: APIRequestContext,
         user: UserModel
     ): Promise<string> {
-        const body: LoginModel = TestDataProvider.getUserData(user.email, user.passwordEncryptMD5);
+        const body: LoginModel = TestDataProvider.getUserData(process.env.EMAIL || user.email, process.env.PASSWORD_MD5 || user.passwordEncryptMD5);
         const response: APIResponse =await ApiBuilder.sendPostRequest(
             request,
             url,
