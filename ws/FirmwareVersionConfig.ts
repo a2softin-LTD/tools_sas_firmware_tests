@@ -1,4 +1,5 @@
-import {FirmwareVersionType} from "../src/domain/constants/firmware-version.types";
+import { FirmwareVersionType } from "../src/domain/constants/firmware-version.types";
+import { FIRMWARE_VERSION_URLS } from "../index";
 
 export interface IFirmwareVersionConfig {
     versionCode: number,
@@ -110,6 +111,36 @@ export const getAllVersionConfigsFiveLastVersions = (deviceVersion: string):IFir
             .map(([versionType, config]) => ({versionType, config}));
     }
     return Array.from(firmwareVersionConfigFiveLastVersionsB3.entries())
+        .filter(([_, cfg]) => !cfg.fake)
+        .map(([versionType, config]) => ({versionType, config}));
+}
+
+let ver = (url: string) => url.slice(url.length - 9, -4).replace('_','');
+
+export const FIRMWARE_VERSION_CONFIG = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
+    .set(FirmwareVersionType.LAST, {
+        versionCode: Number(ver(FIRMWARE_VERSION_URLS.split(',')[0])),
+        url: FIRMWARE_VERSION_URLS.split(',')[0]
+    })
+    .set(FirmwareVersionType.PRE_PENULTIMATE, {
+        versionCode: Number(ver(FIRMWARE_VERSION_URLS.split(',')[1])),
+        url: FIRMWARE_VERSION_URLS.split(',')[1]
+    })
+    .set(FirmwareVersionType.OLD, {
+        versionCode: Number(ver(FIRMWARE_VERSION_URLS.split(',')[2])),
+        url: FIRMWARE_VERSION_URLS.split(',')[2]
+    })
+    .set(FirmwareVersionType.OLDEST, {
+        versionCode: Number(ver(FIRMWARE_VERSION_URLS.split(',')[3])),
+        url: FIRMWARE_VERSION_URLS.split(',')[3]
+    })
+    .set(FirmwareVersionType.NEW, {
+        versionCode: Number(ver(FIRMWARE_VERSION_URLS.split(',')[4])),
+        url: FIRMWARE_VERSION_URLS.split(',')[4]
+    });
+
+export const GET_FIVE_LAST_VERSIONS = ():IFirmwareVersionView[] => {
+    return Array.from(FIRMWARE_VERSION_CONFIG.entries())
         .filter(([_, cfg]) => !cfg.fake)
         .map(([versionType, config]) => ({versionType, config}));
 }

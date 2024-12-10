@@ -2,14 +2,8 @@
   "name": "cloud_e2e_tests",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "npx playwright test",
-    "debug": "npm run test:debug",
-    "docker-build": "docker build -t docker-pw",
-    "docker-run": "docker run --rm docker-pw",
-    "docker-run-interactive": "docker run --rm --network host --env-file .env.local --name gcp -it docker-pw /bin/bash",
-    "docker-test": "npm run test"
+    "test": "node index.js && npx playwright test"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
@@ -29,6 +23,6 @@
     "ts-node": "^10.9.1",
     "ts-test-decorators": "^0.0.6",
     "tsx": "^4.7.1",
-    "ws": "^8.16.0"
+    "ws": "8.17.1"
   }
 }
