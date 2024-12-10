@@ -12,6 +12,7 @@ import { Updater } from "../../src/services/Updater";
 import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
 import { FIRMWARE_VERSION_URLS } from "../../index";
+import config from "../../playwright.config";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -21,12 +22,10 @@ let wsInstance: WsHandler;
 let commandIndex: number = 0;
 
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - positive scenarios', () => {
-    const env = environmentConfig.get(Environments.DEV);
-
     test.beforeAll(async ({request}) => {
         // 1. Getting access token
         JwtToken = await Auth.getAccessToken(
-            env.loginUrl,
+            config.loginUrl,
             request,
             TestDataProvider.SimpleUser
         );
@@ -43,7 +42,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         console.log('****************************************************************************************************');
 
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
-            env.envUrl,
+            config.envUrl,
             request,
             serialNumber
         );

@@ -20,8 +20,6 @@ let wsInstance: WsHandler;
 let commandIndex: number = 0;
 
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - positive scenarios', () => {
-    //const env = environmentConfig.get(Environments.DEV);
-
     test.beforeAll(async ({request}) => {
         // 1. Getting access token
         JwtToken = await Auth.getAccessToken(
