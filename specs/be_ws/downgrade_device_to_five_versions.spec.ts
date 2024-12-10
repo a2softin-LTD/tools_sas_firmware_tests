@@ -4,8 +4,6 @@ import { TestDataProvider } from "../../utils/TestDataProvider";
 import { HostnameController } from "../../api/controllers/HostnameController";
 import { WsHandler } from "../../src/services/WsHandler";
 import {FIRMWARE_VERSION } from "../../ws/FirmwareVersionConfig";
-import { environmentConfig } from "../../ws/EnvironmentConfig";
-import { Environments } from "../../src/domain/constants/environments";
 import { ErrorDescriptions } from "../../src/utils/errors/Errors";
 import { Timeouts } from "../../src/utils/timeout.util";
 import { Updater } from "../../src/services/Updater";
