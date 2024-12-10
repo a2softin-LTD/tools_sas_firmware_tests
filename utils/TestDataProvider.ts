@@ -34,7 +34,5 @@ export class TestDataProvider {
     static readonly DeviceIdWithGSM: string = "00:08:B7:00:00:08"; // Office HUB - with SimCard channel
     static readonly DeviceIdWithWiFi: string = "00:08:B7:10:02:08"; // Office HUB - with WiFi channel
     static readonly DeviceIdPin: string = "00:08:B7:10:02:04"; // PIN hub
-    static readonly DeviceIdTabachkov1: string = "00:08:B7:FE:33:02"; // Tabachkov HUB #1
-    static readonly DeviceIdTabachkov2: string = "00:08:B7:99:99:99"; // Tabachkov HUB #2
 
 }
