@@ -64,15 +64,19 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
             await Timeouts.raceError(async () => {
                 const versions = getAllVersionConfigsFiveLastVersions('B7')
                 const newVersion = versions[0]
-                await Updater.update(wsInstance, serialNumber, newVersion)
+                await Updater.update(wsInstance, serialNumber, newVersion);
+                await new Promise((resolve, reject) => {
+                    console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+                    setTimeout(resolve, PAUSE);
+                });
 
                 const prevVersionList = versions.slice(1);//.reverse()
                 for (const version of prevVersionList) {
+                    await Updater.update(wsInstance, serialNumber, version);
                     await new Promise((resolve, reject) => {
                         console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
                         setTimeout(resolve, PAUSE);
                     });
-                    await Updater.update(wsInstance, serialNumber, version);
                 }
             }, {awaitSeconds: TIMEOUT, errorCode: 999});
         } catch (error) {
