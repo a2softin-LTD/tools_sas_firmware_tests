@@ -14,7 +14,7 @@ import { Timeouts } from "../../src/utils/timeout.util";
 import { Updater } from "../../src/services/Updater";
 import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
-import { FIRMWARE_VERSION_URLS } from "../../index";
+import {FIRMWARE_VERSION_URLS, FIRMWARE_VERSION_URLS_ALL_HUBS} from "../../index";
 import config from "../../playwright.config";
 
 let serialNumber: number;
@@ -65,7 +65,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.raceError(async () => {
-                const versions = FIRMWARE_VERSION(FIRMWARE_VERSION_URLS);
+                const versions = FIRMWARE_VERSION(FIRMWARE_VERSION_URLS_ALL_HUBS);
                 const newVersion = versions[0];
 
                 console.log(newVersion.config.url);
