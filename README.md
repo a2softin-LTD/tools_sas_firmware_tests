@@ -14,8 +14,12 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 ```
 git clone git@github.com:a2softin-LTD/tools_sas_firmware_tests.git
 ```
+- [ ] Open the project in a IDE and run the command for installing all dependencies:
+```
+npm install
+```
 
-- [ ] Run the test from command line
+- [ ] Run the test from command line:
 ####
 - Windows:
 
