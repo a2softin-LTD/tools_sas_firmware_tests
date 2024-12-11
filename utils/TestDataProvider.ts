@@ -8,13 +8,13 @@ export class TestDataProvider {
         role: "user",
         phoneVerified: false,
         phone: "+380971344443",
-        pib: "Пінчук Дмитро Анатолійович",
+        pib: "Test Test Test",
         passwordShouldChange: false,
-        password: 'lepidoptera111278DAP!@#',
-        passwordEncryptMD5: '5a2ddac0aeb60f6cd8c96ef2d3f6c394',
-        id: 2870,
+        password: 'asdASD123',
+        passwordEncryptMD5: '8af3982673455323883c06fa59d2872a',
+        id: 5653,
         asInvitations: [],
-        email: "pinchuk.dap@gmail.com",
+        email: "slobandriana+1@gmail.com",
         preferredLanguage: "uk",
         alarmStationId: null
     }
