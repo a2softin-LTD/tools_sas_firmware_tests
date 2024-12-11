@@ -45,6 +45,12 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
 
         // 2. Getting Hostname
         serialNumber = PanelConvertersUtil.serialToDec(TestDataProvider.DeviceIdWithEthernet);
+
+        console.log();
+        console.log();
+        console.log();
+        console.log();
+        console.log();
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();

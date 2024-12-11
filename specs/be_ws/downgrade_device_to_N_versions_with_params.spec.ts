@@ -42,6 +42,11 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         console.log(`DEVICE_ID = ${DEVICE}`);
         serialNumber = PanelConvertersUtil.serialToDec(DEVICE);
 
+        console.log();
+        console.log();
+        console.log();
+        console.log();
+        console.log();
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();
