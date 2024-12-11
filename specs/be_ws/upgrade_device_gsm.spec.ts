@@ -30,11 +30,6 @@ let ERROR: string = '';
 
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with SimCard channel on the HUB - positive scenarios', () => {
     test.beforeAll(async ({request}) => {
-        await new Promise((resolve, reject) => {
-            console.log("Pause. Waiting for " + PAUSE / 30000 + " sec before run next updating");
-            setTimeout(resolve, PAUSE);
-        });
-
         // 1. Getting access token
         JwtToken = await Auth.getAccessToken(
             config.loginUrl,
@@ -79,6 +74,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Si
             await Timeouts.raceError(async () => {
                 const versions = FIRMWARE_VERSION(FIRMWARE_VERSION_URLS_ALL_HUBS);
                 const newVersion = versions[0];
+                console.log();
                 console.log(`Starting an update using the URL =  ${newVersion.config.url}`);
 
                 await Updater.update(wsInstance, serialNumber, newVersion);
@@ -86,10 +82,15 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Si
                 const prevVersionList = versions.slice(1);//.reverse()
                 for (const version of prevVersionList) {
                     await new Promise((resolve, reject) => {
+                        console.log();
                         console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+                        console.log();
+                        console.log();
                         setTimeout(resolve, PAUSE);
                     });
                     console.log(`Starting an update using the URL =  ${version.config.url}`);
+                    console.log();
+                    console.log();
 
                     await Updater.update(wsInstance, serialNumber, version);
                 }
