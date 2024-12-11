@@ -58,8 +58,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Wi
     });
 
     test('positive: Success upgrade a device', { tag: '@upgrade' }, async () => {
-        const TIMEOUT: number = 1200;
-        const PAUSE: number = 240000;
+        const TIMEOUT: number = 2400;
+        const PAUSE: number = 100000;
         let ERROR: string = '';
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets

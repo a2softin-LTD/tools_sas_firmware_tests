@@ -54,7 +54,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 
     test('positive: Success downgrade a device to five last versions', { tag: '@downgrade' }, async () => {
         const TIMEOUT: number = 2400;
-        const PAUSE: number = 300000;
+        const PAUSE: number = 100000;
         let ERROR: string = '';
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
@@ -63,7 +63,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
                 const versions = FIRMWARE_VERSION(FIRMWARE_VERSION_URLS);
                 const newVersion = versions[0];
 
-                console.log(newVersion.config.url);
+                console.log(`Starting an update using the URL =  ${newVersion.config.url}`);
 
                 await Updater.update(wsInstance, serialNumber, newVersion);
                 await new Promise((resolve, reject) => {
