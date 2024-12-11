@@ -19,8 +19,17 @@ let wsUrl: string;
 let wsInstance: WsHandler;
 let commandIndex: number = 0;
 
+const TIMEOUT: number = 2400;
+const PAUSE: number = 100000;
+let ERROR: string = '';
+
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - positive scenarios', () => {
     test.beforeAll(async ({request}) => {
+        await new Promise((resolve, reject) => {
+            console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+            setTimeout(resolve, PAUSE);
+        });
+
         // 1. Getting access token
         JwtToken = await Auth.getAccessToken(
             config.loginUrl,
@@ -54,10 +63,6 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
     });
 
     test('positive: Success downgrade a device to five last versions', { tag: '@downgrade' }, async () => {
-        const TIMEOUT: number = 2400;
-        const PAUSE: number = 100000;
-        let ERROR: string = '';
-
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.raceError(async () => {
