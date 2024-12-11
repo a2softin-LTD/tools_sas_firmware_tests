@@ -16,6 +16,7 @@ import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
 import { FIRMWARE_VERSION_URLS_ALL_HUBS } from "../../index";
 import config from "../../playwright.config";
+import {PAUSE, TIMEOUT} from "../../utils/Constants";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -23,9 +24,6 @@ let insideGetHostnameData;
 let wsUrl: string;
 let wsInstance: WsHandler;
 let commandIndex: number = 0;
-
-const TIMEOUT: number = 2400;
-const PAUSE: number = 100000;
 let ERROR: string = '';
 
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with WiFi channel on the HUB - positive scenarios', () => {
