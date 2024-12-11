@@ -14,7 +14,7 @@ import { Timeouts } from "../../src/utils/timeout.util";
 import { Updater } from "../../src/services/Updater";
 import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
-import {FIRMWARE_VERSION_URLS, FIRMWARE_VERSION_URLS_ALL_HUBS} from "../../index";
+import { FIRMWARE_VERSION_URLS_ALL_HUBS } from "../../index";
 import config from "../../playwright.config";
 
 let serialNumber: number;
