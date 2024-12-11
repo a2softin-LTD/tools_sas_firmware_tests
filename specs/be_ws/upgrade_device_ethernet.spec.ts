@@ -30,7 +30,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
         JwtToken = await Auth.getAccessToken(
             config.loginUrl,
             request,
-            TestDataProvider.SimpleUser
+            TestDataProvider.SimpleUserCI
         );
         commandIndex++;
 
@@ -39,7 +39,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();
-        console.log('************************************** DeviceId -> Ethernet ****************************************');
+        console.log(`******************** DeviceId -> WiFi -> ${TestDataProvider.DeviceIdWithEthernet} ******************`);
         console.log();
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
@@ -71,18 +71,14 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
                 console.log(newVersion.config.url);
 
                 await Updater.update(wsInstance, serialNumber, newVersion);
-                await new Promise((resolve, reject) => {
-                    console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
-                    setTimeout(resolve, PAUSE);
-                });
-                
+
                 const prevVersionList = versions.slice(1);//.reverse()
                 for (const version of prevVersionList) {
-                    await Updater.update(wsInstance, serialNumber, version);
                     await new Promise((resolve, reject) => {
                         console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
                         setTimeout(resolve, PAUSE);
                     });
+                    await Updater.update(wsInstance, serialNumber, version);
                 }
             }, {awaitSeconds: TIMEOUT, errorCode: 999});
         } catch (error) {
