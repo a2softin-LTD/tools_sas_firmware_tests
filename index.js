@@ -9,7 +9,7 @@ export const FIRMWARE_VERSION_URLS = process.env.FIRMWARE_VERSIONS ||
     ]
         .filter(Boolean).join(',');
 
-export const FIRMWARE_VERSION_URLS_ALL_HUBS = process.env.FIRMWARE_VERSIONS ||
+export const FIRMWARE_VERSION_URLS_ALL_HUBS =
     [
         'http://dev-file.maks.systems:7070/v2/files/b7/22_74.bin',
         'http://dev-file.maks.systems:7070/v2/files/b7/22_75.bin',

@@ -25,13 +25,13 @@ let wsInstance: WsHandler;
 let commandIndex: number = 0;
 
 const TIMEOUT: number = 2400;
-const PAUSE: number = 100000;
+const PAUSE: number = 300000;
 let ERROR: string = '';
 
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Ethernet channel on the HUB - positive scenarios', () => {
     test.beforeAll(async ({request}) => {
         await new Promise((resolve, reject) => {
-            console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+            console.log("Pause. Waiting for " + PAUSE / 3000 + " sec before run next updating");
             setTimeout(resolve, PAUSE);
         });
 
