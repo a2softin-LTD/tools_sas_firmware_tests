@@ -31,7 +31,7 @@ let ERROR: string = '';
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with SimCard channel on the HUB - positive scenarios', () => {
     test.beforeAll(async ({request}) => {
         await new Promise((resolve, reject) => {
-            console.log("Pause. Waiting for " + PAUSE / 3000 + " sec before run next updating");
+            console.log("Pause. Waiting for " + PAUSE / 30000 + " sec before run next updating");
             setTimeout(resolve, PAUSE);
         });
 
