@@ -25,7 +25,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         JwtToken = await Auth.getAccessToken(
             config.loginUrl,
             request,
-            TestDataProvider.SimpleUser
+            // TestDataProvider.SimpleUser
+            TestDataProvider.SimpleUserCI
         );
         commandIndex++;
 

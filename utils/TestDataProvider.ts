@@ -18,6 +18,21 @@ export class TestDataProvider {
         preferredLanguage: "uk",
         alarmStationId: null
     }
+    static readonly SimpleUserCI: UserModel = {
+        emailVerified: true,
+        role: "user",
+        phoneVerified: false,
+        phone: "+380971344443",
+        pib: "Test Test Test",
+        passwordShouldChange: false,
+        password: 'asdASD123',
+        passwordEncryptMD5: '8af3982673455323883c06fa59d2872a',
+        id: 5653,
+        asInvitations: [],
+        email: "agntkcak7s@jxpomup.com",
+        preferredLanguage: "uk",
+        alarmStationId: null
+    }
 
     static getUserData(
         login: string,
