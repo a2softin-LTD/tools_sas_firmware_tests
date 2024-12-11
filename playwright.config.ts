@@ -26,7 +26,7 @@ const defaultConfig: PlaywrightTestConfig = {
     outputDir: './test-results/',
 
     /* Retry on CI only */
-    retries: process.env.CI ? 2 : 0,
+    retries: process.env.CI ? 0 : 0,
 
     globalSetup: "./globalSetup.js",
     use: {
