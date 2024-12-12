@@ -65,7 +65,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
 
     });
 
-    test('positive: Success upgrade a device', { tag: '@upgrade' }, async () => {
+    test('positive: Success upgrade a device', async () => {
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.raceError(async () => {
@@ -101,6 +101,10 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
         // 4. Happy pass if there are no errors
         expect(ERROR).toEqual('');
         await new Promise((resolve, reject) => {
+            console.log();
+            console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+            console.log();
+            console.log();
             setTimeout(resolve, PAUSE);
         });
     });

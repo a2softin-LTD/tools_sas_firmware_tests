@@ -91,6 +91,10 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         // 4. Happy pass if there are no errors
         expect(ERROR).toEqual('');
         await new Promise((resolve, reject) => {
+            console.log();
+            console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+            console.log();
+            console.log();
             setTimeout(resolve, PAUSE);
         });
     });
