@@ -65,7 +65,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
 
     });
 
-    test('positive: Success upgrade a device', { tag: '@upgrade_' }, async () => {
+    test('positive: Success upgrade a device', async () => {
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.raceError(async () => {
