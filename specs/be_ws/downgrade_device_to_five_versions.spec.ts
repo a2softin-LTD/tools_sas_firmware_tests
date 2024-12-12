@@ -90,6 +90,9 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 
         // 4. Happy pass if there are no errors
         expect(ERROR).toEqual('');
+        await new Promise((resolve, reject) => {
+            setTimeout(resolve, PAUSE);
+        });
     });
 
 });
