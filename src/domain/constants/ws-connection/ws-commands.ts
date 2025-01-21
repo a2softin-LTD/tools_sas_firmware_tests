@@ -24,6 +24,7 @@ export enum WsMethod {
     UPDATE_RELAY = "updateRelay",
     UPDATE_GROUP = "updateGroup",
     UPDATE_PANEL = "updatePanel",
+    UPDATE_REACTION = "updateReaction",
     UPDATE_PANEL_FIRMWARE = "updatePanelFirmware",
     REMOVE_KEYBOARD = "removeKeyboard",
     REMOVE_SENSOR = "removeSensor",

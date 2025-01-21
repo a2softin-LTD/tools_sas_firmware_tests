@@ -1,3 +1,5 @@
+import { SetupSessionRelayDto } from "./relay-typ";
+
 export interface PanelUpdateBLock {
     panelSettings?: any,
     users?: any[]
@@ -7,6 +9,6 @@ export interface PanelUpdateBLock {
     keyFobs?: any[]
     repeaters?: any[]
     zoneExtenders?: any[]
-    relays?: any[]
+    relays?: SetupSessionRelayDto[]
     alarmServer?: any
 }

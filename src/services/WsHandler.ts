@@ -5,6 +5,7 @@ import { MaksSetupWsCallback } from "../domain/view/MaksSetupWsCallback";
 import { Timeouts} from "../utils/timeout.util";
 import { ICreateSubscriptionView, IDropSubscriptionView } from "../domain/view/subscription.view";
 import { isDefined } from "../utils/is-defined.util";
+import { PanelParsedInfo } from "../domain/entity/setup-session/PanelParsedInfo";
 
 export class WsHandler {
     private websocketInstance: WebSocket
@@ -17,7 +18,7 @@ export class WsHandler {
     ) {
     }
 
-    createSocket(serial: number) {
+    createSocket(serial: number):Promise<PanelParsedInfo> {
         return new Promise((resolve, reject) => {
             this.websocketInstance = new WebSocket(this.serverUrl + '/sockets?token=' + this.activeJwtToken);
             this.websocketInstance.onopen = () => {
@@ -89,6 +90,7 @@ export class WsHandler {
         return Timeouts.raceError(new Promise((resolve, reject) => {
             const subscribePoint: IDropSubscriptionView = {
                 method: model.subscribeMethod,
+                // @ts-ignore
                 field: model.subscribePart
             };
             const {validityFunction} = model;

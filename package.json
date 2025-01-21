@@ -6,6 +6,7 @@
     "test": "node index.js && npx playwright test"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.3.0",
     "dotenv": "^16.4.5",
     "mocha": "^10.6.0",
     "rxjs": "^7.8.1"

@@ -1,3 +1,5 @@
+import { PanelReactionsDto } from "./panel-reaction.dto";
+
 export interface PanelData {
     panelSettings?: any,
     users?: any,
@@ -7,4 +9,5 @@ export interface PanelData {
     keyFobs?: any
     repeaters: any
     alarmServer?: any,
+    reactions?: PanelReactionsDto[]
 }
