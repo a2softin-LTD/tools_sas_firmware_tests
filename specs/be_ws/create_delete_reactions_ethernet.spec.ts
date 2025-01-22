@@ -94,7 +94,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
                         method: WsMethod.UPDATE_REACTION,
                         subscribePart: 'reactions',
                         subscribeMethod: 'create',
-                        data: JSON.stringify(reactionCommands[i]),
+                        data: reactionCommands[i],
                         validityFunction: data => Boolean(data.length)
                     })
                 }

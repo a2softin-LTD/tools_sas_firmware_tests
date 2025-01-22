@@ -18,7 +18,7 @@ export class WsHandler {
     ) {
     }
 
-    createSocket(serial: number):Promise<PanelParsedInfo> {
+    createSocket(serial: number): Promise<PanelParsedInfo> {
         return new Promise((resolve, reject) => {
             this.websocketInstance = new WebSocket(this.serverUrl + '/sockets?token=' + this.activeJwtToken);
             this.websocketInstance.onopen = () => {
@@ -121,7 +121,14 @@ export class WsHandler {
     }
 
     public createSubscription({field, method, callback}: ICreateSubscriptionView) {
-        this.subs[field][method] = callback
+
+        let fieldSubObject = this.subs[field]
+        if (!fieldSubObject) {
+            fieldSubObject = {}
+            this.subs[field] = fieldSubObject
+        }
+
+        fieldSubObject[method] = callback
     }
 
     private callbacks = {};
@@ -148,16 +155,17 @@ export class WsHandler {
 
     private sendToSubscribers(data) {
         if (typeof data != "object") return;
-        Object.keys(data)
-            .forEach(method => {
-                Object.keys(data[method])
-                    .forEach(field => {
-                        try {
-                            this.subs[field][method](data[method][field])
-                        } catch (e) {
-                        }
-                    })
-            })
+
+        for (const method of Object.keys(data)) {
+            for (const field of Object.keys(data[method])) {
+
+                try {
+                    this.subs[field][method](data[method][field])
+                } catch (e) {
+                }
+            }
+
+        }
     }
 
     private subs = {
@@ -170,7 +178,8 @@ export class WsHandler {
         keyFobs: {},
         repeaters: {},
         zoneExtenders: {},
-        relays: {}
+        relays: {},
+        reactions: {}
     };
 
     close() {
