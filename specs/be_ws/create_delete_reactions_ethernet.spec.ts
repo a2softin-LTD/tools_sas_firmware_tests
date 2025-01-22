@@ -1,17 +1,21 @@
-import { APIResponse, expect, test } from "@playwright/test";
-import { Auth } from "../../auth/Auth";
-import { TestDataProvider } from "../../utils/TestDataProvider";
-import { HostnameController} from "../../api/controllers/HostnameController";
-import { WsMethod} from "../../src/domain/constants/ws-connection/ws-commands";
-import { WsHandler} from "../../src/services/WsHandler";
-import { ErrorDescriptions } from "../../src/utils/errors/Errors";
-import { Timeouts } from "../../src/utils/timeout.util";
-import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
-import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
-import { PAUSE, PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT } from "../../utils/Constants";
+import {APIResponse, expect, test} from "@playwright/test";
+import {Auth} from "../../auth/Auth";
+import {TestDataProvider} from "../../utils/TestDataProvider";
+import {HostnameController} from "../../api/controllers/HostnameController";
+import {WsMethod} from "../../src/domain/constants/ws-connection/ws-commands";
+import {WsHandler} from "../../src/services/WsHandler";
+import {ErrorDescriptions} from "../../src/utils/errors/Errors";
+import {Timeouts} from "../../src/utils/timeout.util";
+import {buildPanelWsUrl} from "../../src/utils/ws-url-builder.util";
+import {PanelConvertersUtil} from "../../src/utils/converters/panel-converters.util";
+import {PAUSE, PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT} from "../../utils/Constants";
 import config from "../../playwright.config";
-import { SetupSessionRelayDto } from "../../src/domain/entity/setup-session/relay-typ";
-import { generateRelayReactionCommands } from "../../src/utils/reaction-generators/generate-relay-reaction-commands.util";
+import {SetupSessionRelayDto} from "../../src/domain/entity/setup-session/relay-typ";
+import {generateRelayReactionCommands} from "../../src/utils/reaction-generators/generate-relay-reaction-commands.util";
+import {
+    PanelReactionsDto,
+    ReactionTemplateTriggerTypes
+} from "../../src/domain/entity/setup-session/panel-reaction.dto";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -21,6 +25,8 @@ let wsInstance: WsHandler;
 let commandIndex: number = 0;
 let ERROR: string = '';
 let usedRelay: SetupSessionRelayDto
+
+let reactions: PanelReactionsDto[]
 
 test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB - positive scenarios', () => {
     test.beforeAll(async ({request}) => {
@@ -61,17 +67,55 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
 
         const initialData = await wsInstance.createSocket(serialNumber);
 
+        reactions = initialData.create.reactions
+
         usedRelay = initialData.create.relays?.[0];
 
         if (!usedRelay) {
             throw new Error('Relays are not found');
         }
+        if (!reactions) {
+            throw new Error('reactions unsupported')
+        }
 
     });
 
+    test('remove all relay reactions', async () => {
+        // try {
+
+        const removedReactionIndexes = reactions
+            .filter(el => [ReactionTemplateTriggerTypes.OutputOff, ReactionTemplateTriggerTypes.OutputOn].includes(el.triggerType))
+            .map(el => el.index)
+
+
+        await Timeouts.raceError(async () => {
+
+            for (const removedReactionIndex of removedReactionIndexes) {
+                await new Promise((resolve, reject) => {
+                    console.log();
+                    console.log("Pause. Waiting for " + PAUSE_BETWEEN_REACTION_CREATION + " sec before run next updating");
+                    console.log();
+                    console.log();
+                    setTimeout(resolve, PAUSE_BETWEEN_REACTION_CREATION);
+                });
+                console.log();
+                await wsInstance.update({
+                    method: WsMethod.REMOVE_REACTION,
+                    subscribePart: 'reactions',
+                    subscribeMethod: 'delete',
+                    data: removedReactionIndex,
+                    validityFunction: (data: number[]) => data.some(el => el == removedReactionIndex)
+                })
+            }
+        }, {awaitSeconds: TIMEOUT, errorCode: 999});
+
+        // } catch (error) {
+        // }
+    });
+
     test('Relays 1', async () => {
+
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
-        console.log();
         try {
             const startTimeRangeMins: number = 0
             const endTimeRangeMins: number = 5
@@ -98,7 +142,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
                         validityFunction: data => Boolean(data.length)
                     })
                 }
-            }, { awaitSeconds: TIMEOUT, errorCode: 999});
+            }, {awaitSeconds: TIMEOUT, errorCode: 999});
         } catch (error) {
             console.log(error);
             const errorCode: string = Object.keys(ErrorDescriptions).find(key => ErrorDescriptions[key] === error.error);

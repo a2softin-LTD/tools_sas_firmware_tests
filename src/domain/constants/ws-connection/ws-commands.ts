@@ -34,6 +34,7 @@ export enum WsMethod {
     REMOVE_ZONE_EXTENDER = "removeZoneExtender",
     REMOVE_RELAY = "removeRelay",
     REMOVE_KEY_FOB = "removeKeyFob",
+    REMOVE_REACTION = "removeReaction",
     UPDATE_ALARM_SERVER = "updateAlarmServer",
     UPDATE_ENGINEER_CODE = "updateEngineerCode",
     HISTORY = "history",
