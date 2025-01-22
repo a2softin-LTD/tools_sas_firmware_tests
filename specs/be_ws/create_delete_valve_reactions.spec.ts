@@ -11,8 +11,9 @@ import {PanelConvertersUtil} from "../../src/utils/converters/panel-converters.u
 import {PAUSE, PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT} from "../../utils/Constants";
 import config from "../../playwright.config";
 import {SetupSessionRelayDto} from "../../src/domain/entity/setup-session/relay-typ";
-import {generateRelayReactionCommands} from "../../src/utils/reaction-generators/generate-relay-reaction-commands.util";
 import {PanelReactionsDto, ReactionAllowedTypes} from "../../src/domain/entity/setup-session/panel-reaction.dto";
+import {isValve} from "../../src/domain/entity/enums/type-codes";
+import {generateValveReactionCommands} from "../../src/utils/reaction-generators/generate-valve-reaction-commands.util";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -21,7 +22,7 @@ let wsUrl: string;
 let wsInstance: WsHandler;
 let commandIndex: number = 0;
 let ERROR: string = '';
-let usedRelay: SetupSessionRelayDto
+let usedValve: SetupSessionRelayDto
 
 let reactions: PanelReactionsDto[]
 
@@ -66,10 +67,10 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
 
         reactions = initialData.create.reactions
 
-        usedRelay = initialData.create.relays?.[0];
+        usedValve = initialData.create.sensors.find(el => isValve(el.type));
 
-        if (!usedRelay) {
-            throw new Error('Relays are not found');
+        if (!usedValve) {
+            throw new Error('Valve are not found');
         }
         if (!reactions) {
             throw new Error('reactions unsupported')
@@ -77,11 +78,11 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
 
     });
 
-    test('remove all relay reactions', async () => {
+    test('remove all valve reactions', async () => {
         // try {
 
         const removedReactionIndexes = reactions
-            .filter(el => ReactionAllowedTypes.relay.includes(el.triggerType))
+            .filter(el => ReactionAllowedTypes.valve.includes(el.triggerType))
             .map(el => el.index)
 
 
@@ -110,14 +111,14 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         // }
     });
 
-    test('Relays 1', async () => {
+    test('create valve reactions for time range', async () => {
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             const startTimeRangeMins: number = 0
             const endTimeRangeMins: number = 5
             const amountCommands: number = 12;
-            const reactionCommands = generateRelayReactionCommands(usedRelay, startTimeRangeMins, endTimeRangeMins)
+            const reactionCommands = generateValveReactionCommands(usedValve, startTimeRangeMins, endTimeRangeMins)
 
             await Timeouts.raceError(async () => {
 

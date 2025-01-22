@@ -16,3 +16,8 @@ export interface PanelReactionsDto {
     name?: string
     index?: number
 }
+
+export const ReactionAllowedTypes = {
+    relay: [ReactionTemplateTriggerTypes.OutputOff, ReactionTemplateTriggerTypes.OutputOn],
+    valve: [ReactionTemplateTriggerTypes.ValveClose, ReactionTemplateTriggerTypes.ValveOpen],
+}
