@@ -102,12 +102,12 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
 });
 
 test.describe('[MPX][UI] Testing hub parameters', () => {
-    test.beforeAll(async ({request}) => {
+    test.beforeAll(async ({ request }) => {
         // 1. Getting access token
         JwtToken = await Auth.getAccessToken(
             config.loginUrl,
             request,
-            TestDataProvider.SimpleUser
+            TestDataProvider.SimpleUser,
         );
         commandIndex++;
 
@@ -131,7 +131,7 @@ test.describe('[MPX][UI] Testing hub parameters', () => {
         const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
             config.envUrl,
             request,
-            serialNumber
+            serialNumber,
         );
         expect(responseGetHostnameData.status()).toBe(200);
 
