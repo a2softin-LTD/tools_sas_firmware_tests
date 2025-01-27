@@ -13,7 +13,7 @@ import config from "../../playwright.config";
 import { SetupSessionRelayDto } from "../../src/domain/entity/setup-session/relay-typ";
 import { generateRelayReactionCommands } from "../../src/utils/reaction-generators/generate-relay-reaction-commands.util";
 import { PanelReactionsDto, ReactionAllowedTypes } from "../../src/domain/entity/setup-session/panel-reaction.dto";
-import { REACTION_AMOUNT } from "../../index";
+import { DEVICE, REACTION_AMOUNT } from "../../index";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -38,7 +38,8 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         commandIndex++;
 
         // 2. Getting Hostname
-        serialNumber = PanelConvertersUtil.serialToDec(TestDataProvider.DeviceIdWithEthernet);
+        console.log(`DEVICE_ID = ${DEVICE}`);
+        serialNumber = PanelConvertersUtil.serialToDec(DEVICE);
 
         console.log();
         console.log();
@@ -48,7 +49,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();
-        console.log(`***************************** DeviceId -> Ethernet -> ${TestDataProvider.DeviceIdWithEthernet} ****************************`);
+        console.log(`***************************** DeviceId -> Ethernet -> ${serialNumber} ****************************`);
         console.log();
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
@@ -81,7 +82,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
 
     });
 
-    test('1. Create N relay reactions', { tag: '@tabachkov' }, async () => {
+    test('1. Create N relay reactions', { tag: '@tabachkov_reactions_add' }, async () => {
         const reactionAmount = REACTION_AMOUNT;
 
         // 4. [WS] Connection and sending necessary commands to the device via web sockets
@@ -130,7 +131,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         });
     });
 
-    test('2. Remove all relay reactions', async () => {
+    test('2. Remove all relay reactions', { tag: '@tabachkov_reactions_delete' }, async () => {
         const removedReactionIndexes = reactions
             .filter(el => ReactionAllowedTypes.relay.includes(el.triggerType))
             .map(el => el.index);

@@ -19,7 +19,7 @@ git clone git@github.com:a2softin-LTD/tools_sas_firmware_tests.git
 npm install
 ```
 
-- [ ] Run the test from command line:
+### 1. Run Upgrade/Downgrade test from command line:
 ####
 - Windows:
 
@@ -30,6 +30,20 @@ $env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PA
 ```
 TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${DEVICE_ID_HEX}" FIRMWARE_VERSIONS="http://dev-file.maks.systems:7070/v2/files/b7/22_74.bin,http://dev-file.maks.systems:7070/v2/files/b7/22_73.bin" npx playwright test --grep "@tabachkov"
 ```
+use follow tag: `@tabachkov`
+
+### 2. Run Add/Delete reactions test from command line:
+####
+- Windows:
+
+```
+$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:FIRMWARE_VERSIONS="http://dev-file.maks.systems:7070/v2/files/b7/22_74.bin,http://dev-file.maks.systems:7070/v2/files/b7/22_75.bin"; npx playwright test --grep "@tabachkov_reactions_add | @tabachkov_reactions_delete"
+```
+- Linux:
+```
+TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${DEVICE_ID_HEX}" FIRMWARE_VERSIONS="http://dev-file.maks.systems:7070/v2/files/b7/22_74.bin,http://dev-file.maks.systems:7070/v2/files/b7/22_75.bin" npx playwright test --grep "@tabachkov_reactions_add | @tabachkov_reactions_delete"
+```
+use following tags: `@tabachkov_reactions_add` or `@tabachkov_reactions_delete`
 
 where:
 - ENV: string = {**"dev"** **by default**, "qa", "prod"}
