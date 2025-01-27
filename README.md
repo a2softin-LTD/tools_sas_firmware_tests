@@ -37,11 +37,11 @@ use follow tag: `@tabachkov`
 - Windows:
 
 ```
-$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:FIRMWARE_VERSIONS="http://dev-file.maks.systems:7070/v2/files/b7/22_74.bin,http://dev-file.maks.systems:7070/v2/files/b7/22_75.bin"; npx playwright test --grep "@tabachkov_reactions_add | @tabachkov_reactions_delete"
+$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; npx playwright test --grep "@tabachkov_reactions_add | @tabachkov_reactions_delete"
 ```
 - Linux:
 ```
-TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${DEVICE_ID_HEX}" FIRMWARE_VERSIONS="http://dev-file.maks.systems:7070/v2/files/b7/22_74.bin,http://dev-file.maks.systems:7070/v2/files/b7/22_75.bin" npx playwright test --grep "@tabachkov_reactions_add | @tabachkov_reactions_delete"
+TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${DEVICE_ID_HEX}" npx playwright test --grep "@tabachkov_reactions_add | @tabachkov_reactions_delete"
 ```
 use following tags: `@tabachkov_reactions_add` or `@tabachkov_reactions_delete`
 
