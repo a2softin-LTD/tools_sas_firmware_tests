@@ -33,7 +33,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         JwtToken = await Auth.getAccessToken(
             config.loginUrl,
             request,
-            TestDataProvider.SimpleUserCI,
+            TestDataProvider.SimpleUserZajac,
         );
         commandIndex++;
 
@@ -82,7 +82,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
 
     });
 
-    test('1. Create N relay reactions', { tag: '@tabachkov_reactions_add' }, async () => {
+    test('1. Create N relay reactions', { tag: '@sas_reactions_add' }, async () => {
         const reactionAmount = REACTION_AMOUNT;
 
         // 4. [WS] Connection and sending necessary commands to the device via web sockets
@@ -122,16 +122,9 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
 
         // 5. Happy pass if there are no errors
         expect(ERROR).toEqual('');
-        await new Promise((resolve, reject) => {
-            console.log();
-            console.log("Pause. Waiting for " + PAUSE / 10000 + " sec before run next updating");
-            console.log();
-            console.log();
-            setTimeout(resolve, PAUSE);
-        });
     });
 
-    test('2. Remove all relay reactions', { tag: '@tabachkov_reactions_delete' }, async () => {
+    test('2. Remove all relay reactions', { tag: '@sas_reactions_delete' }, async () => {
         const removedReactionIndexes = reactions
             .filter(el => ReactionAllowedTypes.relay.includes(el.triggerType))
             .map(el => el.index);

@@ -141,7 +141,7 @@ test.describe('[MPX][UI] Testing hub parameters', () => {
 
     });
 
-    test('positive: Success downgrade a device to five last versions', { tag: '@tabachkov' }, async () => {
+    test('positive: Success downgrade a device to five last versions', { tag: '@sas_upgrade_downgrade' }, async () => {
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.raceError(async () => {
