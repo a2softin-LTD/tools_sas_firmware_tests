@@ -8,7 +8,7 @@ export enum UIErrorMessages {
 
 export const TIMEOUT: number = 2400;
 
-export const PAUSE: number = 180000;
+export const PAUSE: number = 60000;
 
 export const PAUSE_BETWEEN_REACTION_CREATION: number = 1000;
 

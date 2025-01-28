@@ -12,6 +12,7 @@ import { DEVICE_SAS, FIRMWARE_VERSION_URLS } from "../../index";
 import { FIRMWARE_VERSION, IFirmwareVersionView } from "../../ws/FirmwareVersionConfig";
 import config from "../../playwright.config";
 import { PAUSE, TIMEOUT } from "../../utils/Constants";
+import moment = require("moment");
 
 let serialNumber: number;
 let JwtToken: string;
@@ -21,87 +22,7 @@ let wsInstance: WsHandler;
 let commandIndex: number = 0;
 let ERROR: string = '';
 
-test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - positive scenarios', () => {
-    test.beforeAll(async ({request}) => {
-        // 1. Getting access token
-        JwtToken = await Auth.getAccessToken(
-            config.loginUrl,
-            request,
-            TestDataProvider.SimpleUser
-        );
-        commandIndex++;
-
-        // 2. Getting Hostname
-        console.log(`DEVICE_ID = ${DEVICE_SAS}`);
-        serialNumber = PanelConvertersUtil.serialToDec(DEVICE_SAS);
-
-        console.log();
-        console.log();
-        console.log();
-        console.log();
-        console.log();
-        console.log('****************************************************************************************************');
-        console.log('****************************************************************************************************');
-        console.log();
-        console.log(`*********************************** DeviceId -> ${serialNumber} **********************************`);
-        console.log();
-        console.log('****************************************************************************************************');
-        console.log('****************************************************************************************************');
-
-        const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
-            config.envUrl,
-            request,
-            serialNumber
-        );
-        expect(responseGetHostnameData.status()).toBe(200);
-
-        insideGetHostnameData = await responseGetHostnameData.json();
-        wsUrl = buildPanelWsUrl(insideGetHostnameData.result)
-        wsInstance = new WsHandler(wsUrl, JwtToken);
-
-    });
-
-    test('positive: Success downgrade a device to five last versions', { tag: '@tabachkov' }, async () => {
-        // 3. [WSS] Connection and sending necessary commands to the device via web sockets
-        try {
-            await Timeouts.raceError(async () => {
-                const versions = FIRMWARE_VERSION(FIRMWARE_VERSION_URLS);
-                const newVersion = versions[0];
-                console.log(`Starting an update using the URL =  ${newVersion.config.url}`);
-
-                await Updater.update(wsInstance, serialNumber, newVersion);
-
-                const prevVersionList: IFirmwareVersionView[] = versions.slice(1);//.reverse()
-                for (const version of prevVersionList) {
-                    await new Promise((resolve, reject) => {
-                        console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
-                        setTimeout(resolve, PAUSE);
-                    });
-                    console.log(`Starting an update using the URL =  ${version.config.url}`);
-
-                    await Updater.update(wsInstance, serialNumber, version);
-                }
-            }, {awaitSeconds: TIMEOUT, errorCode: 999});
-        } catch (error) {
-            const errorCode: string = Object.keys(ErrorDescriptions).find(key => ErrorDescriptions[key] === error.error);
-            console.log(ErrorDescriptions[errorCode]);
-            ERROR = ErrorDescriptions[errorCode];
-        }
-
-        // 4. Happy pass if there are no errors
-        expect(ERROR).toEqual('');
-        await new Promise((resolve, reject) => {
-            console.log();
-            console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
-            console.log();
-            console.log();
-            setTimeout(resolve, PAUSE);
-        });
-    });
-
-});
-
-test.describe('[MPX][UI] Testing hub parameters', () => {
+test.describe('[SAS][WS] Automate firmware upgrade/downgrade testing - positive scenarios', () => {
     test.beforeAll(async ({ request }) => {
         // 1. Getting access token
         JwtToken = await Auth.getAccessToken(
@@ -123,7 +44,7 @@ test.describe('[MPX][UI] Testing hub parameters', () => {
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();
-        console.log(`************************************** DeviceId -> ${serialNumber} *********************************`);
+        console.log(`************************************** DeviceId -> ${DEVICE_SAS} *********************************`);
         console.log();
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
@@ -142,6 +63,7 @@ test.describe('[MPX][UI] Testing hub parameters', () => {
     });
 
     test('positive: Success downgrade a device to five last versions', { tag: '@sas_upgrade_downgrade' }, async () => {
+        console.log(`Test started at ${moment().format('LTS')}`);
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.raceError(async () => {
@@ -154,7 +76,11 @@ test.describe('[MPX][UI] Testing hub parameters', () => {
                 const prevVersionList: IFirmwareVersionView[] = versions.slice(1);//.reverse()
                 for (const version of prevVersionList) {
                     await new Promise((resolve, reject) => {
+                        console.log();
                         console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+                        console.log(`Current time is ${moment().format('LTS')}`);
+                        console.log();
+                        console.log();
                         setTimeout(resolve, PAUSE);
                     });
                     console.log(`Starting an update using the URL =  ${version.config.url}`);
@@ -172,11 +98,12 @@ test.describe('[MPX][UI] Testing hub parameters', () => {
         expect(ERROR).toEqual('');
         await new Promise((resolve, reject) => {
             console.log();
-            console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+            console.log("Pause. Waiting for finishing test...");
             console.log();
             console.log();
-            setTimeout(resolve, PAUSE);
+            setTimeout(resolve, PAUSE / 2);
         });
+        console.log(`Test finished at ${moment().format('LTS')}`);
     });
 
 });

@@ -55,6 +55,12 @@ TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVI
 ```
 use follow tag: `@sas_upgrade_downgrade`
 
+Example (for Windows):
+```` 
+$env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:10:08:F4"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/34_75.bin,http://51.20.115.159:7070/firmware/b7/22_75.bin"; npx playwright test --grep "@sas_upgrade_downgrade"
+````
+
+
 ### 2. Open the project root and run Add/Delete reactions test from command line:
 ####
 - Windows:
@@ -68,10 +74,17 @@ TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVI
 ```
 use following tags: `@tabachkov_reactions_add` or `@tabachkov_reactions_delete`
 
+Examples (for Windows): 
+```` 
+$env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_add" 
+
+$env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_delete"
+````
+
 where:
 - ENV: string = {**"dev"** **by default**, "qa", "prod"}
 - USER_EMAIL: string = {YOUR_EMAIL || **"slobandriana+1@gmail.com" by default**}
-- USER_PASSWORD_MD5: string = {YOUR_PASSWORD_MD5 || **"5a2ddac0aeb60f6cd8c96ef2d3f6c394" by default**}
+- USER_PASSWORD_MD5: string = {YOUR_PASSWORD_MD5 || **"8af3982673455323883c06fa59d2872a" by default**}
 - DEVICE_ID_HEX: string = {YOUR_DEVICE_ID_HEX || **"00:08:B7:10:08:F4" by default**}
 - FIRMWARE_VERSIONS: string = {YOUR_FIRMWARE_VERSIONS_AS_STRING || "http:\/\/51.20.115.159:7070/firmware/b7/34_75.bin,http:\/\/51.20.115.159:7070/firmware/b7/22_75.bin" by default}
 - command fot launch the test: npx playwright test --grep "@sas_upgrade_downgrade", where the tag "@sas_upgrade_downgrade" always used!

@@ -16,7 +16,8 @@ import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
 import { FIRMWARE_VERSION_URLS_ALL_HUBS } from "../../index";
 import config from "../../playwright.config";
-import {PAUSE, TIMEOUT} from "../../utils/Constants";
+import { PAUSE, TIMEOUT } from "../../utils/Constants";
+import moment = require("moment");
 
 let serialNumber: number;
 let JwtToken: string;
@@ -47,7 +48,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();
-        console.log(`***************************** DeviceId -> Ethernet -> ${serialNumber} ****************************`);
+        console.log(`***************************** DeviceId -> Ethernet -> ${TestDataProvider.DeviceIdWithEthernet} ****************************`);
         console.log();
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
@@ -65,7 +66,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
 
     });
 
-    test('positive: Success upgrade a device', async () => {
+    test('positive: Success upgrade a device', { tag: '@upgrade' }, async () => {
+        console.log(`Test started at ${moment().format('LTS')}`);
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             await Timeouts.raceError(async () => {
@@ -81,6 +83,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
                     await new Promise((resolve, reject) => {
                         console.log();
                         console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+                        console.log(`Current time is ${moment().format('LTS')}`);
                         console.log();
                         console.log();
                         setTimeout(resolve, PAUSE);
@@ -102,11 +105,12 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
         expect(ERROR).toEqual('');
         await new Promise((resolve, reject) => {
             console.log();
-            console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+            console.log("Pause. Waiting for finishing test...");
             console.log();
             console.log();
-            setTimeout(resolve, PAUSE);
+            setTimeout(resolve, PAUSE / 2);
         });
+        console.log(`Test finished at ${moment().format('LTS')}`);
     });
 
 });
