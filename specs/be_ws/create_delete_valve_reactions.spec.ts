@@ -1,19 +1,19 @@
-import {APIResponse, expect, test} from "@playwright/test";
-import {Auth} from "../../auth/Auth";
-import {TestDataProvider} from "../../utils/TestDataProvider";
-import {HostnameController} from "../../api/controllers/HostnameController";
-import {WsMethod} from "../../src/domain/constants/ws-connection/ws-commands";
-import {WsHandler} from "../../src/services/WsHandler";
-import {ErrorDescriptions} from "../../src/utils/errors/Errors";
-import {Timeouts} from "../../src/utils/timeout.util";
-import {buildPanelWsUrl} from "../../src/utils/ws-url-builder.util";
-import {PanelConvertersUtil} from "../../src/utils/converters/panel-converters.util";
-import {PAUSE, PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT} from "../../utils/Constants";
+import { APIResponse, expect, test } from "@playwright/test";
+import { Auth } from "../../auth/Auth";
+import { TestDataProvider  } from "../../utils/TestDataProvider";
+import { HostnameController } from "../../api/controllers/HostnameController";
+import { WsMethod } from "../../src/domain/constants/ws-connection/ws-commands";
+import { WsHandler } from "../../src/services/WsHandler";
+import { ErrorDescriptions } from "../../src/utils/errors/Errors";
+import { Timeouts } from "../../src/utils/timeout.util";
+import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
+import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
+import { PAUSE, PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT } from "../../utils/Constants";
 import config from "../../playwright.config";
-import {SetupSessionRelayDto} from "../../src/domain/entity/setup-session/relay-typ";
-import {PanelReactionsDto, ReactionAllowedTypes} from "../../src/domain/entity/setup-session/panel-reaction.dto";
-import {isValve} from "../../src/domain/entity/enums/type-codes";
-import {generateValveReactionCommands} from "../../src/utils/reaction-generators/generate-valve-reaction-commands.util";
+import { SetupSessionRelayDto} from "../../src/domain/entity/setup-session/relay-typ";
+import { PanelReactionsDto, ReactionAllowedTypes } from "../../src/domain/entity/setup-session/panel-reaction.dto";
+import { isValve } from "../../src/domain/entity/enums/type-codes";
+import { generateValveReactionCommands } from "../../src/utils/reaction-generators/generate-valve-reaction-commands.util";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -37,7 +37,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         commandIndex++;
 
         // 2. Getting Hostname
-        serialNumber = PanelConvertersUtil.serialToDec(TestDataProvider.DeviceIdWithRelays);
+        serialNumber = PanelConvertersUtil.serialToDec(TestDataProvider.DeviceIdWithEthernet);
 
         console.log();
         console.log();
@@ -47,7 +47,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();
-        console.log(`***************************** DeviceId -> Ethernet -> ${TestDataProvider.DeviceIdWithRelays} ****************************`);
+        console.log(`*********************************** DeviceId -> ${serialNumber} **********************************`);
         console.log();
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');

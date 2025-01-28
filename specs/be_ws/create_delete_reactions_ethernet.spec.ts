@@ -8,12 +8,12 @@ import { ErrorDescriptions } from "../../src/utils/errors/Errors";
 import { Timeouts } from "../../src/utils/timeout.util";
 import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
-import { PAUSE, PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT } from "../../utils/Constants";
+import { PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT } from "../../utils/Constants";
 import config from "../../playwright.config";
 import { SetupSessionRelayDto } from "../../src/domain/entity/setup-session/relay-typ";
 import { generateRelayReactionCommands } from "../../src/utils/reaction-generators/generate-relay-reaction-commands.util";
 import { PanelReactionsDto, ReactionAllowedTypes } from "../../src/domain/entity/setup-session/panel-reaction.dto";
-import { DEVICE, REACTION_AMOUNT } from "../../index";
+import { DEVICE_SAS, REACTION_AMOUNT} from "../../index";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -38,8 +38,8 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         commandIndex++;
 
         // 2. Getting Hostname
-        console.log(`DEVICE_ID = ${DEVICE}`);
-        serialNumber = PanelConvertersUtil.serialToDec(DEVICE);
+        console.log(`DEVICE_ID = ${DEVICE_SAS}`);
+        serialNumber = PanelConvertersUtil.serialToDec(DEVICE_SAS);
 
         console.log();
         console.log();
@@ -49,7 +49,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();
-        console.log(`***************************** DeviceId -> Ethernet -> ${serialNumber} ****************************`);
+        console.log(`*********************************** DeviceId -> ${serialNumber} **********************************`);
         console.log();
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');

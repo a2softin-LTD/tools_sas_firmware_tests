@@ -8,7 +8,7 @@ import { Timeouts } from "../../src/utils/timeout.util";
 import { Updater } from "../../src/services/Updater";
 import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
-import { DEVICE, FIRMWARE_VERSION_URLS } from "../../index";
+import { DEVICE_SAS, FIRMWARE_VERSION_URLS } from "../../index";
 import { FIRMWARE_VERSION, IFirmwareVersionView } from "../../ws/FirmwareVersionConfig";
 import config from "../../playwright.config";
 import { PAUSE, TIMEOUT } from "../../utils/Constants";
@@ -32,8 +32,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         commandIndex++;
 
         // 2. Getting Hostname
-        console.log(`DEVICE_ID = ${DEVICE}`);
-        serialNumber = PanelConvertersUtil.serialToDec(DEVICE);
+        console.log(`DEVICE_ID = ${DEVICE_SAS}`);
+        serialNumber = PanelConvertersUtil.serialToDec(DEVICE_SAS);
 
         console.log();
         console.log();
@@ -43,7 +43,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();
-        console.log(`************************************** DeviceId -> ${serialNumber} *********************************`);
+        console.log(`*********************************** DeviceId -> ${serialNumber} **********************************`);
         console.log();
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
@@ -112,8 +112,8 @@ test.describe('[MPX][UI] Testing hub parameters', () => {
         commandIndex++;
 
         // 2. Getting Hostname
-        console.log(`DEVICE_ID = ${DEVICE}`);
-        serialNumber = PanelConvertersUtil.serialToDec(DEVICE);
+        console.log(`DEVICE_ID = ${DEVICE_SAS}`);
+        serialNumber = PanelConvertersUtil.serialToDec(DEVICE_SAS);
 
         console.log();
         console.log();
