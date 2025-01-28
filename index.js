@@ -1,5 +1,5 @@
-//export const DEVICE = process.env.DEVICE_ID_ || "00:08:B7:10:08:F4";
-export const DEVICE_SAS = process.env.DEVICE_ID || "00:08:B7:00:00:16";
+//export const DEVICE = process.env.DEVICE_ID_ || "00:08:B7:00:00:16";
+export const DEVICE_SAS = process.env.DEVICE_ID || "00:08:B7:10:08:F4";
 export const REACTION_AMOUNT = process.env.REACTION_AMOUNT || "1";
 export const FIRMWARE_VERSION_URLS = process.env.FIRMWARE_VERSIONS ||
         [
