@@ -82,15 +82,13 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Wi
                 for (const version of prevVersionList) {
                     await new Promise((resolve, reject) => {
                         console.log();
-                        console.log("Pause. Waiting for " + (4 * PAUSE / 1000) + " sec before run next updating");
+                        console.log("Updating. Waiting for " + (3 * PAUSE / 1000) + " sec");
                         console.log(`Current time is ${moment().format('LTS')}`);
                         console.log();
                         console.log();
-                        setTimeout(resolve, PAUSE);
+                        setTimeout(resolve, 3 * PAUSE);
                     });
                     console.log(`Starting an update using the URL =  ${version.config.url}`);
-                    console.log();
-                    console.log();
 
                     await Updater.update(wsInstance, serialNumber, version);
                 }
@@ -105,7 +103,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Wi
         expect(ERROR).toEqual('');
         await new Promise((resolve, reject) => {
             console.log();
-            console.log("Pause. Waiting for finishing test...");
+            console.log("Updating. Waiting for " + (3 * PAUSE / 1000) + " sec");
+            console.log(`Current time is ${moment().format('LTS')}`);
             console.log();
             console.log();
             setTimeout(resolve, 3 * PAUSE);

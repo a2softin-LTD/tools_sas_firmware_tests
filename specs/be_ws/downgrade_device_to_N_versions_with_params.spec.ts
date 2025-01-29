@@ -77,11 +77,11 @@ test.describe('[SAS][WS] Automate firmware upgrade/downgrade testing - positive 
                 for (const version of prevVersionList) {
                     await new Promise((resolve, reject) => {
                         console.log();
-                        console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+                        console.log("Updating. Waiting for " + (2 * PAUSE / 1000) + " sec");
                         console.log(`Current time is ${moment().format('LTS')}`);
                         console.log();
                         console.log();
-                        setTimeout(resolve, PAUSE);
+                        setTimeout(resolve, 2 * PAUSE);
                     });
                     console.log(`Starting an update using the URL =  ${version.config.url}`);
 
@@ -98,10 +98,11 @@ test.describe('[SAS][WS] Automate firmware upgrade/downgrade testing - positive 
         expect(ERROR).toEqual('');
         await new Promise((resolve, reject) => {
             console.log();
-            console.log("Pause. Waiting for finishing test...");
+            console.log("Updating. Waiting for " + PAUSE / 1000 + " sec");
+            console.log(`Current time is ${moment().format('LTS')}`);
             console.log();
             console.log();
-            setTimeout(resolve, PAUSE / 2);
+            setTimeout(resolve, PAUSE);
         });
         console.log(`Test finished at ${moment().format('LTS')}`);
     });
