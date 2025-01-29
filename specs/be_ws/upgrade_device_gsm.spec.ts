@@ -67,7 +67,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Si
 
     });
 
-    test('positive: Success upgrade a device', async () => {
+    test('positive: Success upgrade a device', { tag: '@upgrade' }, async () => {
         console.log(`Test started at ${moment().format('LTS')}`);
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {

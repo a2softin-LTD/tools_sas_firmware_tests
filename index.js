@@ -3,14 +3,15 @@ export const DEVICE_SAS = process.env.DEVICE_ID || "00:08:B7:10:08:F4";
 export const REACTION_AMOUNT = process.env.REACTION_AMOUNT || "1";
 export const FIRMWARE_VERSION_URLS = process.env.FIRMWARE_VERSIONS ||
         [
-            'http://51.20.115.159:7070/firmware/b7/34_75.bin',
+            'http://51.20.115.159:7070/firmware/b7/22_73.bin',
+            'http://51.20.115.159:7070/firmware/b7/22_74.bin',
             'http://51.20.115.159:7070/firmware/b7/22_75.bin',
         ]
         .filter(Boolean).join(',');
 
 export const FIRMWARE_VERSION_URLS_ALL_HUBS =
     [
-        'http://51.20.115.159:7070/firmware/b7/34_75.bin',
+        'http://51.20.115.159:7070/firmware/b7/22_74.bin',
         'http://51.20.115.159:7070/firmware/b7/22_75.bin',
     ]
         .filter(Boolean).join(',')
