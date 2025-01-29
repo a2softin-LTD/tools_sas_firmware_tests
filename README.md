@@ -60,7 +60,10 @@ Example (for Windows):
 ```` 
 $env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:10:08:F4"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin"; npx playwright test --grep "@sas_upgrade_downgrade"
 ````
+#### Important to know!
+1. The versions will be installed in the order they are specified in the line: `VERSION_1 -> VERSION_2 -> ... -> VERSION_N`
 
+2. If you try to install a previously installed version - the test will fail (this behavior will be fixed as an Improvement some later)
 
 ### 2. Open the project root and run 'Upgrade/Downgrade' `tests for several devices` from command line:
 ####
@@ -101,11 +104,20 @@ $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af398267345
 $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_delete"
 ````
 
-where:
+#### The values of the environment variables are described below:
 - ENV: string = {**"dev"** **by default**, "qa", "prod"}
 - USER_EMAIL: string = {YOUR_EMAIL || **"slobandriana+1@gmail.com" by default**}
 - USER_PASSWORD_MD5: string = {YOUR_PASSWORD_MD5 || **"8af3982673455323883c06fa59d2872a" by default**}
 - USER_PASSWORD_STRING: string {USER_PASSWORD_STRING || **"asdASD123" by default**}
 - DEVICE_ID_HEX: string = {YOUR_DEVICE_ID_HEX || **"00:08:B7:10:08:F4" by default**}
-- FIRMWARE_VERSIONS: string = {YOUR_FIRMWARE_VERSIONS_AS_STRING || "http:\/\/51.20.115.159:7070/firmware/b7/22_74.bin,http:\/\/51.20.115.159:7070/firmware/b7/22_75.bin" by default}
-- command fot launch the test: npx playwright test --grep "@sas_upgrade_downgrade", where the tag "@sas_upgrade_downgrade" always used!
+- FIRMWARE_VERSIONS: string = {YOUR_FIRMWARE_VERSIONS_AS_STRING || **"http:\/\/51.20.115.159:7070/firmware/b7/22_74.bin,http:\/\/51.20.115.159:7070/firmware/b7/22_75.bin" by default**}
+- REACTION_AMOUNT: string = {REACTION_AMOUNT || **"10" by default**}
+
+#### Commands for running certain tests:
+- command to run all test: `npx playwright test` 
+- command to run tests for upgrade firmware for selected devices:`npx playwright test --grep "@upgrade"`, where the tag "@upgrade" always used!
+- command to run tests for downgrade firmware for selected devices:`npx playwright test --grep "@downgrade"`, where the tag "@downgrade" always used!
+- command to run tests for upgrade/downgrade firmware for several selected devices:`npx playwright test --grep "@several_devices_up_down"`, where the tag "@several_devices_up_down" always used!
+- command to run tests for upgrade/downgrade random versions (e.g. 22_75 -> 22_73 -> 22_76 -> 22_71 -> ...) of firmware for selected devices:`npx playwright test --grep "@sas_upgrade_downgrade"`, where the tag "@sas_upgrade_downgrade" always used!
+- command to run tests to add the specified number of Reactions for selected devices:`npx playwright test --grep "@sas_reactions_add"`, where the tag "@sas_reactions_add" always used!
+- command to run tests to delete all Reactions for selected devices:`npx playwright test --grep "@sas_reactions_delete"`, where the tag "@sas_reactions_delete" always used!
