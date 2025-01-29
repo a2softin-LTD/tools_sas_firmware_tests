@@ -19,6 +19,7 @@ export const ErrorDescriptions = {
     324: "Panel command parameter not changed",
     325: "Panel command user pin code occupied",
     326: "Panel command user email occupied",
+    204: "User panel configuration not allowed",
 
     999: "The timeout has been exceeded. Possible reasons:\n" +
         "- no connection to the File Server\n" +

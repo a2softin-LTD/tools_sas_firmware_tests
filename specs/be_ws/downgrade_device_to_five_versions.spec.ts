@@ -98,11 +98,11 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX - posit
         expect(ERROR).toEqual('');
         await new Promise((resolve, reject) => {
             console.log();
-            console.log("Updating. Waiting for " + PAUSE / 1000 + " sec");
+            console.log("Updating. Waiting for " + (2 * PAUSE / 1000) + " sec");
             console.log(`Current time is ${moment().format('LTS')}`);
             console.log();
             console.log();
-            setTimeout(resolve, PAUSE);
+            setTimeout(resolve, 2 * PAUSE);
         });
         console.log(`Test finished at ${moment().format('LTS')}`);
     });

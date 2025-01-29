@@ -42,26 +42,46 @@ Run the install command and select the following to get started:
 
 - [ ] (!) Use [MD5 generator](https://www.md5hashgenerator.com/) to convert password from `String` to `Hash`
 
-### 1. Open the project root and run Upgrade/Downgrade test from command line:
+
+### 1. Open the project root and run 'Upgrade/Downgrade' tests from command line:
 ####
 - Windows, eg:
 
 ```
-$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/34_75.bin,http://51.20.115.159:7070/firmware/b7/22_75.bin"; npx playwright test --grep "@sas_upgrade_downgrade"
+$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin"; npx playwright test --grep "@sas_upgrade_downgrade"
 ```
 - Linux, eg:
 ```
-TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${DEVICE_ID_HEX}" FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/34_75.bin,http://51.20.115.159:7070/firmware/b7/22_75.bin" npx playwright test --grep "@sas_upgrade_downgrade"
+TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${DEVICE_ID_HEX}" FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin" npx playwright test --grep "@sas_upgrade_downgrade"
 ```
 use follow tag: `@sas_upgrade_downgrade`
 
 Example (for Windows):
 ```` 
-$env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:10:08:F4"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/34_75.bin,http://51.20.115.159:7070/firmware/b7/22_75.bin"; npx playwright test --grep "@sas_upgrade_downgrade"
+$env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:10:08:F4"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin"; npx playwright test --grep "@sas_upgrade_downgrade"
 ````
 
 
-### 2. Open the project root and run Add/Delete reactions test from command line:
+### 2. Open the project root and run 'Upgrade/Downgrade' `tests for several devices` from command line:
+####
+- Windows, eg:
+
+```
+$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:SEVERAL_DEVICES_SAS="${SEVERAL_DEVICES_SAS}"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin"; npx playwright test --grep "@several_devices_up_down"
+```
+- Linux, eg:
+```
+TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${SEVERAL_DEVICES_SAS}" FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin" npx playwright test --grep "@several_devices_up_down"
+```
+use follow tag: `@several_devices_up_down`
+
+Example (for Windows):
+```` 
+$env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:SEVERAL_DEVICES_SAS="00:08:B7:00:00:08,00:08:B7:10:02:08"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin"; npx playwright test --grep "@several_devices_up_down"
+````
+
+
+### 3. Open the project root and run 'Add/Delete reactions' tests from command line:
 ####
 - Windows:
 
@@ -72,9 +92,9 @@ $env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PA
 ```
 TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${DEVICE_ID_HEX}"; $env:REACTION_AMOUNT="${REACTION_AMOUNT}" npx playwright test --grep "@sas_reactions_add | @sas_reactions_delete"
 ```
-use following tags: `@tabachkov_reactions_add` or `@tabachkov_reactions_delete`
+use following tags: `@sas_reactions_add` or `@sas_reactions_delete`
 
-Examples (for Windows): 
+Examples (for Windows):
 ```` 
 $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_add" 
 
