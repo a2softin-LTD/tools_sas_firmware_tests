@@ -19,7 +19,7 @@ let ERROR: string = '';
 let deviceHexIdIndex: number = 0;
 
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (several devices) - positive scenarios', () => {
-    test('positive: Success downgrade several devices', { tag: '@owngrade' }, async ({ request }) => {
+    test('positive: Success upgrade/downgrade several HUB devices', { tag: '@several_devices_up_down' }, async ({ request }) => {
         // 2. Getting Hostname
         // serialNumbers = PanelConvertersUtil.serialToDec(SEVERAL_DEVICES_SAS);
         const serialNumbers: number[] = SEVERAL_DEVICES_SAS.split(',').map(e => PanelConvertersUtil.serialToDec(e));
