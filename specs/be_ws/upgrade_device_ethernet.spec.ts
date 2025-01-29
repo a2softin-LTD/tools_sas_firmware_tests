@@ -82,11 +82,11 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
                 for (const version of prevVersionList) {
                     await new Promise((resolve, reject) => {
                         console.log();
-                        console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
+                        console.log("Pause. Waiting for " + 3 * PAUSE / 1000 + " sec before run next updating");
                         console.log(`Current time is ${moment().format('LTS')}`);
                         console.log();
                         console.log();
-                        setTimeout(resolve, PAUSE);
+                        setTimeout(resolve, 3 * PAUSE);
                     });
                     console.log(`Starting an update using the URL =  ${version.config.url}`);
                     console.log();
@@ -108,7 +108,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
             console.log("Pause. Waiting for finishing test...");
             console.log();
             console.log();
-            setTimeout(resolve, PAUSE / 2);
+            setTimeout(resolve, 2 * PAUSE);
         });
         console.log(`Test finished at ${moment().format('LTS')}`);
     });
