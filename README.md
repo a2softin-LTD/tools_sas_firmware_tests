@@ -34,7 +34,7 @@ npm install
 ```
 npm init playwright@latest
 ```
-Run the install command and select the following to get started:
+Run install command and select the following to get started:
 - Choose between TypeScript or JavaScript (default is TypeScript)
 - Name of your Tests folder (default is tests or e2e if you already have a tests folder in your project)
 - Add a GitHub Actions workflow to easily run tests on CI
@@ -48,17 +48,18 @@ Run the install command and select the following to get started:
 - Windows, eg:
 
 ```
-$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:FIRMWARE_VERSIONS="${VERSION_1},${VERSION_2},...${VERSION_N}"; npx playwright test --grep "@sas_upgrade_downgrade"
+$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:PASSWORD="${PASSWORD}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:FIRMWARE_VERSIONS="${VERSION_1},${VERSION_2},...${VERSION_N}"; npx playwright test --grep "@sas_upgrade_downgrade"
 ```
 - Linux, eg:
 ```
-TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${DEVICE_ID_HEX}" FIRMWARE_VERSIONS="${VERSION_1},${VERSION_2},...${VERSION_N}" npx playwright test --grep "@sas_upgrade_downgrade"
+TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" PASSWORD="${PASSWORD}" DEVICE_ID="${DEVICE_ID_HEX}" FIRMWARE_VERSIONS="${VERSION_1},${VERSION_2},...${VERSION_N}" npx playwright test --grep "@sas_upgrade_downgrade"
 ```
 use follow tag: `@sas_upgrade_downgrade`
 
 Example (for Windows):
 ```` 
 $env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:10:08:F4"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin"; npx playwright test --grep "@sas_upgrade_downgrade"
+$env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD="asdASD123"; $env:DEVICE_ID="00:08:B7:10:08:F4"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin"; npx playwright test --grep "@sas_upgrade_downgrade"
 ````
 #### Important to know!
 1. The versions will be installed in the order they are specified in the line: `VERSION_1 -> VERSION_2 -> ... -> VERSION_N`
@@ -70,17 +71,18 @@ $env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD_MD5="8af
 - Windows, eg:
 
 ```
-$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:SEVERAL_DEVICES_SAS="${SEVERAL_DEVICES_SAS}"; $env:FIRMWARE_VERSIONS="${VERSION_1},${VERSION_2},...${VERSION_N}"; npx playwright test --grep "@several_devices_up_down"
+$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:PASSWORD="${USER_PASSWORD}"; $env:SEVERAL_DEVICES_SAS="${SEVERAL_DEVICES_SAS}"; $env:FIRMWARE_VERSIONS="${VERSION_1},${VERSION_2},...${VERSION_N}"; npx playwright test --grep "@several_devices_up_down"
 ```
 - Linux, eg:
 ```
-TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${SEVERAL_DEVICES_SAS}" FIRMWARE_VERSIONS="${VERSION_1},${VERSION_2},...${VERSION_N}" npx playwright test --grep "@several_devices_up_down"
+TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" PASSWORD="${USER_PASSWORD}" DEVICE_ID="${SEVERAL_DEVICES_SAS}" FIRMWARE_VERSIONS="${VERSION_1},${VERSION_2},...${VERSION_N}" npx playwright test --grep "@several_devices_up_down"
 ```
 use follow tag: `@several_devices_up_down`
 
 Example (for Windows):
 ```` 
 $env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:SEVERAL_DEVICES_SAS="00:08:B7:00:00:08,00:08:B7:10:02:08"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_74.bin,http://51.20.115.159:7070/firmware/b7/22_75.bin"; npx playwright test --grep "@several_devices_up_down"
+$env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD="asdASD123"; $env:SEVERAL_DEVICES_SAS="00:08:B7:00:00:08,00:08:B7:10:02:08"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_74.bin,http://51.20.115.159:7070/firmware/b7/22_75.bin"; npx playwright test --grep "@several_devices_up_down"
 ````
 
 
@@ -89,26 +91,28 @@ $env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD_MD5="8
 - Windows:
 
 ```
-$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:REACTION_AMOUNT="${REACTION_AMOUNT}"; npx playwright test --grep "@sas_reactions_add | @sas_reactions_delete"
+$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:PASSWORD="${USER_PASSWORD}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:REACTION_AMOUNT="${REACTION_AMOUNT}"; npx playwright test --grep "@sas_reactions_add | @sas_reactions_delete"
 ```
 - Linux:
 ```
-TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" DEVICE_ID="${DEVICE_ID_HEX}"; $env:REACTION_AMOUNT="${REACTION_AMOUNT}" npx playwright test --grep "@sas_reactions_add | @sas_reactions_delete"
+TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" PASSWORD="${USER_PASSWORD}" DEVICE_ID="${DEVICE_ID_HEX}"; $env:REACTION_AMOUNT="${REACTION_AMOUNT}" npx playwright test --grep "@sas_reactions_add | @sas_reactions_delete"
 ```
 use following tags: `@sas_reactions_add` or `@sas_reactions_delete`
 
 Examples (for Windows):
 ```` 
 $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_add" 
+$env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_add" 
 
 $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_delete"
+$env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_delete"
 ````
 
 #### The values of the environment variables are described below:
 - ENV: string = {**"dev"** **by default**, "qa", "prod"}
 - USER_EMAIL: string = {YOUR_EMAIL || **"slobandriana+1@gmail.com" by default**}
 - USER_PASSWORD_MD5: string = {YOUR_PASSWORD_MD5 || **"8af3982673455323883c06fa59d2872a" by default**}
-- USER_PASSWORD_STRING: string {USER_PASSWORD_STRING || **"asdASD123" by default**}
+- PASSWORD (instead MD5): string = {YOUR_PASSWORD || **"asdASD123" by default**}
 - DEVICE_ID_HEX: string = {YOUR_DEVICE_ID_HEX || **"00:08:B7:10:08:F4" by default**}
 - FIRMWARE_VERSIONS: string = {YOUR_FIRMWARE_VERSIONS_AS_STRING || **"http:\/\/51.20.115.159:7070/firmware/b7/22_74.bin,http:\/\/51.20.115.159:7070/firmware/b7/22_75.bin" by default**}
 - REACTION_AMOUNT: string = {REACTION_AMOUNT || **"10" by default**}

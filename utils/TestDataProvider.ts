@@ -1,5 +1,6 @@
 import { UserModel } from "../api/models/UserModel";
 import { LoginModel } from "../api/models/LoginModel";
+import MD5 from "crypto-js/md5";
 
 export class TestDataProvider {
 
@@ -69,11 +70,18 @@ export class TestDataProvider {
 
     static getUserData(
         login: string,
+        passwordMD5: string,
         password: string,
     ): LoginModel {
+        let userPassword: string;
+        if (!passwordMD5) {
+            userPassword = MD5(password);
+        } else {
+            userPassword = passwordMD5;
+        }
         const body: LoginModel = {
             login: login,
-            password: password,
+            password: userPassword,
         };
         return body;
     }

@@ -12,8 +12,8 @@ export class Auth {
         request: APIRequestContext,
         user: UserModel
     ): Promise<string> {
-        const body: LoginModel = TestDataProvider.getUserData(process.env.EMAIL || user.email, process.env.PASSWORD_MD5 || user.passwordEncryptMD5);
-        const response: APIResponse =await ApiBuilder.sendPostRequest(
+        const body: LoginModel = TestDataProvider.getUserData(process.env.EMAIL || user.email, process.env.PASSWORD_MD5 || user.passwordEncryptMD5, process.env.PASSWORD || user.password);
+        const response: APIResponse = await ApiBuilder.sendPostRequest(
             request,
             url,
             '/login',
