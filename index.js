@@ -5,8 +5,8 @@ export const REACTION_AMOUNT = process.env.REACTION_AMOUNT || "1";
 export const FIRMWARE_VERSION_URLS = process.env.FIRMWARE_VERSIONS ||
         [
             'http://51.20.115.159:7070/firmware/b7/22_73.bin',
-            // 'http://51.20.115.159:7070/firmware/b7/22_74.bin',
-            // 'http://51.20.115.159:7070/firmware/b7/22_75.bin',
+            'http://51.20.115.159:7070/firmware/b7/22_74.bin',
+            'http://51.20.115.159:7070/firmware/b7/22_75.bin',
         ]
         .filter(Boolean).join(',');
 
