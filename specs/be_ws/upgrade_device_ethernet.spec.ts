@@ -45,6 +45,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
         console.log();
         console.log();
         console.log();
+        console.log(`DEVICE_ID = ${serialNumber}`);
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();

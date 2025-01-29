@@ -32,7 +32,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         JwtToken = await Auth.getAccessToken(
             config.loginUrl,
             request,
-            TestDataProvider.SimpleUserRelay
+            TestDataProvider.SimpleUserRelay,
         );
         commandIndex++;
 
@@ -44,6 +44,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         console.log();
         console.log();
         console.log();
+        console.log(`DEVICE_ID = ${serialNumber}`);
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();

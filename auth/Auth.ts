@@ -4,6 +4,7 @@ import { ApiBuilder } from "../api/builder/ApiBuilder";
 import { UserModel } from "../api/models/UserModel";
 import { LoginModel } from "../api/models/LoginModel";
 import { expect } from "@playwright/test";
+import { md5 } from "js-md5";
 
 export class Auth {
 
@@ -12,7 +13,38 @@ export class Auth {
         request: APIRequestContext,
         user: UserModel
     ): Promise<string> {
-        const body: LoginModel = TestDataProvider.getUserData(process.env.EMAIL || user.email, process.env.PASSWORD_MD5 || user.passwordEncryptMD5, process.env.PASSWORD || user.password);
+        let email: string;
+        let password: string;
+
+        console.log(`process.env.EMAIL = ${process.env.EMAIL}`);
+        console.log(`process.env.PASSWORD_MD5 = ${process.env.PASSWORD_MD5}`);
+        console.log(`process.env.PASSWORD = ${process.env.PASSWORD}`);
+        console.log();
+        console.log();
+        console.log();
+
+        if (!process.env.EMAIL) {
+            email = user.email;
+        } else {
+            email = process.env.EMAIL;
+        }
+
+        if (!process.env.PASSWORD_MD5 && !process.env.PASSWORD) {
+            console.log('!process.env.PASSWORD_MD5 && !process.env.PASSWORD');
+            password = user.passwordEncryptMD5;
+        } else if (process.env.PASSWORD_MD5 && !process.env.PASSWORD) {
+            console.log('process.env.PASSWORD_MD5 && !process.env.PASSWORD');
+            password = user.passwordEncryptMD5;
+        } else if (!process.env.PASSWORD_MD5 && process.env.PASSWORD) {
+            console.log('!process.env.PASSWORD_MD5 && process.env.PASSWORD');
+            console.log(`process.env.PASSWORD = ${process.env.PASSWORD}`);
+            password = md5(process.env.PASSWORD);
+            console.log(`user.password in MD5 = ${password}`);
+        }
+
+        //const body: LoginModel = TestDataProvider.getUserData(process.env.EMAIL, process.env.PASSWORD_MD5, process.env.PASSWORD);
+        const body: LoginModel = TestDataProvider.getUserData(email, password);
+        console.log(body);
         const response: APIResponse = await ApiBuilder.sendPostRequest(
             request,
             url,
@@ -21,6 +53,8 @@ export class Auth {
         )
 
         expect(response.status()).toBe(200);
+
+        console.log(await response.json());
 
         return (await response.json()).result.access_token;
     }

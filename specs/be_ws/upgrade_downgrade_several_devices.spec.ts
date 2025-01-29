@@ -29,17 +29,16 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (severa
             const JwtToken = await Auth.getAccessToken(
                 config.loginUrl,
                 request,
-                // TestDataProvider.SimpleUser
                 TestDataProvider.SimpleUser,
             );
 
             commandIndex++;
+            console.log();
+            console.log();
+            console.log();
+            console.log();
+            console.log();
             console.log(`DEVICE_ID = ${serialNumber}`);
-            console.log();
-            console.log();
-            console.log();
-            console.log();
-            console.log();
             console.log('****************************************************************************************************');
             console.log('****************************************************************************************************');
             console.log();

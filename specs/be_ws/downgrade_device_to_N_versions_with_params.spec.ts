@@ -41,6 +41,7 @@ test.describe('[SAS][WS] Automate firmware upgrade/downgrade testing - positive 
         console.log();
         console.log();
         console.log();
+        console.log(`DEVICE_ID = ${serialNumber}`);
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();

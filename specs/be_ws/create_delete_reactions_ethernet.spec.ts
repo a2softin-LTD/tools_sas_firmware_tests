@@ -46,6 +46,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         console.log();
         console.log();
         console.log();
+        console.log(`DEVICE_ID = ${serialNumber}`);
         console.log('****************************************************************************************************');
         console.log('****************************************************************************************************');
         console.log();
