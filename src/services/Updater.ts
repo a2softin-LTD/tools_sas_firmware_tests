@@ -81,4 +81,68 @@ export class Updater {
 
         wsInstance.close()
     }
+
+    static async armGroupsListOfPanel(wsInstance: WsControlHandler, serialNumber: number, groupIndexes: Array<number>) {
+
+
+        const initialData = await wsInstance.createSocket(serialNumber);
+        const initialGroups = initialData.create?.groups
+
+        const armedGroups = initialGroups
+            .filter(el => el.states.some(state => [ArmStatesEnum.ArmedStay, ArmStatesEnum.ArmedAway].includes(state)))
+
+        const notArmedGroupsIndexes = groupIndexes.filter(gi => !armedGroups.some(group => group.index == gi))
+
+        for (const groupIndex of notArmedGroupsIndexes) {
+
+            await wsInstance.update({
+                subscribeMethod: "update", subscribePart: 'groups',
+                validityFunction: (groups: IControlPanelUpdateBlock["groups"]) => {
+                    if (!groups?.length) return false
+                    const armedGroupExist = Boolean(
+                        groups.filter(el => el.states.includes(ArmStatesEnum.ArmedAway))
+                            .some(el => el.index == groupIndex)
+                    )
+
+                    return armedGroupExist
+                },
+                method: ControlPanelSessionCommands.ARM_AWAY,
+                data: {groups: [groupIndex]}
+            })
+        }
+
+        console.log("wsInstance success!!!");
+        wsInstance.close()
+    }
+
+    static async disarmAllGroupsOfPanel(wsInstance: WsControlHandler, serialNumber: number) {
+        const initialData = await wsInstance.createSocket(serialNumber);
+        const groups = initialData.create?.groups
+        const armedGroups = groups
+            .filter(el => el.states.some(state => [ArmStatesEnum.ArmedStay, ArmStatesEnum.ArmedAway].includes(state)))
+
+        if (!armedGroups.length) return true
+
+        let groupIndex: number
+        for (const armedGroup of armedGroups) {
+            groupIndex = armedGroup.index
+
+            await wsInstance.update({
+                subscribeMethod: "update", subscribePart: 'groups',
+                validityFunction: (groups: IControlPanelUpdateBlock["groups"]) => {
+                    if (!groups?.length) return false
+                    const disarmedGroupExist = Boolean(
+                        groups.filter(el => el.states.includes(ArmStatesEnum.Disarm))
+                            .some(el => el.index == groupIndex)
+                    )
+                    return disarmedGroupExist
+                },
+                method: ControlPanelSessionCommands.DISARM,
+                data: {groups: [groupIndex]}
+            })
+        }
+
+
+        wsInstance.close()
+    }
 }

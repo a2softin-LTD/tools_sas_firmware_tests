@@ -6,7 +6,8 @@ type ArmState = 'ArmedAway'
 
 export enum ArmStatesEnum {
     ArmedAway = "ArmedAway",
-    Disarm = 'Disarm'
+    Disarm = 'Disarm',
+    ArmedStay = 'ArmedStay',
 }
 
 export interface IControlGroupState {

@@ -14,7 +14,6 @@ import {WsControlHandler} from "../services/WsControlHandler";
 import {getAllVersionConfigsB7} from "../../ws/FirmwareVersionConfig";
 
 export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env: IServerAddresses) {
-
     let serialNumber: number;
     let JwtToken: string;
     let insideGetHostnameData;
