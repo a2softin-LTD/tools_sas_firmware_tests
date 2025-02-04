@@ -1,10 +1,10 @@
-import {BehaviorSubject, filter, map, Observable, Subject, switchMap, take} from "rxjs";
+import {BehaviorSubject, filter, map, Observable, of, Subject, switchMap, take} from "rxjs";
 import {WsMethod} from "../domain/constants/ws-connection/ws-commands";
 import {MaksSetupWsCallback} from "../domain/view/MaksSetupWsCallback";
 import {Timeouts} from "../utils/timeout.util";
 import {PanelParsedInfo} from "../domain/entity/setup-session/PanelParsedInfo";
 import {PanelUpdateBLock} from "../domain/entity/setup-session/PanelUpdateBLock";
-import {WsUpdateModel} from "../domain/view/WsUpdateModel";
+import {WsUpdateModel} from "../domain/entity/setup-session/WsUpdateModel";
 import {SessionTypeEnum} from "../domain/constants/ws-connection/session-type.enum";
 import {isDefined} from "../utils/is-defined.util";
 
@@ -36,7 +36,7 @@ export class WsHandlerRxSetupSession {
 
 
     initSocket() {
-        if (this.activeSession) return;
+        if (this.activeSession) return of(true);
         this.websocketInstance = new WebSocket(this.buildServerUrl());
         this.websocketInstance.onclose = err => {
             this.close()
@@ -46,6 +46,9 @@ export class WsHandlerRxSetupSession {
             if (this.activeSession) {
                 this.activeSession = false
             }
+        }
+        this.websocketInstance.onopen = () => {
+            console.log('open');
         }
         this.websocketInstance.onmessage = (message) => {
             const callback = JSON.parse(message.data);

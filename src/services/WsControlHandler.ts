@@ -1,13 +1,13 @@
-import { WebSocket } from "ws";
-import { WsMethod } from "../domain/constants/ws-connection/ws-commands";
-import { WsUpdateModel } from "../domain/view/WsUpdateModel";
-import { MaksSetupWsCallback } from "../domain/view/MaksSetupWsCallback";
-import { Timeouts} from "../utils/timeout.util";
-import { ICreateSubscriptionView, IDropSubscriptionView } from "../domain/view/subscription.view";
-import { isDefined } from "../utils/is-defined.util";
-import { PanelParsedInfo } from "../domain/entity/setup-session/PanelParsedInfo";
+import {WebSocket} from "ws";
+import {ControlPanelSessionCommands} from "../domain/constants/ws-connection/ws-commands";
+import {MaksSetupWsCallback} from "../domain/view/MaksSetupWsCallback";
+import {Timeouts} from "../utils/timeout.util";
+import {ICreateSubscriptionView, IDropSubscriptionView} from "../domain/view/subscription.view";
+import {isDefined} from "../utils/is-defined.util";
+import {IControlSessionUpdateModel} from "../domain/entity/control-session/control-session-update.model";
+import {IControlPanelParsedInfo, IControlPanelUpdateBlock} from "../domain/entity/control-session/control-panel-data";
 
-export class WsHandler {
+export class WsControlHandler {
     private websocketInstance: WebSocket
     private openCallback: any;
     private activeSession: boolean;
@@ -18,13 +18,16 @@ export class WsHandler {
     ) {
     }
 
-    createSocket(serial: number): Promise<PanelParsedInfo> {
+    createSocket(serial: number): Promise<IControlPanelParsedInfo> {
         return new Promise((resolve, reject) => {
             this.openCallback = resolve;
 
-            this.websocketInstance = new WebSocket(this.serverUrl + '/sockets?token=' + this.activeJwtToken);
+            this.websocketInstance = new WebSocket(this.serverUrl + '/api1?token=' + this.activeJwtToken);
             this.websocketInstance.onopen = () => {
-                this.send(WsMethod.OPEN_PANEL_SESSION, serial)
+                this.send(ControlPanelSessionCommands.OPEN_PANEL_SESSION, {
+                    serial,
+                    region: "international"
+                })
                     .catch(error => {
                         reject(error)
                     });
@@ -33,13 +36,12 @@ export class WsHandler {
                 const callback = JSON.parse(message.data);
                 //console.log(callback);
 
-                if (callback.server === WsMethod.GET_PANEL_CHANGES) {
+                if (callback.server === ControlPanelSessionCommands.PANEL_CHANGES) {
                     this.sendData(callback.data);
                     this.sendToSubscribers(callback.data)
                 } else this.callSubscription(callback)
             };
             this.websocketInstance.onclose = (err) => {
-                //console.log(err);
                 if (err.code) {
                     return this.activeSession = false;
                 }
@@ -87,11 +89,10 @@ export class WsHandler {
         })
     }
 
-    update<T>(model: WsUpdateModel): Promise<boolean> {
+    update<T>(model: IControlSessionUpdateModel): Promise<boolean> {
         return Timeouts.raceError(new Promise((resolve, reject) => {
-            const subscribePoint: IDropSubscriptionView = {
+            const subscribePoint: IDropSubscriptionView<IControlPanelUpdateBlock> = {
                 method: model.subscribeMethod,
-                // @ts-ignore
                 field: model.subscribePart
             };
             const {validityFunction} = model;
@@ -115,21 +116,14 @@ export class WsHandler {
         }), model.gsmTime || 60)
     }
 
-    public removeSubscription(...subscriptionsInfo: IDropSubscriptionView[]) {
+    public removeSubscription(...subscriptionsInfo: IDropSubscriptionView<IControlPanelUpdateBlock>[]) {
         subscriptionsInfo.forEach(({method, field}) => {
             delete this.subs[field][method]
         })
     }
 
-    public createSubscription({field, method, callback}: ICreateSubscriptionView) {
-
-        let fieldSubObject = this.subs[field]
-        if (!fieldSubObject) {
-            fieldSubObject = {}
-            this.subs[field] = fieldSubObject
-        }
-
-        fieldSubObject[method] = callback
+    public createSubscription({field, method, callback}: ICreateSubscriptionView<IControlPanelUpdateBlock>) {
+        this.subs[field][method] = callback
     }
 
     private callbacks = {};
@@ -156,17 +150,16 @@ export class WsHandler {
 
     private sendToSubscribers(data) {
         if (typeof data != "object") return;
-
-        for (const method of Object.keys(data)) {
-            for (const field of Object.keys(data[method])) {
-
-                try {
-                    this.subs[field][method](data[method][field])
-                } catch (e) {
-                }
-            }
-
-        }
+        Object.keys(data)
+            .forEach(method => {
+                Object.keys(data[method])
+                    .forEach(field => {
+                        try {
+                            this.subs[field][method](data[method][field])
+                        } catch (e) {
+                        }
+                    })
+            })
     }
 
     private subs = {
@@ -179,8 +172,7 @@ export class WsHandler {
         keyFobs: {},
         repeaters: {},
         zoneExtenders: {},
-        relays: {},
-        reactions: {}
+        relays: {}
     };
 
     close() {
@@ -193,15 +185,18 @@ export class WsHandler {
                             objectKey: string /*keyof operationMode*/, awaitedValue: any) {
 
         return new Promise((resolve, reject) => {
-            const subscribePoint: IDropSubscriptionView = {method: rootKey, field: structureKey} as any;
+            const subscribePoint: IDropSubscriptionView<IControlPanelUpdateBlock> = {
+                method: rootKey,
+                field: structureKey
+            } as any;
             this.createSubscription({
                 ...subscribePoint,
                 callback: (data: any) => {
                     const allowed = isDefined(data[objectKey]) && data[objectKey] == awaitedValue;
-                    // console.group();
-                    // console.log("data:", data, {objectKey, structureKey, rootKey, awaitedValue});
-                    // console.log("Allowed:", allowed);
-                    // console.groupEnd();
+                    console.group();
+                    console.log("data:", data, {objectKey, structureKey, rootKey, awaitedValue});
+                    console.log("Allowed:", allowed);
+                    console.groupEnd();
                     if (allowed) return;
                     return resolve(true);
                 }

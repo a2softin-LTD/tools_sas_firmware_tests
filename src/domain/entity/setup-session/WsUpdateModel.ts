@@ -1,5 +1,5 @@
-import { WsMethod } from "../constants/ws-connection/ws-commands";
-import { PanelData } from "../entity/setup-session/PanelData";
+import { WsMethod } from "../../constants/ws-connection/ws-commands";
+import { PanelData } from "./PanelData";
 
 export interface WsUpdateModel {
     method?: WsMethod,
