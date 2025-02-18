@@ -10,14 +10,14 @@ export class Updater {
     static async update(wsInstance: WsHandler, serialNumber: number, allowedVersionConfig: IFirmwareVersionView) {
         try {
             const initialData = await wsInstance.createSocket(serialNumber);
-            if (initialData["create"]['panelSettings']['versionCode'] == allowedVersionConfig.config.versionCode)
+            if (initialData["create"]['panelSettings']['version'].includes(allowedVersionConfig.config.version))
                 throw 1001;
             // const allowedVersionConfig = getAnotherVersionConfig(initialData["create"]['panelSettings']['versionCode'])
             //console.log(`Install the version: ${allowedVersionConfig.versionType}`)
 
             await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, allowedVersionConfig.config.url);
-            await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
-            await wsInstance.getSubscribedObjectData("update", 'panelSettings', "versionCode", allowedVersionConfig.config.versionCode);
+            // await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
+            await wsInstance.getSubscribedObjectData("update", 'panelSettings', "version", allowedVersionConfig.config.version);
             wsInstance.close();
         } catch (error) {
             wsInstance.close();

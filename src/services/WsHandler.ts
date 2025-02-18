@@ -1,11 +1,11 @@
 import { WebSocket } from "ws";
 import { WsMethod } from "../domain/constants/ws-connection/ws-commands";
-import { WsUpdateModel } from "../domain/view/WsUpdateModel";
 import { MaksSetupWsCallback } from "../domain/view/MaksSetupWsCallback";
 import { Timeouts} from "../utils/timeout.util";
 import { ICreateSubscriptionView, IDropSubscriptionView } from "../domain/view/subscription.view";
 import { isDefined } from "../utils/is-defined.util";
 import { PanelParsedInfo } from "../domain/entity/setup-session/PanelParsedInfo";
+import { WsUpdateModel } from "../domain/entity/setup-session/WsUpdateModel";
 
 export class WsHandler {
     private websocketInstance: WebSocket
@@ -163,6 +163,7 @@ export class WsHandler {
                 try {
                     this.subs[field][method](data[method][field])
                 } catch (e) {
+                    console.log(e);
                 }
             }
 
@@ -189,23 +190,33 @@ export class WsHandler {
         this.websocketInstance = null
     }
 
+    private comparisonTypeFns = {
+        full: (wsValue, awaitedValue) => wsValue == awaitedValue,
+        substring: (wsValue: string, awaitedValue: string) => wsValue.includes(awaitedValue),
+    }
+
     getSubscribedObjectData(rootKey: "create" | "update", structureKey: string/*keyof PanelData*/,
-                            objectKey: string /*keyof operationMode*/, awaitedValue: any) {
+                            objectKey: string /*keyof operationMode*/, awaitedValue: any, compareType: 'full' | 'substring' = 'full') {
 
         return new Promise((resolve, reject) => {
             const subscribePoint: IDropSubscriptionView = {method: rootKey, field: structureKey} as any;
             this.createSubscription({
                 ...subscribePoint,
                 callback: (data: any) => {
-                    const allowed = isDefined(data[objectKey]) && data[objectKey] == awaitedValue;
-                    // console.group();
-                    // console.log("data:", data, {objectKey, structureKey, rootKey, awaitedValue});
+                    if (!isDefined(data[objectKey])) return;
+
+                    const comparisonTypeFn = this.comparisonTypeFns[compareType]
+
+                    const isValid = comparisonTypeFn(data[objectKey], awaitedValue)
+                    console.group();
+                    console.log("data:", data, {objectKey, structureKey, rootKey, awaitedValue});
                     // console.log("Allowed:", allowed);
-                    // console.groupEnd();
-                    if (allowed) return;
+                    console.groupEnd();
+                    if (!isValid) return;
                     return resolve(true);
                 }
             });
         });
     }
+
 }

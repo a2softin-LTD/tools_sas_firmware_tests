@@ -1,7 +1,7 @@
 import { FirmwareVersionType } from "../src/domain/constants/firmware-version.types";
 
 export interface IFirmwareVersionConfig {
-    versionCode: number,
+    version: string,
     fake?: boolean,
     url: string
 }
@@ -13,78 +13,78 @@ export interface IFirmwareVersionView  {
 
 export const firmwareVersionConfigB7 = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
     .set(FirmwareVersionType.OLDEST, {
-        versionCode: 2273,
+        version: "2273",
         url: 'http://dev-file.maks.systems:7070/v2/files/b7/22_73.bin'
     })
     .set(FirmwareVersionType.OLD, {
-        versionCode: 2274,
+        version: "2274",
         url: 'http://dev-file.maks.systems:7070/v2/files/b7/22_74.bin'
     }).set(FirmwareVersionType.NEW, {
-        versionCode: 2275,
+        version: "2275",
         url: 'http://dev-file.maks.systems:7070/v2/files/b7/22_75.bin'
     });
 
 export const firmwareVersionConfigB3 = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
     .set(FirmwareVersionType.OLDEST, {
-        versionCode: 2273,
+        version: "2273",
         url: 'http://dev-file.maks.systems:7070/v2/files/b3/22_73.bin'
     })
     .set(FirmwareVersionType.OLD, {
-        versionCode: 2274,
+        version: "2274",
         url: 'http://dev-file.maks.systems:7070/v2/files/b3/22_74.bin'
     })
     .set(FirmwareVersionType.NEW, {
-        versionCode: 2275,
+        version: "2275",
         url: 'http://dev-file.maks.systems:7070/v2/files/b3/22_75.bin'
     });
 
 export const firmwareVersionConfigFiveLastVersionsB7 = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
     .set(FirmwareVersionType.OLDEST, {
-        versionCode: 2271,
+        version: "2271",
         url: 'http://dev-file.maks.systems:7070/v2/files/b7/22_71.bin'
     })
     .set(FirmwareVersionType.OLD, {
-        versionCode: 2272,
+        version: "2272",
         url: 'http://dev-file.maks.systems:7070/v2/files/b7/22_72.bin'
     })
     .set(FirmwareVersionType.NEW, {
-        versionCode: 2273,
+        version: "2273",
         url: 'http://dev-file.maks.systems:7070/v2/files/b7/22_73.bin'
     })
     .set(FirmwareVersionType.LAST, {
-        versionCode: 2274,
+        version: "2274",
         url: 'http://dev-file.maks.systems:7070/v2/files/b7/22_74.bin'
     })
     .set(FirmwareVersionType.PRE_PENULTIMATE, {
-        versionCode: 2275,
+        version: "2275",
         url: 'http://dev-file.maks.systems:7070/v2/files/b7/22_75.bin'
     });
 
 export const firmwareVersionConfigFiveLastVersionsB3 = new Map<FirmwareVersionType, IFirmwareVersionConfig>()
     .set(FirmwareVersionType.OLDEST, {
-        versionCode: 2271,
+        version: "2271",
         url: 'http://dev-file.maks.systems:7070/v2/files/b3/22_71.bin'
     })
     .set(FirmwareVersionType.OLD, {
-        versionCode: 2272,
+        version: "2272",
         url: 'http://dev-file.maks.systems:7070/v2/files/b3/22_72.bin'
     })
     .set(FirmwareVersionType.NEW, {
-        versionCode: 2273,
+        version: "2273",
         url: 'http://dev-file.maks.systems:7070/v2/files/b3/22_73.bin'
     })
     .set(FirmwareVersionType.LAST, {
-        versionCode: 2274,
+        version: "2274",
         url: 'http://dev-file.maks.systems:7070/v2/files/b3/22_74.bin'
     })
     .set(FirmwareVersionType.PRE_PENULTIMATE, {
-        versionCode: 2275,
+        version: "2275",
         url: 'http://dev-file.maks.systems:7070/v2/files/b3/22_75.bin'
     });
 
-export const getAnotherVersionConfig = (versionCode: number):IFirmwareVersionView => {
+export const getAnotherVersionConfig = (versionCode: string):IFirmwareVersionView => {
     const allowedConfigs = Array.from(firmwareVersionConfigB7.entries())
-        .filter(([_, cfg]) => !cfg.fake && cfg.versionCode != versionCode)
+        .filter(([_, cfg]) => !cfg.fake && cfg.version != versionCode)
         .map(([versionType, config]) => ({versionType, config}))
     return allowedConfigs[0];
 }
@@ -119,9 +119,10 @@ export const FIRMWARE_VERSION = (versions: string) => {
     let n: number = 0;
     const versionsMap: Map<FirmwareVersionType, IFirmwareVersionConfig> = new Map<FirmwareVersionType, IFirmwareVersionConfig>();
     for (const version of versionList) {
-        const versionNumber: number = Number(version.slice(version.length - 9, -4).replace('_',''));
+        const versionParts: string[] = version.split('/')[4].split('_');
+        const versionNumber: string = versionParts[1] + '.' + versionParts[2];
         versionsMap.set(FirmwareVersionType[String(n)], {
-            versionCode: versionNumber,
+            version: versionNumber,
             url: version
         })
         n++;
