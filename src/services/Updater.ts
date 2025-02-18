@@ -17,7 +17,7 @@ export class Updater {
 
             await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, allowedVersionConfig.config.url);
             // await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
-            await wsInstance.getSubscribedObjectData("update", 'panelSettings', "version", allowedVersionConfig.config.version);
+            await wsInstance.getSubscribedObjectData("update", 'panelSettings', "version", allowedVersionConfig.config.version, 'substring');
             wsInstance.close();
         } catch (error) {
             wsInstance.close();

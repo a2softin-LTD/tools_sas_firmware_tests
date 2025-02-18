@@ -1,11 +1,12 @@
 import { WebSocket } from "ws";
 import { WsMethod } from "../domain/constants/ws-connection/ws-commands";
 import { MaksSetupWsCallback } from "../domain/view/MaksSetupWsCallback";
-import { Timeouts} from "../utils/timeout.util";
+import { Timeouts } from "../utils/timeout.util";
 import { ICreateSubscriptionView, IDropSubscriptionView } from "../domain/view/subscription.view";
-import { isDefined } from "../utils/is-defined.util";
+import { isNullOrUndefined } from "../utils/is-defined.util";
 import { PanelParsedInfo } from "../domain/entity/setup-session/PanelParsedInfo";
 import { WsUpdateModel } from "../domain/entity/setup-session/WsUpdateModel";
+
 
 export class WsHandler {
     private websocketInstance: WebSocket
@@ -161,7 +162,7 @@ export class WsHandler {
             for (const field of Object.keys(data[method])) {
 
                 try {
-                    this.subs[field][method](data[method][field])
+                    this.subs[field]?.[method]?.(data[method][field])
                 } catch (e) {
                     console.log(e);
                 }
@@ -203,10 +204,10 @@ export class WsHandler {
             this.createSubscription({
                 ...subscribePoint,
                 callback: (data: any) => {
-                    if (!isDefined(data[objectKey])) return;
+                    if (isNullOrUndefined(data[objectKey])) return;
 
-                    const comparisonTypeFn = this.comparisonTypeFns[compareType]
-
+                    const comparisonTypeFn = this.comparisonTypeFns[compareType] || this.comparisonTypeFns.full
+                    
                     const isValid = comparisonTypeFn(data[objectKey], awaitedValue)
                     console.group();
                     console.log("data:", data, {objectKey, structureKey, rootKey, awaitedValue});

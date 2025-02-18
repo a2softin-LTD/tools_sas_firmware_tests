@@ -1,11 +1,11 @@
-import {WebSocket} from "ws";
-import {ControlPanelSessionCommands} from "../domain/constants/ws-connection/ws-commands";
-import {MaksSetupWsCallback} from "../domain/view/MaksSetupWsCallback";
-import {Timeouts} from "../utils/timeout.util";
-import {ICreateSubscriptionView, IDropSubscriptionView} from "../domain/view/subscription.view";
-import {isDefined} from "../utils/is-defined.util";
-import {IControlSessionUpdateModel} from "../domain/entity/control-session/control-session-update.model";
-import {IControlPanelParsedInfo, IControlPanelUpdateBlock} from "../domain/entity/control-session/control-panel-data";
+import { WebSocket } from "ws";
+import { ControlPanelSessionCommands } from "../domain/constants/ws-connection/ws-commands";
+import { MaksSetupWsCallback } from "../domain/view/MaksSetupWsCallback";
+import { Timeouts } from "../utils/timeout.util";
+import { ICreateSubscriptionView, IDropSubscriptionView } from "../domain/view/subscription.view";
+import { isDefined } from "../utils/is-defined.util";
+import { IControlSessionUpdateModel } from "../domain/entity/control-session/control-session-update.model";
+import { IControlPanelParsedInfo, IControlPanelUpdateBlock } from "../domain/entity/control-session/control-panel-data";
 
 export class WsControlHandler {
     private websocketInstance: WebSocket
@@ -155,7 +155,7 @@ export class WsControlHandler {
                 Object.keys(data[method])
                     .forEach(field => {
                         try {
-                            this.subs[field][method](data[method][field])
+                            this.subs[field]?.[method]?.(data[method][field])
                         } catch (e) {
                         }
                     })
