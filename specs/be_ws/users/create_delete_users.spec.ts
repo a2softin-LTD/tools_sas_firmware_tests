@@ -13,6 +13,7 @@ import config from "../../../playwright.config";
 import { SetupSessionRelayDto } from "../../../src/domain/entity/setup-session/relay-typ";
 import { PanelReactionsDto } from "../../../src/domain/entity/setup-session/panel-reaction.dto";
 import { generateUserCreationModels } from "../../../src/utils/generators/users/generate-user-creation-commands.util";
+import { IPanelUser } from "../../../src/domain/entity/setup-session/PanelData";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -22,8 +23,7 @@ let wsInstance: WsHandler;
 let commandIndex: number = 0;
 let ERROR: string = '';
 let usedValve: SetupSessionRelayDto
-
-let reactions: PanelReactionsDto[]
+let users: Array<IPanelUser> = []
 
 test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB - positive scenarios', () => {
     test.beforeAll(async ({request}) => {
@@ -63,18 +63,21 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         wsUrl = buildPanelWsUrl(insideGetHostnameData.result);
         wsInstance = new WsHandler(wsUrl, JwtToken);
 
+        const initialData = await wsInstance.createSocket(serialNumber);
+        users = initialData.create.users || [];
+
     });
 
     test('remove all users from panel', async () => {
         // try {
 
-        const removedUserIndexes = reactions
-            .map(el => el.index)
 
+        const removedUserIndexes = users
+            .map(el => el.index)
 
         await Timeouts.raceError(async () => {
 
-            for (const removedReactionIndex of removedUserIndexes) {
+            for (const removedIndex of removedUserIndexes) {
                 await new Promise((resolve, reject) => {
                     console.log();
                     console.log("Pause. Waiting for " + PAUSE_BETWEEN_REACTION_CREATION + " sec before run next updating");
@@ -87,8 +90,8 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
                     method: WsMethod.REMOVE_USER,
                     subscribePart: 'users',
                     subscribeMethod: 'delete',
-                    data: removedReactionIndex,
-                    validityFunction: (data: number[]) => data.some(el => el == removedReactionIndex)
+                    data: removedIndex,
+                    validityFunction: (data: number[]) => data.some(el => el == removedIndex)
                 })
             }
         }, {awaitSeconds: TIMEOUT, errorCode: 999});
