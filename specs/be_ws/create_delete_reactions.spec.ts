@@ -11,7 +11,7 @@ import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters
 import { PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT } from "../../utils/Constants";
 import config from "../../playwright.config";
 import { SetupSessionRelayDto } from "../../src/domain/entity/setup-session/relay-typ";
-import { generateRelayReactionCommands } from "../../src/utils/reaction-generators/generate-relay-reaction-commands.util";
+import { generateRelayReactionCommands } from "../../src/utils/generators/reactions/generate-relay-reaction-commands.util";
 import { PanelReactionsDto, ReactionAllowedTypes } from "../../src/domain/entity/setup-session/panel-reaction.dto";
 import { DEVICE_SAS, REACTION_AMOUNT} from "../../index";
 

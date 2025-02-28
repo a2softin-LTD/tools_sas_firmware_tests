@@ -1,19 +1,18 @@
 import { APIResponse, expect, test } from "@playwright/test";
-import { Auth } from "../../auth/Auth";
-import { TestDataProvider  } from "../../utils/TestDataProvider";
-import { HostnameController } from "../../api/controllers/HostnameController";
-import { WsMethod } from "../../src/domain/constants/ws-connection/ws-commands";
-import { WsHandler } from "../../src/services/WsHandler";
-import { ErrorDescriptions } from "../../src/utils/errors/Errors";
-import { Timeouts } from "../../src/utils/timeout.util";
-import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
-import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
-import { PAUSE, PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT } from "../../utils/Constants";
-import config from "../../playwright.config";
-import { SetupSessionRelayDto} from "../../src/domain/entity/setup-session/relay-typ";
-import { PanelReactionsDto, ReactionAllowedTypes } from "../../src/domain/entity/setup-session/panel-reaction.dto";
-import { isValve } from "../../src/domain/entity/enums/type-codes";
-import { generateValveReactionCommands } from "../../src/utils/generators/reactions/generate-valve-reaction-commands.util";
+import { Auth } from "../../../auth/Auth";
+import { TestDataProvider } from "../../../utils/TestDataProvider";
+import { HostnameController } from "../../../api/controllers/HostnameController";
+import { WsMethod } from "../../../src/domain/constants/ws-connection/ws-commands";
+import { WsHandler } from "../../../src/services/WsHandler";
+import { ErrorDescriptions } from "../../../src/utils/errors/Errors";
+import { Timeouts } from "../../../src/utils/timeout.util";
+import { buildPanelWsUrl } from "../../../src/utils/ws-url-builder.util";
+import { PanelConvertersUtil } from "../../../src/utils/converters/panel-converters.util";
+import { PAUSE, PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT } from "../../../utils/Constants";
+import config from "../../../playwright.config";
+import { SetupSessionRelayDto } from "../../../src/domain/entity/setup-session/relay-typ";
+import { PanelReactionsDto } from "../../../src/domain/entity/setup-session/panel-reaction.dto";
+import { generateUserCreationModels } from "../../../src/utils/generators/users/generate-user-creation-commands.util";
 
 let serialNumber: number;
 let JwtToken: string;
@@ -64,32 +63,18 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         wsUrl = buildPanelWsUrl(insideGetHostnameData.result);
         wsInstance = new WsHandler(wsUrl, JwtToken);
 
-        const initialData = await wsInstance.createSocket(serialNumber);
-
-        reactions = initialData.create.reactions
-
-        usedValve = initialData.create.sensors.find(el => isValve(el.type));
-
-        if (!usedValve) {
-            throw new Error('Valve are not found');
-        }
-        if (!reactions) {
-            throw new Error('reactions unsupported')
-        }
-
     });
 
-    test('remove all valve reactions', async () => {
+    test('remove all users from panel', async () => {
         // try {
 
-        const removedReactionIndexes = reactions
-            .filter(el => ReactionAllowedTypes.valve.includes(el.triggerType))
+        const removedUserIndexes = reactions
             .map(el => el.index)
 
 
         await Timeouts.raceError(async () => {
 
-            for (const removedReactionIndex of removedReactionIndexes) {
+            for (const removedReactionIndex of removedUserIndexes) {
                 await new Promise((resolve, reject) => {
                     console.log();
                     console.log("Pause. Waiting for " + PAUSE_BETWEEN_REACTION_CREATION + " sec before run next updating");
@@ -99,7 +84,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
                 });
                 console.log();
                 await wsInstance.update({
-                    method: WsMethod.REMOVE_REACTION,
+                    method: WsMethod.REMOVE_USER,
                     subscribePart: 'users',
                     subscribeMethod: 'delete',
                     data: removedReactionIndex,
@@ -112,18 +97,17 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         // }
     });
 
-    test('create valve reactions for time range', async () => {
+    test('add users to panel', async () => {
 
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
-            const startTimeRangeMins: number = 0
-            const endTimeRangeMins: number = 5
-            const amountCommands: number = 12;
-            const reactionCommands = generateValveReactionCommands(usedValve, startTimeRangeMins, endTimeRangeMins)
+
+            const count = 10
+            const userModels = generateUserCreationModels(count)
 
             await Timeouts.raceError(async () => {
 
-                for (let i = 0; i < reactionCommands.length; i++) {
+                for (let i = 0; i < userModels.length; i++) {
                     await new Promise((resolve, reject) => {
                         console.log();
                         console.log("Pause. Waiting for " + PAUSE_BETWEEN_REACTION_CREATION + " sec before run next updating");
@@ -132,12 +116,12 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
                         setTimeout(resolve, PAUSE_BETWEEN_REACTION_CREATION);
                     });
                     console.log();
-                    console.log(reactionCommands[i]);
+                    console.log(userModels[i]);
                     await wsInstance.update({
-                        method: WsMethod.UPDATE_REACTION,
-                        subscribePart: 'reactions',
+                        method: WsMethod.UPDATE_USER,
+                        subscribePart: 'users',
                         subscribeMethod: 'create',
-                        data: reactionCommands[i],
+                        data: userModels[i],
                         validityFunction: data => Boolean(data.length)
                     })
                 }

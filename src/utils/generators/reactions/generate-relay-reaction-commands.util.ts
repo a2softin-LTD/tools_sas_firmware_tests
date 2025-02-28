@@ -1,5 +1,5 @@
-import { SetupSessionRelayDto } from "../../domain/entity/setup-session/relay-typ";
-import { PanelReactionsDto, ReactionTemplateTriggerTypes } from "../../domain/entity/setup-session/panel-reaction.dto";
+import { SetupSessionRelayDto } from "../../../domain/entity/setup-session/relay-typ";
+import { PanelReactionsDto, ReactionTemplateTriggerTypes } from "../../../domain/entity/setup-session/panel-reaction.dto";
 
 export function generateRelayReactionCommands(
     relay: SetupSessionRelayDto,

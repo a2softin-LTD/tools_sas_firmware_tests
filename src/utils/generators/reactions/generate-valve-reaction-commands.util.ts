@@ -1,5 +1,5 @@
-import {PanelReactionsDto, ReactionTemplateTriggerTypes} from "../../domain/entity/setup-session/panel-reaction.dto";
-import {PcSensorDto} from "../../domain/entity/setup-session/sensor.dto";
+import {PanelReactionsDto, ReactionTemplateTriggerTypes} from "../../../domain/entity/setup-session/panel-reaction.dto";
+import {PcSensorDto} from "../../../domain/entity/setup-session/sensor.dto";
 
 export function generateValveReactionCommands(
     valve: PcSensorDto,
