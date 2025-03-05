@@ -6,10 +6,5 @@ node_modules/
 /playwright/.cache/
 results.json
 .env.local
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
 *.html
 *.xml
-

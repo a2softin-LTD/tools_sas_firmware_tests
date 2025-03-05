@@ -16,10 +16,10 @@ const defaultConfig: PlaywrightTestConfig = {
     fullyParallel: true,
 
     /* Maximum time one test can run for. */
-    timeout: 30 * 60 * 1000,
+    timeout: 5 * 60 * 1000,
     expect: {
         /* Maximum time expect() should wait for the condition to be met. */
-        timeout: 30 * 60 * 1000
+        timeout: 30_000
     },
 
     /* Folder for test artifacts such as screenshots, videos, traces, etc. */

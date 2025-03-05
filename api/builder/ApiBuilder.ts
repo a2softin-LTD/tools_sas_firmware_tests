@@ -18,4 +18,20 @@ export class ApiBuilder {
     });
   }
 
+  static async sendGetRequest(
+      request: APIRequestContext,
+      url: string,
+      endpoint: string,
+      body?: object,
+      params?: Record<string, string | number | boolean>,
+  ): Promise<APIResponse> {
+    return await request.get(url + endpoint, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: body,
+      params: params,
+    });
+  }
+
 }

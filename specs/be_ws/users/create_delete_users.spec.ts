@@ -8,10 +8,14 @@ import { ErrorDescriptions } from "../../../src/utils/errors/Errors";
 import { Timeouts } from "../../../src/utils/timeout.util";
 import { buildPanelWsUrl } from "../../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../../src/utils/converters/panel-converters.util";
-import { PAUSE, PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT } from "../../../utils/Constants";
+import {
+    PAUSE,
+    PAUSE_BETWEEN_REACTION_CREATION,
+    PAUSE_BETWEEN_USER_CREATION,
+    TIMEOUT,
+    USER_DEFAULT_AMOUNT,
+} from "../../../utils/Constants";
 import config from "../../../playwright.config";
-import { SetupSessionRelayDto } from "../../../src/domain/entity/setup-session/relay-typ";
-import { PanelReactionsDto } from "../../../src/domain/entity/setup-session/panel-reaction.dto";
 import { generateUserCreationModels } from "../../../src/utils/generators/users/generate-user-creation-commands.util";
 import { IPanelUser } from "../../../src/domain/entity/setup-session/PanelData";
 
@@ -22,8 +26,7 @@ let wsUrl: string;
 let wsInstance: WsHandler;
 let commandIndex: number = 0;
 let ERROR: string = '';
-let usedValve: SetupSessionRelayDto
-let users: Array<IPanelUser> = []
+let users: Array<IPanelUser> = [];
 
 test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB - positive scenarios', () => {
     test.beforeAll(async ({request}) => {
@@ -31,7 +34,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         JwtToken = await Auth.getAccessToken(
             config.loginUrl,
             request,
-            TestDataProvider.SimpleUserRelay,
+            TestDataProvider.SimpleUserCI,
         );
         commandIndex++;
 
@@ -68,55 +71,65 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
 
     });
 
-    test('remove all users from panel', async () => {
-        // try {
-
-
-        const removedUserIndexes = users
+    test('Remove all users from panel', async () => {
+        const removedUserIndexes: number[] = users
             .map(el => el.index)
 
         await Timeouts.raceError(async () => {
-
             for (const removedIndex of removedUserIndexes) {
-                await new Promise((resolve, reject) => {
-                    console.log();
-                    console.log("Pause. Waiting for " + PAUSE_BETWEEN_REACTION_CREATION + " sec before run next updating");
-                    console.log();
-                    console.log();
-                    setTimeout(resolve, PAUSE_BETWEEN_REACTION_CREATION);
-                });
-                console.log();
                 await wsInstance.update({
                     method: WsMethod.REMOVE_USER,
                     subscribePart: 'users',
                     subscribeMethod: 'delete',
                     data: removedIndex,
-                    validityFunction: (data: number[]) => data.some(el => el == removedIndex)
+                    validityFunction: (data: number[]) => data.some(el => el === removedIndex)
                 })
             }
-        }, {awaitSeconds: TIMEOUT, errorCode: 999});
-
-        // } catch (error) {
-        // }
+        }, { awaitSeconds: TIMEOUT, errorCode: 999 });
     });
 
-    test('add users to panel', async () => {
-
+    test('Add N users to panel', async () => {
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
-
-            const count = 10
-            const userModels = generateUserCreationModels(count)
+            const count: number = USER_DEFAULT_AMOUNT;
+            const userModels: IPanelUser[] = generateUserCreationModels(count);
 
             await Timeouts.raceError(async () => {
+                for (let i = 0; i < userModels.length; i++) {
+                    console.log();
+                    console.log(userModels[i]);
+                    await wsInstance.update({
+                        method: WsMethod.UPDATE_USER,
+                        subscribePart: 'users',
+                        subscribeMethod: 'create',
+                        data: userModels[i],
+                        validityFunction: data => Boolean(data.length)
+                    })
+                }
+            }, {awaitSeconds: TIMEOUT, errorCode: 999});
+        } catch (error) {
+            console.log(error);
+            const errorCode: string = Object.keys(ErrorDescriptions).find(key => ErrorDescriptions[key] === error.error);
+            console.log(ErrorDescriptions[errorCode]);
+            ERROR = ErrorDescriptions[errorCode];
+        }
+        // 4. Happy pass if there are no errors
+        expect(ERROR).toEqual('');
+    });
 
+    test('Add N users to panel per M sec', async () => {
+        // 3. [WSS] Connection and sending necessary commands to the device via web sockets
+        try {
+            const count: number = USER_DEFAULT_AMOUNT;
+            const userModels: IPanelUser[] = generateUserCreationModels(count);
+
+            await Timeouts.raceError(async () => {
                 for (let i = 0; i < userModels.length; i++) {
                     await new Promise((resolve, reject) => {
                         console.log();
-                        console.log("Pause. Waiting for " + PAUSE_BETWEEN_REACTION_CREATION + " sec before run next updating");
+                        console.log("Pause. Waiting for " + PAUSE_BETWEEN_USER_CREATION / 1000 + " sec before create next User");
                         console.log();
-                        console.log();
-                        setTimeout(resolve, PAUSE_BETWEEN_REACTION_CREATION);
+                        setTimeout(resolve, PAUSE_BETWEEN_USER_CREATION);
                     });
                     console.log();
                     console.log(userModels[i]);
@@ -135,16 +148,8 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
             console.log(ErrorDescriptions[errorCode]);
             ERROR = ErrorDescriptions[errorCode];
         }
-
         // 4. Happy pass if there are no errors
         expect(ERROR).toEqual('');
-        await new Promise((resolve, reject) => {
-            console.log();
-            console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
-            console.log();
-            console.log();
-            setTimeout(resolve, PAUSE);
-        });
     });
 
 });

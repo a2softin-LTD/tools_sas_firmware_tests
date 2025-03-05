@@ -12,7 +12,11 @@ export const PAUSE: number = 60000;
 
 export const PAUSE_BETWEEN_REACTION_CREATION: number = 1000;
 
+export const PAUSE_BETWEEN_USER_CREATION: number = 5000;
+
 export const EMAIL_NECESSARY_NAME_PART: string = 'sastest2398';
+
+export const USER_DEFAULT_AMOUNT: number = 11;
 
 export const USER_FULL_FIRST: string = '01 | Дмитро | snaut12@gmail.com';
 

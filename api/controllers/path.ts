@@ -1,0 +1,2 @@
+export const INTEGRATION_READ_PANEL_LIST_FIRST_NODE: string = "/integration/read/onlinePanelList/213849629123";
+export const INTEGRATION_READ_PANEL_LIST_SECOND_NODE: string = "/integration/read/onlinePanelList/213849629123";
