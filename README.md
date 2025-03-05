@@ -56,7 +56,7 @@ TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" PASS
 ```
 use follow tag: `@sas_upgrade_downgrade`
 
-Example (for Windows):
+See examples below (for Windows):
 ```` 
 $env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:10:08:F4"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin"; npx playwright test --grep "@sas_upgrade_downgrade"
 $env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD="asdASD123"; $env:DEVICE_ID="00:08:B7:10:08:F4"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_75.bin,http://51.20.115.159:7070/firmware/b7/22_74.bin"; npx playwright test --grep "@sas_upgrade_downgrade"
@@ -79,7 +79,7 @@ TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" PASS
 ```
 use follow tag: `@several_devices_up_down`
 
-Example (for Windows):
+See examples below (for Windows):
 ```` 
 $env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:SEVERAL_DEVICES_SAS="00:08:B7:00:00:08,00:08:B7:10:02:08"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_74.bin,http://51.20.115.159:7070/firmware/b7/22_75.bin"; npx playwright test --grep "@several_devices_up_down"
 $env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD="asdASD123"; $env:SEVERAL_DEVICES_SAS="00:08:B7:00:00:08,00:08:B7:10:02:08"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_74.bin,http://51.20.115.159:7070/firmware/b7/22_75.bin"; npx playwright test --grep "@several_devices_up_down"
@@ -99,7 +99,7 @@ TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" PASS
 ```
 use following tags: `@sas_reactions_add` or `@sas_reactions_delete`
 
-Examples (for Windows):
+See examples below (for Windows):
 ```` 
 $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_add" 
 $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_add" 
@@ -107,6 +107,30 @@ $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env
 $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_delete"
 $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:REACTION_AMOUNT="10"; npx playwright test --grep "@sas_reactions_delete"
 ````
+
+
+### 4. Open the project root and run 'Add/Delete users' tests from command line:
+####
+- Windows:
+
+```
+$env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:PASSWORD="${USER_PASSWORD}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:USER_AMOUNT="${USER_AMOUNT}"; npx playwright test --grep "@sas_users_add | @sas_users_delete"
+```
+- Linux:
+```
+TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" PASSWORD="${USER_PASSWORD}" DEVICE_ID="${DEVICE_ID_HEX}"; $env:USER_AMOUNT="${USER_AMOUNT}" npx playwright test --grep "@sas_users_add | @sas_users_delete"
+```
+use following tags: `@sas_users_add` or `@sas_users_delete`
+
+See examples below (for Windows):
+```` 
+$env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:USER_AMOUNT="10"; npx playwright test --grep "@sas_users_add" 
+$env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:USER_AMOUNT="10"; npx playwright test --grep "@sas_users_add" 
+
+$env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:USER_AMOUNT="10"; npx playwright test --grep "@sas_users_delete"
+$env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:USER_AMOUNT="10"; npx playwright test --grep "@sas_users_delete"
+````
+
 
 #### The values of the environment variables are described below:
 - ENV: string = {**"dev"** **by default**, "qa", "prod"}
@@ -125,3 +149,5 @@ $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env
 - command to run tests for upgrade/downgrade random versions (e.g. 22_75 -> 22_73 -> 22_76 -> 22_71 -> ...) of firmware for selected devices:`npx playwright test --grep "@sas_upgrade_downgrade"`, where the tag "@sas_upgrade_downgrade" always used!
 - command to run tests to add the specified number of Reactions for selected devices:`npx playwright test --grep "@sas_reactions_add"`, where the tag "@sas_reactions_add" always used!
 - command to run tests to delete all Reactions for selected devices:`npx playwright test --grep "@sas_reactions_delete"`, where the tag "@sas_reactions_delete" always used!
+- command to run tests to add the specified number of Users for selected devices:`npx playwright test --grep "@sas_users_add"`, where the tag "@sas_users_add" always used!
+- command to run tests to delete all Users for selected devices:`npx playwright test --grep "@sas_users_delete"`, where the tag "@sas_users_delete" always used!
