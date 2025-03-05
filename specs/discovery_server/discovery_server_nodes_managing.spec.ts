@@ -10,7 +10,7 @@ test.describe('Checking the behavior of the Discovery server', () => {
     test.afterEach(async () => {
     });
 
-    test('Disconnecting one of the panel-server nodes', {tag:['@smoke']}, async ({ request }) => {
+    test('Disconnecting one of the panel-server nodes', {tag:['@discovery-server']}, async ({ request }) => {
         test.info().annotations.push({
             type: "4.1",
             description: "https://app.clickup.com/30937733/v/dc/xg4m5-25952/xg4m5-14252",
