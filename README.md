@@ -42,11 +42,11 @@ Run install command and select the following to get started:
 
 - [ ] (!) Use [MD5 generator](https://www.md5hashgenerator.com/) to convert password from `String` to `Hash`
 
+# I. Upgrade / Downgrade Firmware tests
 
 ### 1. `Upgrade/Downgrade Firmware` tests for `single device` - running from command line:
 ####
 - Windows, eg:
-
 ```
 $env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:PASSWORD="${PASSWORD}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:FIRMWARE_VERSIONS="${VERSION_1},${VERSION_2},...${VERSION_N}"; npx playwright test --grep "@sas_upgrade_downgrade"
 ```
@@ -71,7 +71,6 @@ $env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD="asdASD1
 ####
 - ***URGENT! All devices must belong to ONE OWNER!***
 - Windows, eg:
-
 ```
 $env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:PASSWORD="${USER_PASSWORD}"; $env:SEVERAL_DEVICES_SAS="${SEVERAL_DEVICES_SAS}"; $env:FIRMWARE_VERSIONS="${VERSION_1},${VERSION_2},...${VERSION_N}"; npx playwright test --grep "@several_devices_up_down"
 ```
@@ -91,7 +90,6 @@ $env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD="asdAS
 ## 3. `Add / Delete reactions` - running  tests from command line:
 ####
 - Windows:
-
 ```
 $env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:PASSWORD="${USER_PASSWORD}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:REACTION_AMOUNT="${REACTION_AMOUNT}"; npx playwright test --grep "@sas_reactions_add | @sas_reactions_delete"
 ```
@@ -114,7 +112,6 @@ $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env
 ## 4. `Add / Delete users` tests - running from command line:
 ####
 - Windows:
-
 ```
 $env:TEST_ENV="${ENV}"; $env:EMAIL="${USER_EMAIL}"; $env:PASSWORD_MD5="${USER_PASSWORD_MD5}"; $env:PASSWORD="${USER_PASSWORD}"; $env:DEVICE_ID="${DEVICE_ID_HEX}"; $env:USER_AMOUNT="${USER_AMOUNT}"; npx playwright test --grep "@sas_users_add | @sas_users_delete"
 ```
@@ -124,7 +121,8 @@ TEST_ENV="${ENV}" EMAIL="${USER_EMAIL}" PASSWORD_MD5="${USER_PASSWORD_MD5}" PASS
 ```
 use following tags: `@sas_users_add` or `@sas_users_delete`
 
-See examples below (for Windows):
+
+### See examples below (for Windows):
 ```` 
 $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:USER_AMOUNT="10"; npx playwright test --grep "@sas_users_add" 
 $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env:DEVICE_ID="00:08:B7:00:00:16"; $env:USER_AMOUNT="10"; npx playwright test --grep "@sas_users_add" 
@@ -153,3 +151,14 @@ $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env
 - command to run tests to delete all Reactions for selected devices:`npx playwright test --grep "@sas_reactions_delete"`, where the tag "@sas_reactions_delete" always used!
 - command to run tests to add the specified number of Users for selected devices:`npx playwright test --grep "@sas_users_add"`, where the tag "@sas_users_add" always used!
 - command to run tests to delete all Users for selected devices:`npx playwright test --grep "@sas_users_delete"`, where the tag "@sas_users_delete" always used!
+
+
+# II. Checking the behavior of the Discovery Server tests - running from command line:
+
+####
+- Windows / Linux:
+```
+npx playwright test --grep "@discovery-server"
+```
+
+use following tags: `@discovery-server`

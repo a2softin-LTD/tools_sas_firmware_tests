@@ -10,7 +10,36 @@ test.describe('Checking the behavior of the Discovery server', () => {
     test.afterEach(async () => {
     });
 
-    test('Disconnecting one of the panel-server nodes', {tag:['@discovery-server']}, async ({ request }) => {
+    test('Disconnecting one of the panel-server nodes', { tag:['@discovery-server'] }, async ({ request }) => {
+        test.info().annotations.push({
+            type: "4.1",
+            description: "https://app.clickup.com/30937733/v/dc/xg4m5-25952/xg4m5-14252",
+        });
+
+        let panelListFirstNodeResponse;
+        let panelListSecondNodeResponse;
+
+        await test.step("1. Getting device list from First node", async () => {
+            const panelListFirstNode = await IntegrationController.getOnlinePanelListFirstNode(request);
+
+            expect(panelListFirstNode.status()).toBe(StatusCode.SuccessOK);
+
+            panelListFirstNodeResponse = await panelListFirstNode.json();
+            console.log(panelListFirstNodeResponse);
+        });
+
+        await test.step("2. Getting device list from Second node", async () => {
+            const panelListSecondNode = await IntegrationController.getOnlinePanelListSecondNode(request);
+
+            expect(panelListSecondNode.status()).toBe(StatusCode.SuccessOK);
+
+            panelListFirstNodeResponse = await panelListSecondNode.json();
+            console.log(panelListSecondNodeResponse);
+        });
+
+    });
+
+    test('Resetting the device to factory settings and initial inclusion in the system without discovery', { tag:['@discovery-server'] }, async ({ request }) => {
         test.info().annotations.push({
             type: "4.1",
             description: "https://app.clickup.com/30937733/v/dc/xg4m5-25952/xg4m5-14252",
