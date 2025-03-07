@@ -42,7 +42,6 @@ export class Auth {
             console.log(`user.password in MD5 = ${password}`);
         }
 
-        //const body: LoginModel = TestDataProvider.getUserData(process.env.EMAIL, process.env.PASSWORD_MD5, process.env.PASSWORD);
         const body: LoginModel = TestDataProvider.getUserData(email, password);
         console.log(body);
         const response: APIResponse = await ApiBuilder.sendPostRequest(

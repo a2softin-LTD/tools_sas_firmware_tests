@@ -71,7 +71,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
 
     });
 
-    test('Remove all users from panel', async () => {
+    test('Remove all users from panel', { tag: '@sas_users_delete' }, async () => {
         const removedUserIndexes: number[] = users
             .map(el => el.index)
 
@@ -88,7 +88,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         }, { awaitSeconds: TIMEOUT, errorCode: 999 });
     });
 
-    test('Add N users to panel', async () => {
+    test('Add N users to panel', { tag: '@sas_users_add' }, async () => {
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             const count: number = USER_DEFAULT_AMOUNT;
@@ -117,7 +117,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         expect(ERROR).toEqual('');
     });
 
-    test('Add N users to panel per M sec', async () => {
+    test('Add N users to panel per M sec', { tag: '@sas_users_add' }, async () => {
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
             const count: number = USER_DEFAULT_AMOUNT;

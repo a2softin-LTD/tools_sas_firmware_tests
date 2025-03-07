@@ -7,7 +7,7 @@ import { HostnameController } from "../../api/controllers/HostnameController";
 import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { Updater} from "../../src/services/Updater";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
-import {environmentConfig, IServerAddresses} from "../../ws/EnvironmentConfig";
+import { environmentConfig, IServerAddresses } from "../../ws/EnvironmentConfig";
 import { Environments } from "../../src/domain/constants/environments";
 import { DEVICE_SAS } from "../../index";
 
@@ -17,20 +17,19 @@ const groupIndexes: any[] = [];
 
 let serialNumber: number;
 let JwtToken: string;
-let insideGetHostnameData;
+let insideGetHostnameData: any;
 let wsUrl: string;
 let setupInstance: WsHandler;
 let controlInstance: WsControlHandler;
 
 test.describe(`update armed panel ${panelSerialNumber}`, () => {
-    // const env = environmentConfig.get(Environments.DEV);
 
-    test.beforeAll(async ({request}) => {
+    test.beforeAll(async ({ request }) => {
         //setup environment
         JwtToken = await Auth.getAccessToken(
             env.loginUrl,
             request,
-            TestDataProvider.SimpleUser,
+            TestDataProvider.SimpleUserCI,
         );
         // 2. Getting Hostname
         serialNumber = PanelConvertersUtil.serialToDec(panelSerialNumber);
@@ -60,9 +59,7 @@ test.describe(`update armed panel ${panelSerialNumber}`, () => {
         wsUrl = buildPanelWsUrl(insideGetHostnameData.result);
         setupInstance = new WsHandler(wsUrl, JwtToken);
         controlInstance = new WsControlHandler(wsUrl, JwtToken);
-    })
 
-    test.beforeAll(async () => {
         const state = await setupInstance.createSocket(serialNumber);
         const initialSessionState = state.create;
         if (!initialSessionState.groups.length) {
@@ -81,11 +78,6 @@ test.describe(`update armed panel ${panelSerialNumber}`, () => {
         if (!attachedSessionUser.mobileAppAllowed) {
             throw 'user dont have permissions for  arm/disarm panel';
         }
-
-        // const hasArmedGroups = initialSessionState.groups.some(checkGroupArmUtil)
-        // if (!hasArmedGroups) {
-        //     await Updater.armPanel(controlInstance, serialNumber)
-        // }
     })
 
     test('disarm all groups', async () => {

@@ -43,7 +43,7 @@ Run install command and select the following to get started:
 - [ ] (!) Use [MD5 generator](https://www.md5hashgenerator.com/) to convert password from `String` to `Hash`
 
 
-### 1. Open the project root and run 'Upgrade/Downgrade' tests from command line:
+### 1. `Upgrade/Downgrade Firmware` tests for `single device` - running from command line:
 ####
 - Windows, eg:
 
@@ -66,8 +66,10 @@ $env:TEST_ENV="dev"; $env:EMAIL="agntkcak7s@jxpomup.com"; $env:PASSWORD="asdASD1
 
 2. If you try to install a previously installed version - the test will fail (this behavior will be fixed as an Improvement some later)
 
-### 2. Open the project root and run 'Upgrade/Downgrade' `tests for several devices` from command line:
+
+## 2. `Upgrade/Downgrade Firmware` tests for `several devices` - running from command line:
 ####
+- ***URGENT! All devices must belong to ONE OWNER!***
 - Windows, eg:
 
 ```
@@ -81,12 +83,12 @@ use follow tag: `@several_devices_up_down`
 
 See examples below (for Windows):
 ```` 
-$env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:SEVERAL_DEVICES_SAS="00:08:B7:00:00:08,00:08:B7:10:02:08"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_74.bin,http://51.20.115.159:7070/firmware/b7/22_75.bin"; npx playwright test --grep "@several_devices_up_down"
-$env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD="asdASD123"; $env:SEVERAL_DEVICES_SAS="00:08:B7:00:00:08,00:08:B7:10:02:08"; $env:FIRMWARE_VERSIONS="http://51.20.115.159:7070/firmware/b7/22_74.bin,http://51.20.115.159:7070/firmware/b7/22_75.bin"; npx playwright test --grep "@several_devices_up_down"
+$env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD_MD5="8af3982673455323883c06fa59d2872a"; $env:SEVERAL_DEVICES_SAS="00:08:B7:00:00:08,00:08:B7:10:02:08"; $env:FIRMWARE_VERSIONS="http://95.67.118.186:29034/fw/xx_76_01/mpx_ua_dev.ebin,http://95.67.118.186:29034/fw/xx_76_02/mpx_ua_dev.ebin"; npx playwright test --grep "@several_devices_up_down"
+$env:TEST_ENV="dev"; $env:EMAIL="slobandriana+1@gmail.com"; $env:PASSWORD="asdASD123"; $env:SEVERAL_DEVICES_SAS="00:08:B7:00:00:08,00:08:B7:10:02:08"; $env:FIRMWARE_VERSIONS="http://95.67.118.186:29034/fw/xx_76_01/mpx_ua_dev.ebin,http://95.67.118.186:29034/fw/xx_76_02/mpx_ua_dev.ebin"; npx playwright test --grep "@several_devices_up_down"
 ````
 
 
-### 3. Open the project root and run 'Add/Delete reactions' tests from command line:
+## 3. `Add / Delete reactions` - running  tests from command line:
 ####
 - Windows:
 
@@ -109,7 +111,7 @@ $env:TEST_ENV="dev"; $env:EMAIL="zajac@ukr.net"; $env:PASSWORD="asdASD123"; $env
 ````
 
 
-### 4. Open the project root and run 'Add/Delete users' tests from command line:
+## 4. `Add / Delete users` tests - running from command line:
 ####
 - Windows:
 

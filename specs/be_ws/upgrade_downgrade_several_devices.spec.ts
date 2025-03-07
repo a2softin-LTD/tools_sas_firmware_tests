@@ -20,12 +20,11 @@ let deviceHexIdIndex: number = 0;
 
 test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (several devices) - positive scenarios', () => {
     test('positive: Success upgrade/downgrade several HUB devices', { tag: '@several_devices_up_down' }, async ({ request }) => {
-        // 2. Getting Hostname
-        // serialNumbers = PanelConvertersUtil.serialToDec(SEVERAL_DEVICES_SAS);
+        // 1. Getting Hostname
         const serialNumbers: number[] = SEVERAL_DEVICES_SAS.split(',').map(e => PanelConvertersUtil.serialToDec(e));
 
         for (const serialNumber of serialNumbers) {
-            // 1. Getting access token
+            // 2. Getting access token
             const JwtToken = await Auth.getAccessToken(
                 config.loginUrl,
                 request,
@@ -42,7 +41,9 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (severa
             console.log('****************************************************************************************************');
             console.log('****************************************************************************************************');
             console.log();
-            console.log(`*********************************** DeviceId -> ${SEVERAL_DEVICES_SAS.split(',')[deviceHexIdIndex]} **********************************`);
+            //for (const serialNumber: string in serialNumbers) {
+                console.log(`*********************************** DeviceId -> ${SEVERAL_DEVICES_SAS.split(',')[deviceHexIdIndex]} **********************************`);
+            //}
             console.log();
             console.log('****************************************************************************************************');
             console.log('****************************************************************************************************');

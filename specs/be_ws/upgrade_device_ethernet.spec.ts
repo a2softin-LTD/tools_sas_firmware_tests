@@ -91,5 +91,4 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
         expect(ERROR).toEqual('');
         console.log(`Test finished at ${moment().format('LTS')}`);
     });
-
 });
