@@ -19,7 +19,7 @@ import { TestDataProvider } from "../../utils/TestDataProvider";
 armedTestGenerator(
     new PanelUpdateFirmwareConfiguration(
         TestDataProvider.DeviceIdWithGSM,
-        getAllVersionConfigsB7(),
+        // getAllVersionConfigsB7(),
         'GSM'
     ),
     environmentConfig.get(Environments.DEV)

@@ -5,7 +5,7 @@ export class PanelUpdateFirmwareConfiguration {
 
     constructor(
         public readonly panelSerialNumber: string,
-        public readonly firmwareList: IFirmwareVersionView[],
+        // public readonly firmwareList: IFirmwareVersionView[],
         public readonly updateChannelName: string
     ) {
     }
