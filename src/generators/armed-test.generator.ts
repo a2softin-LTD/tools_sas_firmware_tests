@@ -1,17 +1,17 @@
-import {APIResponse, expect, test} from "@playwright/test";
-import {IServerAddresses} from "../../ws/EnvironmentConfig";
-import {Auth} from "../../auth/Auth";
-import {TestDataProvider} from "../../utils/TestDataProvider";
-import {HostnameController} from "../../api/controllers/HostnameController";
-import {buildPanelWsUrl} from "../utils/ws-url-builder.util";
-import {checkGroupArmUtil} from "../utils/check-group-arm.util";
-import {Timeouts} from "../utils/timeout.util";
-import {ErrorDescriptions} from "../utils/errors/Errors";
-import {PanelUpdateFirmwareConfiguration} from "../domain/constants/update-firmware.configuration";
-import {WsHandler} from "../services/WsHandler";
-import {Updater} from "../services/Updater";
-import {WsControlHandler} from "../services/WsControlHandler";
-import {getAllVersionConfigsB7} from "../../ws/FirmwareVersionConfig";
+import { APIResponse, expect, test } from "@playwright/test";
+import { IServerAddresses } from "../../ws/EnvironmentConfig";
+import { Auth } from "../../auth/Auth";
+import { HostnameController } from "../../api/controllers/HostnameController";
+import { buildPanelWsUrl } from "../utils/ws-url-builder.util";
+import { checkGroupArmUtil } from "../utils/check-group-arm.util";
+import { Timeouts } from "../utils/timeout.util";
+import { ErrorDescriptions } from "../utils/errors/Errors";
+import { PanelUpdateFirmwareConfiguration } from "../domain/constants/update-firmware.configuration";
+import { WsHandler } from "../services/WsHandler";
+import { Updater } from "../services/Updater";
+import { WsControlHandler } from "../services/WsControlHandler";
+import { FIRMWARE_VERSION } from "../../ws/FirmwareVersionConfig";
+import { FIRMWARE_VERSION_URLS_ALL_HUBS } from "../../index";
 
 export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env: IServerAddresses) {
     let serialNumber: number;
@@ -31,7 +31,7 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
             JwtToken = await Auth.getAccessToken(
                 env.loginUrl,
                 request,
-                TestDataProvider.SimpleUser
+                config.user
             );
             // 2. Getting Hostname
             serialNumber = config.getSerialInDec();
@@ -67,7 +67,7 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
                 throw 'user not found'
             }
 
-            const sessionUser = TestDataProvider.SimpleUser
+            const sessionUser = config.user
             const attachedSessionUser = initialSessionState.users.find(user => sessionUser.email == user.maksMobileLogin)
             if (!attachedSessionUser) {
                 throw 'user not attached to panel'
@@ -91,9 +91,13 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
             // 3. [WSS] Connection and sending necessary commands to the device via web sockets
             try {
                 await Timeouts.raceError(async () => {
-                    const versions = getAllVersionConfigsB7();
+
+                    const versions = FIRMWARE_VERSION(FIRMWARE_VERSION_URLS_ALL_HUBS);
                     const newVersion = versions[0];
+
+                    console.log("newVersion", JSON.stringify(newVersion));
                     await Updater.update(setupInstance, serialNumber, newVersion);
+                    console.log("newVersion update complete");
 
                     const prevVersionList = versions.slice(1);//.reverse()
                     for (const version of prevVersionList) {
@@ -101,7 +105,9 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
                             console.log("Pause. Waiting for " + PAUSE / 1000 + " sec before run next updating");
                             setTimeout(resolve, PAUSE);
                         });
+                        console.log(`Prev version start ${JSON.stringify(version)}`);
                         await Updater.update(setupInstance, serialNumber, version);
+                        console.log(`Prev version complete`);
                     }
                 }, {awaitSeconds: TIMEOUT, errorCode: 999});
             } catch (error) {
