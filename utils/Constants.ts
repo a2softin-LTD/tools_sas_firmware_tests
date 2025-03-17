@@ -992,3 +992,7 @@ export const FAKER_FULL_NAME: string = faker.person.fullName();
 export const FAKER_FULL_NAME_FIRST: string = faker.person.fullName();
 
 export const FAKER_CODE: string = (faker.number.int({ min: 111111, max: 999998 })).toString();
+
+export const FIRST_NODE: string = "panel-1.dev.private.sas";
+
+export const SECOND_NODE: string = "panel-2.dev.private.sas";
