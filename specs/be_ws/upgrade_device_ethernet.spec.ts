@@ -11,7 +11,7 @@ import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
 import { FIRMWARE_VERSION_URLS_ALL_HUBS } from "../../index";
 import config from "../../playwright.config";
-import { TIMEOUT } from "../../utils/Constants";
+import { PAUSE, TIMEOUT } from "../../utils/Constants";
 import moment = require("moment");
 
 let serialNumber: number;
@@ -28,7 +28,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
         JwtToken = await Auth.getAccessToken(
             config.loginUrl,
             request,
-            TestDataProvider.SimpleUserCI
+            TestDataProvider.SimpleUserCI,
         );
         commandIndex++;
 
@@ -62,7 +62,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
 
     });
 
-    test('positive: Success upgrade a device', {tag: '@upgrade'}, async () => {
+    test('[Ethernet] positive: Success upgrade a device', {tag: '@upgrade'}, async () => {
         console.log(`Test started at ${moment().format('LTS')}`);
         // 3. [WSS] Connection and sending necessary commands to the device via web sockets
         try {
@@ -76,11 +76,14 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX with Et
 
                 const prevVersionList = versions.slice(1);//.reverse()
                 for (const version of prevVersionList) {
-
+                    await new Promise((resolve, reject) => {
+                        setTimeout(resolve, PAUSE / 6);
+                    });
+                    console.log();
                     console.log(`Starting an update using the URL =  ${version.config.url}`);
                     await Updater.update(wsInstance, serialNumber, version);
                 }
-            }, {awaitSeconds: TIMEOUT, errorCode: 999});
+            }, { awaitSeconds: TIMEOUT, errorCode: 999 });
         } catch (error) {
             const errorCode: string = Object.keys(ErrorDescriptions).find(key => ErrorDescriptions[key] === error.error);
             console.log(ErrorDescriptions[errorCode]);

@@ -1,5 +1,3 @@
-
-
 export interface UserModel {
     emailVerified?: boolean,
     role?: string,
@@ -14,4 +12,10 @@ export interface UserModel {
     email?: string,
     preferredLanguage?: string,
     alarmStationId?: number | null | undefined
+}
+
+export interface SimpleUserModel {
+    email?: string,
+    password?: string,
+    passwordEncryptMD5?: string,
 }

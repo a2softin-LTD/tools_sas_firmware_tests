@@ -6,7 +6,7 @@ export enum UIErrorMessages {
     REQUIRED_FIELD = 'Required field',
 }
 
-export const TIMEOUT: number = 2400;
+export const TIMEOUT: number = 10000;
 
 export const PAUSE: number = 60000;
 
