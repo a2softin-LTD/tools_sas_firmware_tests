@@ -52,8 +52,8 @@ export function getConfigurationFromFile<TFIleView extends object = any>(): TFIl
     try {
         const jsonData = fs.readFileSync(filePath, 'utf8');
         const data = JSON.parse(jsonData);
-        console.log('Data read successfully:');
-        console.log(data);
+        // console.log('Data read successfully:');
+        // console.log(data);
         return data
     } catch (err) {
         console.error(`Error while working with file ${filePath}:`, err.message);

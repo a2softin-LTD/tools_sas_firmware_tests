@@ -5,19 +5,27 @@ import {ErrorHandler} from "../utils/errors/ErrorHandler";
 import {WsControlHandler} from "./WsControlHandler";
 import {ArmStatesEnum, IControlPanelUpdateBlock} from "../domain/entity/control-session/control-panel-data";
 
-
 export class Updater {
+    static async currentVersion(wsInstance: WsHandler, serialNumber: number) {
+        const initialData = await wsInstance.createSocket(serialNumber);
+        try {
+            return initialData['create']['panelSettings']['version'];
+        } catch(e) {
+            return initialData['update']['panelSettings']['version'];
+        }
+    }
+
     static async update(wsInstance: WsHandler, serialNumber: number, allowedVersionConfig: IFirmwareVersionView) {
         try {
             const initialData = await wsInstance.createSocket(serialNumber);
-            if (initialData["create"]['panelSettings']['version'].includes(allowedVersionConfig.config.version))
+            if (initialData['create']['panelSettings']['version'].includes(allowedVersionConfig.config.version))
                 throw 1001;
-            // const allowedVersionConfig = getAnotherVersionConfig(initialData["create"]['panelSettings']['versionCode'])
+            // const allowedVersionConfig = getAnotherVersionConfig(initialData['create']['panelSettings']['versionCode'])
             //console.log(`Install the version: ${allowedVersionConfig.versionType}`)
 
             await wsInstance.send(WsMethod.UPDATE_PANEL_FIRMWARE, allowedVersionConfig.config.url);
-            // await wsInstance.getSubscribedObjectData("update", 'panelSettings', "operationMode", 0);
-            await wsInstance.getSubscribedObjectData("update", 'panelSettings', "version", allowedVersionConfig.config.version, 'substring');
+            // await wsInstance.getSubscribedObjectData('update', 'panelSettings', "operationMode", 0);
+            await wsInstance.getSubscribedObjectData('update', 'panelSettings', "version", allowedVersionConfig.config.version, 'substring');
             wsInstance.close();
         } catch (error) {
             wsInstance.close();
@@ -83,8 +91,6 @@ export class Updater {
     }
 
     static async armGroupsListOfPanel(wsInstance: WsControlHandler, serialNumber: number, groupIndexes: Array<number>) {
-
-
         const initialData = await wsInstance.createSocket(serialNumber);
         const initialGroups = initialData.create?.groups
 

@@ -12,6 +12,7 @@ import { Updater } from "../services/Updater";
 import { WsControlHandler } from "../services/WsControlHandler";
 import { FIRMWARE_VERSION } from "../../ws/FirmwareVersionConfig";
 import { FIRMWARE_VERSION_URLS_ALL_HUBS } from "../../index";
+import {tracePanelCommunicationActiveChannel} from "../utils/read-panel-communication-active-channel.util";
 
 export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env: IServerAddresses) {
     let serialNumber: number;
@@ -60,7 +61,7 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
             const state = await setupInstance.createSocket(serialNumber)
             const initialSessionState = state.create
 
-            // tracePanelCommunicationActiveChannel(state, channel => `device ${channel} ${config.getSerialInDec()}`)
+            tracePanelCommunicationActiveChannel(state, channel => `device ${channel} ${config.getSerialInDec()}`);
 
             if (!initialSessionState.groups.length) {
                 throw 'wrong configuration restart panel'

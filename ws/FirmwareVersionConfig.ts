@@ -114,6 +114,11 @@ export const getAllVersionConfigsFiveLastVersions = (deviceVersion: string):IFir
         .map(([versionType, config]) => ({versionType, config}));
 }
 
+export const getSingleFirmwareVersion = (url: string) => {
+    const versionParts: string[] = url.split('/')[4].split('_');
+    return versionParts[1] + '.' + versionParts[2];
+}
+
 export const FIRMWARE_VERSION = (versions: string) => {
     const versionList: string[] = versions.split(',');
     let n: number = 0;
@@ -123,7 +128,7 @@ export const FIRMWARE_VERSION = (versions: string) => {
         const versionNumber: string = versionParts[1] + '.' + versionParts[2];
         versionsMap.set(FirmwareVersionType[String(n)], {
             version: versionNumber,
-            url: version
+            url: version,
         })
         n++;
     }

@@ -11,7 +11,7 @@ export interface UserModel {
     asInvitations?: Array<any>,
     email?: string,
     preferredLanguage?: string,
-    alarmStationId?: number | null | undefined
+    alarmStationId?: number | null | undefined,
 }
 
 export interface SimpleUserModel {

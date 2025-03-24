@@ -1,22 +1,23 @@
 import { APIResponse, expect, test } from "@playwright/test";
-import { Auth } from "../../auth/Auth";
-import { HostnameController } from "../../api/controllers/HostnameController";
-import { WsHandler } from "../../src/services/WsHandler";
-import { FIRMWARE_VERSION, getSingleFirmwareVersion } from "../../ws/FirmwareVersionConfig";
-import { ErrorDescriptions } from "../../src/utils/errors/Errors";
-import { Timeouts } from "../../src/utils/timeout.util";
-import { Updater } from "../../src/services/Updater";
-import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
-import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
-import { TIMEOUT } from "../../utils/Constants";
-import { getConfigurationFromFile } from "../../src/utils/getConfigurationFromFile";
-import { SimpleUserModel } from "../../api/models/UserModel";
-import { PanelUpdateFirmwareConfiguration } from "../../src/domain/constants/update-firmware.configuration";
-import { tracePanelCommunicationActiveChannel } from "../../src/utils/read-panel-communication-active-channel.util";
-import { PanelParsedInfo } from "../../src/domain/entity/setup-session/PanelParsedInfo";
-import config from "../../playwright.config";
+import { Auth } from "../../../auth/Auth";
+import { HostnameController } from "../../../api/controllers/HostnameController";
+import { WsHandler } from "../../../src/services/WsHandler";
+import { FIRMWARE_VERSION, getSingleFirmwareVersion } from "../../../ws/FirmwareVersionConfig";
+import { ErrorDescriptions } from "../../../src/utils/errors/Errors";
+import { Timeouts } from "../../../src/utils/timeout.util";
+import { Updater } from "../../../src/services/Updater";
+import { buildPanelWsUrl } from "../../../src/utils/ws-url-builder.util";
+import { PanelConvertersUtil } from "../../../src/utils/converters/panel-converters.util";
+import { TIMEOUT } from "../../../utils/Constants";
+import { getConfigurationFromFile } from "../../../src/utils/getConfigurationFromFile";
+import { SimpleUserModel } from "../../../api/models/UserModel";
+import { PanelUpdateFirmwareConfiguration } from "../../../src/domain/constants/update-firmware.configuration";
+import { tracePanelCommunicationActiveChannel } from "../../../src/utils/read-panel-communication-active-channel.util";
+import { PanelParsedInfo } from "../../../src/domain/entity/setup-session/PanelParsedInfo";
+import config from "../../../playwright.config";
 import moment = require("moment");
-import { reports } from "../../src/utils/reports";
+import { reports, vision } from "../../../src/utils/reports";
+import { ReportModel } from "../../../models/ReportModel";
 
 let JwtToken: string;
 let insideGetHostnameData: string;
@@ -24,8 +25,9 @@ let wsUrl: string;
 let wsInstance: WsHandler;
 let commandIndex: number = 0;
 let ERROR: string = '';
+let testVersionUpgradeTime: number;
 
-test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single/Multiple device) - positive scenarios', () => {
+test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single user and multiple devices) - positive scenarios', () => {
     const userData = getConfigurationFromFile();
     const USER: SimpleUserModel = userData[0].user;
     const VERSIONS: string = userData[0].versions.filter(Boolean).join(',');
@@ -34,15 +36,34 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
 
     let channel: string;
     let oldVersion: string;
+    let overallTestInfo: ReportModel[] = [];
+    let singleTestInfo: ReportModel = {
+        serialNumberHex: "",
+        versionFromTo: [],
+        testStartTime: "",
+        testFinishTime: "",
+        testVersionUpgradeTime: [],
+        testDurationInSeconds: 0,
+        connectionChannel: "",
+        upgradeIterationAmount: 0,
+    };
+    let indexDevice: number = 0;
+    let indexVersion: number = 0;
+    let testDuration: number = 0;
 
     // Number of amount
     test.describe.configure({ retries: userData[0].retries });
 
     // test('positive: Success upgrade device/devices', { tag: '@sas_upgrade_path' }, async ({ request }) => {
     test('positive: Success upgrade device/devices', async ({ request }) => {
-        const startTime = moment().valueOf();
+        const totalTestStartTime: number = moment().valueOf();
+
         // 1. Getting test user data
         for (const serialNumber of DEVICES_DEC) {
+            singleTestInfo.serialNumberHex = DEVICES_HEX[indexDevice]; // 1
+            singleTestInfo.testStartTime = moment().format('LTS'); // 2
+            testDuration = moment().valueOf();
+
             // 2. Getting access token
             JwtToken = await Auth.getAccessToken(
                 config.loginUrl,
@@ -52,19 +73,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
             commandIndex++;
 
             // 3. Console vision
-            console.log();
-            console.log();
-            console.log();
-            console.log();
-            console.log();
-            console.log(`DEVICE_ID = ${serialNumber}`);
-            console.log('****************************************************************************************************');
-            console.log('****************************************************************************************************');
-            console.log();
-            console.log(`************************************** DeviceId -> ${serialNumber} *************************************`);
-            console.log();
-            console.log('****************************************************************************************************');
-            console.log('****************************************************************************************************');
+            vision(serialNumber);
 
             // 4. Getting Hostname
             const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
@@ -79,6 +88,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
             wsUrl = buildPanelWsUrl(insideGetHostnameData.result);
             wsInstance = new WsHandler(wsUrl, JwtToken);
             oldVersion = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
+            singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3); // 3.1
 
             const state: PanelParsedInfo = await wsInstance.createSocket(serialNumber);
             // const initialSessionState: PanelUpdateBLock = state.create;
@@ -92,20 +102,36 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
                 await Timeouts.raceError(async () => {
                     const versions = FIRMWARE_VERSION(VERSIONS);
                     const newVersion = versions[0];
+                    singleTestInfo.versionFromTo[indexVersion] += ` -> ${newVersion.config.version}`; // 3.2
+
                     console.log();
                     console.log(`Starting an update to new version using the URL =  ${newVersion.config.url}`);
 
+                    testVersionUpgradeTime = moment().valueOf();
                     await Updater.update(wsInstance, serialNumber, newVersion);
+                    testVersionUpgradeTime = moment().valueOf() - testVersionUpgradeTime;
+                    singleTestInfo.testVersionUpgradeTime[indexVersion] = Math.round(100 * testVersionUpgradeTime / 1000) / 100;
 
                     const prevVersionList = versions.slice(1);
+                    indexVersion++;
                     for (const version of prevVersionList) {
+                        singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3); // 3.1
+
                         // Pause between tests
                         await new Promise((resolve, reject) => {
-                            setTimeout(resolve, 5000);
+                            setTimeout(resolve, TIMEOUT);
                         });
+
                         console.log();
-                        console.log(`Starting an update using the URL =  ${version.config.url}`);
+                        console.log(`Starting an update to new version using the URL =  ${version.config.url}`);
+
+                        testVersionUpgradeTime = moment().valueOf();
                         await Updater.update(wsInstance, serialNumber, version);
+                        testVersionUpgradeTime = moment().valueOf() - testVersionUpgradeTime;
+                        singleTestInfo.testVersionUpgradeTime[indexVersion] = Math.round(100 * testVersionUpgradeTime / 1000) / 100;
+
+                        singleTestInfo.versionFromTo[indexVersion] += ` -> ${version.config.version}`; // 3.2
+                        indexVersion++;
                     }
                 }, { awaitSeconds: TIMEOUT, errorCode: 999 });
             } catch (error) {
@@ -115,15 +141,28 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
             }
 
             // 6. Happy pass if there are no errors
+            singleTestInfo.connectionChannel = channel;
+            singleTestInfo.testFinishTime = moment().format('LTS');
+            singleTestInfo.testDurationInSeconds = Math.round(100 * (moment().valueOf() - testDuration) / 1000) / 100;
             expect(ERROR).toEqual('');
+            indexDevice++;
+            indexVersion = 0;
+            overallTestInfo.push(singleTestInfo);
             console.log(`Test finished at ${moment().format('LTS')}`);
+            
+            // Pause between tests
+            await new Promise((resolve, reject) => {
+                setTimeout(resolve, TIMEOUT);
+            });
         }
-        const finishTime: number = moment().valueOf();
+        console.log(`Overall test finished at ${moment().format('LTS')}`);
+
+        const totalTestFinishTime: number = moment().valueOf();
         const testDate: string = moment().format('YYYY-MM-DD');
         const serialNumberHex: string[] = DEVICES_HEX;
         const currentVersion: string = oldVersion;
         const finalVersion: string = getSingleFirmwareVersion(userData[0].versions[userData[0].versions.length - 1]);
-        const totalTime: string = ((finishTime - startTime) / 1000).toFixed(0);
+        const totalTime: number = Math.round(100 * (totalTestFinishTime - totalTestStartTime) / 1000) / 100;
         const connectionChannel: string = channel;
         const upgradeIterationAmount: number = userData[0].versions.length;
 
@@ -135,6 +174,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
             totalTime,
             connectionChannel,
             upgradeIterationAmount,
+            overallTestInfo,
         );
         
     });
