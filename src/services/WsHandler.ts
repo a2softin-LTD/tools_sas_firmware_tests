@@ -200,7 +200,7 @@ export class WsHandler {
                             objectKey: string /*keyof operationMode*/, awaitedValue: any, compareType: 'full' | 'substring' = 'full') {
 
         return new Promise((resolve, reject) => {
-            const subscribePoint: IDropSubscriptionView = {method: rootKey, field: structureKey} as any;
+            const subscribePoint: IDropSubscriptionView = { method: rootKey, field: structureKey } as any;
             this.createSubscription({
                 ...subscribePoint,
                 callback: (data: any) => {
@@ -209,10 +209,10 @@ export class WsHandler {
                     const comparisonTypeFn = this.comparisonTypeFns[compareType] || this.comparisonTypeFns.full
                     
                     const isValid = comparisonTypeFn(data[objectKey], awaitedValue)
-                    console.group();
-                    console.log("data:", data, {objectKey, structureKey, rootKey, awaitedValue});
+                    // console.group();
+                    // console.log("data:", data, {objectKey, structureKey, rootKey, awaitedValue});
                     // console.log("Allowed:", allowed);
-                    console.groupEnd();
+                    // console.groupEnd();
                     if (!isValid) return;
                     return resolve(true);
                 }

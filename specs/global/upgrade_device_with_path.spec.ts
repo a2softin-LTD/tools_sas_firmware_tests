@@ -9,7 +9,7 @@ import { Updater } from "../../src/services/Updater";
 import { buildPanelWsUrl } from "../../src/utils/ws-url-builder.util";
 import { PanelConvertersUtil } from "../../src/utils/converters/panel-converters.util";
 import config from "../../playwright.config";
-import { TIMEOUT } from "../../utils/Constants";
+import {PAUSE_BETWEEN_REACTION_CREATION, TIMEOUT} from "../../utils/Constants";
 import moment = require("moment");
 import { getConfigurationFromFile } from "../../src/utils/getConfigurationFromFile";
 import { SimpleUserModel } from "../../api/models/UserModel";
@@ -79,6 +79,10 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
 
                     const prevVersionList = versions.slice(1);
                     for (const version of prevVersionList) {
+                        // Pause between tests
+                        await new Promise((resolve, reject) => {
+                            setTimeout(resolve, 5000);
+                        });
                         console.log();
                         console.log(`Starting an update using the URL =  ${version.config.url}`);
                         await Updater.update(wsInstance, serialNumber, version);
