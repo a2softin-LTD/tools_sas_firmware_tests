@@ -1,11 +1,11 @@
-import {IPanelGroup, IPanelUser} from "./PanelData";
+import { IPanelGroup, IPanelState, IPanelUser } from "./PanelData";
 
-import {SetupSessionRelayDto} from "./relay-typ";
-import {PanelReactionsDto} from "./panel-reaction.dto";
-import {PcSensorDto} from "./sensor.dto";
+import { SetupSessionRelayDto } from "./relay-typ";
+import { PanelReactionsDto } from "./panel-reaction.dto";
+import { PcSensorDto } from "./sensor.dto";
 
 export interface PanelUpdateBLock {
-    panelSettings?: any,
+    panelSettings?: IPanelState,
     users?: IPanelUser[]
     sensors?: PcSensorDto[]
     keyboards?: any[]

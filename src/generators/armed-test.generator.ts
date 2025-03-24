@@ -59,6 +59,9 @@ export function armedTestGenerator(config: PanelUpdateFirmwareConfiguration, env
         test.beforeAll(async () => {
             const state = await setupInstance.createSocket(serialNumber)
             const initialSessionState = state.create
+
+            // tracePanelCommunicationActiveChannel(state, channel => `device ${channel} ${config.getSerialInDec()}`)
+
             if (!initialSessionState.groups.length) {
                 throw 'wrong configuration restart panel'
             }
