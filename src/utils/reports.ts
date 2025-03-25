@@ -50,8 +50,10 @@ export function reports(
     });
 }
 
-export function vision(serialNumber: number) {
+export function vision(serialNumber: number, channel: string, time: string) {
     console.log();
     console.log(`DEVICE_ID = ${serialNumber}`);
+    console.log(`Connection channel: "${channel}"`);
+    console.log(`Test started at ${time}`);
     console.log();
 }

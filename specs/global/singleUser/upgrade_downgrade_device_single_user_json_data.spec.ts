@@ -74,10 +74,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
             );
             commandIndex++;
 
-            // 3. Console vision
-            vision(serialNumber);
-
-            // 4. Getting Hostname
+            // 3. Getting Hostname
             const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
                 config.envUrl,
                 request,
@@ -97,8 +94,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
             let configuration: PanelUpdateFirmwareConfiguration;
             channel = tracePanelCommunicationActiveChannel(state, channel => `device ${channel} ${configuration.getSerialInDec()}`);
 
-            console.log(`Connection channel: "${channel}"`);
-            console.log(`Test started at ${moment().format('LTS')}`);
+            // 4. Console vision
+            vision(serialNumber, channel, moment().format('LTS'));
             // 5. [WSS] Connection and sending necessary commands to the device via web sockets
             try {
                 await Timeouts.raceError(async () => {
