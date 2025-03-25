@@ -54,14 +54,16 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
     // Number of amount
     test.describe.configure({ retries: userData[0].retries });
 
-    // test('positive: Success upgrade device/devices', { tag: '@sas_upgrade_path' }, async ({ request }) => {
-    test('positive: Success upgrade device/devices', async ({ request }) => {
+    test('positive: Success upgrade device/devices', { tag: '@sas_upgrade_path' }, async ({ request }) => {
+        console.log("I. TEST PROGRESS");
+        console.log();
+
         const totalTestStartTime: number = moment().valueOf();
 
         // 1. Getting test user data
         for (const serialNumber of DEVICES_DEC) {
-            singleTestInfo.serialNumberHex = DEVICES_HEX[indexDevice]; // 1
-            singleTestInfo.testStartTime = moment().format('LTS'); // 2
+            singleTestInfo.serialNumberHex = DEVICES_HEX[indexDevice];
+            singleTestInfo.testStartTime = moment().format('LTS');
             testDuration = moment().valueOf();
 
             // 2. Getting access token
@@ -88,24 +90,24 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
             wsUrl = buildPanelWsUrl(insideGetHostnameData.result);
             wsInstance = new WsHandler(wsUrl, JwtToken);
             oldVersion = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
-            singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3); // 3.1
+            singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
 
             const state: PanelParsedInfo = await wsInstance.createSocket(serialNumber);
             // const initialSessionState: PanelUpdateBLock = state.create;
             let configuration: PanelUpdateFirmwareConfiguration;
             channel = tracePanelCommunicationActiveChannel(state, channel => `device ${channel} ${configuration.getSerialInDec()}`);
 
-            console.log(`Current channel is "${channel}"`);
+            console.log(`Connection channel: "${channel}"`);
             console.log(`Test started at ${moment().format('LTS')}`);
             // 5. [WSS] Connection and sending necessary commands to the device via web sockets
             try {
                 await Timeouts.raceError(async () => {
                     const versions = FIRMWARE_VERSION(VERSIONS);
                     const newVersion = versions[0];
-                    singleTestInfo.versionFromTo[indexVersion] += ` -> ${newVersion.config.version}`; // 3.2
+                    singleTestInfo.versionFromTo[indexVersion] += ` -> ${newVersion.config.version}`;
 
                     console.log();
-                    console.log(`Starting an update to new version using the URL =  ${newVersion.config.url}`);
+                    console.log(`Initiate an update to a new version using the URL: "${newVersion.config.url}"`);
 
                     testVersionUpgradeTime = moment().valueOf();
                     await Updater.update(wsInstance, serialNumber, newVersion);
@@ -115,7 +117,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
                     const prevVersionList = versions.slice(1);
                     indexVersion++;
                     for (const version of prevVersionList) {
-                        singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3); // 3.1
+                        singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
 
                         // Pause between tests
                         await new Promise((resolve, reject) => {
@@ -123,14 +125,14 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
                         });
 
                         console.log();
-                        console.log(`Starting an update to new version using the URL =  ${version.config.url}`);
+                        console.log(`Initiate an update to a new version using the URL: "${version.config.url}"`);
 
                         testVersionUpgradeTime = moment().valueOf();
                         await Updater.update(wsInstance, serialNumber, version);
                         testVersionUpgradeTime = moment().valueOf() - testVersionUpgradeTime;
                         singleTestInfo.testVersionUpgradeTime[indexVersion] = Math.round(100 * testVersionUpgradeTime / 1000) / 100;
 
-                        singleTestInfo.versionFromTo[indexVersion] += ` -> ${version.config.version}`; // 3.2
+                        singleTestInfo.versionFromTo[indexVersion] += ` -> ${version.config.version}`;
                         indexVersion++;
                     }
                 }, { awaitSeconds: TIMEOUT, errorCode: 999 });

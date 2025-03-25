@@ -43,7 +43,9 @@ export class Auth {
         }
 
         const body: LoginModel = TestDataProvider.getUserData(email, password);
-        console.log(body);
+
+        // console.log(body);
+
         const response: APIResponse = await ApiBuilder.sendPostRequest(
             request,
             url,
