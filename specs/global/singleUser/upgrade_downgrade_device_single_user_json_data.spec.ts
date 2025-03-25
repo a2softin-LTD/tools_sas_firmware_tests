@@ -96,6 +96,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
 
             // 4. Console vision
             vision(serialNumber, channel, moment().format('LTS'));
+
             // 5. [WSS] Connection and sending necessary commands to the device via web sockets
             try {
                 await Timeouts.raceError(async () => {
@@ -175,6 +176,5 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
             upgradeIterationAmount,
             overallTestInfo,
         );
-        
     });
 });
