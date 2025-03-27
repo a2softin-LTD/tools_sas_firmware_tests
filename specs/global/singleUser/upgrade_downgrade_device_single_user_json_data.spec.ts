@@ -18,6 +18,8 @@ import config from "../../../playwright.config";
 import moment = require("moment");
 import { reports, vision } from "../../../src/utils/reports";
 import { ReportModel } from "../../../models/ReportModel";
+import { downloadAndVerifySensorFirmware } from "../../../utils/fileUploader";
+;
 
 let JwtToken: string;
 let insideGetHostnameData: string;
@@ -176,5 +178,16 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
             upgradeIterationAmount,
             overallTestInfo,
         );
+    });
+
+    test('Upload file via link', async ({ page }) => {
+
+        // Method 1: Using setInputFiles with a remote URL
+        const fileUrl: string = 'http://95.67.118.186:29034/bin/ua/wdc_uni_v5.20.bin';
+        const bytes: number = 9;
+
+        const firstBytes: any = await downloadAndVerifySensorFirmware(fileUrl, bytes);
+
+        console.log();
     });
 });
