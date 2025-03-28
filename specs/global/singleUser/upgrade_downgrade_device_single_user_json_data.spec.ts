@@ -54,7 +54,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
     let indexVersion: number = 0;
     let testDuration: number = 0;
 
-    // Number of amount
+    // Number of retries
     test.describe.configure({ retries: userData[0].retries });
 
     test('positive: Success upgrade device/devices', { tag: '@sas_upgrade_path' }, async ({ request }) => {
@@ -65,98 +65,100 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
 
         // 1. Getting test user data
         for (const serialNumber of DEVICES_DEC) {
-            singleTestInfo.serialNumberHex = DEVICES_HEX[indexDevice];
-            singleTestInfo.testStartTime = moment().format('LTS');
-            testDuration = moment().valueOf();
+            for (let cycle: number = 0; cycle < userData[0].cycle; cycle++) {
+                singleTestInfo.serialNumberHex = DEVICES_HEX[indexDevice];
+                singleTestInfo.testStartTime = moment().format('LTS');
+                testDuration = moment().valueOf();
 
-            // 2. Getting access token
-            JwtToken = await Auth.getAccessToken(
-                config.loginUrl,
-                request,
-                USER,
-            );
-            commandIndex++;
+                // 2. Getting access token
+                JwtToken = await Auth.getAccessToken(
+                    config.loginUrl,
+                    request,
+                    USER,
+                );
+                commandIndex++;
 
-            // 3. Getting Hostname
-            const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
-                config.envUrl,
-                request,
-                serialNumber
-            );
-            expect(responseGetHostnameData.status()).toBe(200);
+                // 3. Getting Hostname
+                const responseGetHostnameData: APIResponse = await HostnameController.getHostname(
+                    config.envUrl,
+                    request,
+                    serialNumber
+                );
+                expect(responseGetHostnameData.status()).toBe(200);
 
-            insideGetHostnameData = await responseGetHostnameData.json();
-            // @ts-ignore
-            wsUrl = buildPanelWsUrl(insideGetHostnameData.result);
-            wsInstance = new WsHandler(wsUrl, JwtToken);
-            oldVersion = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
-            singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
+                insideGetHostnameData = await responseGetHostnameData.json();
+                // @ts-ignore
+                wsUrl = buildPanelWsUrl(insideGetHostnameData.result);
+                wsInstance = new WsHandler(wsUrl, JwtToken);
+                oldVersion = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
+                singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
 
-            const state: PanelParsedInfo = await wsInstance.createSocket(serialNumber);
-            // const initialSessionState: PanelUpdateBLock = state.create;
-            let configuration: PanelUpdateFirmwareConfiguration;
-            channel = tracePanelCommunicationActiveChannel(state, channel => `device ${channel} ${configuration.getSerialInDec()}`);
+                const state: PanelParsedInfo = await wsInstance.createSocket(serialNumber);
+                // const initialSessionState: PanelUpdateBLock = state.create;
+                let configuration: PanelUpdateFirmwareConfiguration;
+                channel = tracePanelCommunicationActiveChannel(state, channel => `device ${channel} ${configuration.getSerialInDec()}`);
 
-            // 4. Console vision
-            vision(serialNumber, channel, moment().format('LTS'));
+                // 4. Console vision
+                vision(serialNumber, channel, moment().format('LTS'));
 
-            // 5. [WSS] Connection and sending necessary commands to the device via web sockets
-            try {
-                await Timeouts.raceError(async () => {
-                    const versions = FIRMWARE_VERSION(VERSIONS);
-                    const newVersion = versions[0];
-                    singleTestInfo.versionFromTo[indexVersion] += ` -> ${newVersion.config.version}`;
-
-                    console.log();
-                    console.log(`Initiate an update to a new version using the URL: "${newVersion.config.url}"`);
-
-                    testVersionUpgradeTime = moment().valueOf();
-                    await Updater.update(wsInstance, serialNumber, newVersion);
-                    testVersionUpgradeTime = moment().valueOf() - testVersionUpgradeTime;
-                    singleTestInfo.testVersionUpgradeTime[indexVersion] = Math.round(100 * testVersionUpgradeTime / 1000) / 100;
-
-                    const prevVersionList = versions.slice(1);
-                    indexVersion++;
-                    for (const version of prevVersionList) {
-                        singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
-
-                        // Pause between tests
-                        await new Promise((resolve, reject) => {
-                            setTimeout(resolve, TIMEOUT);
-                        });
+                // 5. [WSS] Connection and sending necessary commands to the device via web sockets
+                try {
+                    await Timeouts.raceError(async () => {
+                        const versions = FIRMWARE_VERSION(VERSIONS);
+                        const newVersion = versions[0];
+                        singleTestInfo.versionFromTo[indexVersion] += ` -> ${newVersion.config.version}`;
 
                         console.log();
-                        console.log(`Initiate an update to a new version using the URL: "${version.config.url}"`);
+                        console.log(`Initiate an update to a new version using the URL: "${newVersion.config.url}"`);
 
                         testVersionUpgradeTime = moment().valueOf();
-                        await Updater.update(wsInstance, serialNumber, version);
+                        await Updater.update(wsInstance, serialNumber, newVersion);
                         testVersionUpgradeTime = moment().valueOf() - testVersionUpgradeTime;
                         singleTestInfo.testVersionUpgradeTime[indexVersion] = Math.round(100 * testVersionUpgradeTime / 1000) / 100;
 
-                        singleTestInfo.versionFromTo[indexVersion] += ` -> ${version.config.version}`;
+                        const prevVersionList = versions.slice(1);
                         indexVersion++;
-                    }
-                }, { awaitSeconds: TIMEOUT, errorCode: 999 });
-            } catch (error) {
-                const errorCode: string = Object.keys(ErrorDescriptions).find(key => ErrorDescriptions[key] === error.error);
-                console.log(ErrorDescriptions[errorCode]);
-                ERROR = ErrorDescriptions[errorCode];
-            }
+                        for (const version of prevVersionList) {
+                            singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
 
-            // 6. Happy pass if there are no errors
-            singleTestInfo.connectionChannel = channel;
-            singleTestInfo.testFinishTime = moment().format('LTS');
-            singleTestInfo.testDurationInSeconds = Math.round(100 * (moment().valueOf() - testDuration) / 1000) / 100;
-            expect(ERROR).toEqual('');
-            indexDevice++;
-            indexVersion = 0;
-            overallTestInfo.push(singleTestInfo);
-            console.log(`Test finished at ${moment().format('LTS')}`);
-            
-            // Pause between tests
-            await new Promise((resolve, reject) => {
-                setTimeout(resolve, TIMEOUT);
-            });
+                            // Pause between tests
+                            await new Promise((resolve, reject) => {
+                                setTimeout(resolve, TIMEOUT);
+                            });
+
+                            console.log();
+                            console.log(`Initiate an update to a new version using the URL: "${version.config.url}"`);
+
+                            testVersionUpgradeTime = moment().valueOf();
+                            await Updater.update(wsInstance, serialNumber, version);
+                            testVersionUpgradeTime = moment().valueOf() - testVersionUpgradeTime;
+                            singleTestInfo.testVersionUpgradeTime[indexVersion] = Math.round(100 * testVersionUpgradeTime / 1000) / 100;
+
+                            singleTestInfo.versionFromTo[indexVersion] += ` -> ${version.config.version}`;
+                            indexVersion++;
+                        }
+                    }, {awaitSeconds: TIMEOUT, errorCode: 999});
+                } catch (error) {
+                    const errorCode: string = Object.keys(ErrorDescriptions).find(key => ErrorDescriptions[key] === error.error);
+                    console.log(ErrorDescriptions[errorCode]);
+                    ERROR = ErrorDescriptions[errorCode];
+                }
+
+                // 6. Happy pass if there are no errors
+                singleTestInfo.connectionChannel = channel;
+                singleTestInfo.testFinishTime = moment().format('LTS');
+                singleTestInfo.testDurationInSeconds = Math.round(100 * (moment().valueOf() - testDuration) / 1000) / 100;
+                expect(ERROR).toEqual('');
+                indexDevice++;
+                indexVersion = 0;
+                overallTestInfo.push(singleTestInfo);
+                console.log(`Test finished at ${moment().format('LTS')}`);
+
+                // Pause between tests
+                await new Promise((resolve, reject) => {
+                    setTimeout(resolve, TIMEOUT);
+                });
+            }
         }
         console.log(`Overall test finished at ${moment().format('LTS')}`);
 
@@ -167,7 +169,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
         const finalVersion: string = getSingleFirmwareVersion(userData[0].versions[userData[0].versions.length - 1]);
         const totalTime: number = Math.round(100 * (totalTestFinishTime - totalTestStartTime) / 1000) / 100;
         const connectionChannel: string = channel;
-        const upgradeIterationAmount: number = userData[0].versions.length;
+        const upgradeIterationAmount: number = userData[0].cycle;
 
         reports(
             testDate,
@@ -181,7 +183,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
         );
     });
 
-    test('Upload file via link', async ({ page }) => {
+    test('Upload file via link', async () => {
 
         // Method 1: Using setInputFiles with a remote URL
         const fileUrl: string = 'http://95.67.118.186:29034/bin/ua/WDCPlus_UA_v3.36.bin';
