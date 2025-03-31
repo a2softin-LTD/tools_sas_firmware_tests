@@ -19,7 +19,7 @@ import moment = require("moment");
 import { reports, vision } from "../../../src/utils/reports";
 import { ReportModel } from "../../../models/ReportModel";
 import { downloadAndVerifySensorFirmware } from "../../../utils/fileUploader";
-import {DeviceTypeCodes} from "../../../utils/DeviceTypeCodes";
+import { DeviceTypeCodes } from "../../../utils/DeviceTypeCodes";
 ;
 
 let JwtToken: string;

@@ -1,7 +1,7 @@
 [
   {
     "user": {
-      "email": "agntkcak7s@jxpomup.com",
+      "email": "slobandriana+1@gmail.com",
       "password": "asdASD123",
       "passwordEncryptMD5": "8af3982673455323883c06fa59d2872a"
     },
@@ -10,14 +10,15 @@
       "http://95.67.118.186:29034/fw/xx_77_16/mpx_ua_dev.ebin"
     ],
     "deviceIdsHex": [
-      "00:08:B7:10:08:F4"
+      "00:08:B7:10:02:08",
+      "00:08:B7:10:00:08"
     ],
     "cycle": 2,
     "retries": 1
   },
   {
     "user": {
-      "email": "slobandriana+1@gmail.com",
+      "email": "agntkcak7s@jxpomup.com",
       "password": "asdASD123",
       "passwordEncryptMD5": "8af3982673455323883c06fa59d2872a"
     },
@@ -27,8 +28,7 @@
       "http://95.67.118.186:29034/fw/xx_77_16/mpx_ua_dev.ebin"
     ],
     "deviceIdsHex": [
-      "00:08:B7:10:00:08",
-      "00:08:B7:10:02:08"
+      "00:08:B7:10:08:F4"
     ],
     "cycle": 1,
     "retries": 1

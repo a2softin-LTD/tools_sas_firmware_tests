@@ -91,7 +91,7 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
 
 async function deviceUpdater(request: APIRequestContext, serialNumber: number, cycleAmount: number, deviceIndex) {
     for (let cycle: number = 0; cycle < cycleAmount; cycle++) {
-        singleTestInfo.serialNumberHex = DEVICES_HEX[deviceIndex];
+        singleTestInfo.serialNumberHex = DEVICES_HEX[deviceIndex]; // serial convert to hex
         singleTestInfo.testStartTime = moment().format('LTS');
         testDuration = moment().valueOf();
 

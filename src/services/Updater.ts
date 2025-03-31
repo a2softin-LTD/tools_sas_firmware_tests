@@ -1,9 +1,9 @@
-import {WsHandler} from "./WsHandler";
-import {IFirmwareVersionView} from "../../ws/FirmwareVersionConfig";
-import {ControlPanelSessionCommands, WsMethod} from "../domain/constants/ws-connection/ws-commands";
-import {ErrorHandler} from "../utils/errors/ErrorHandler";
-import {WsControlHandler} from "./WsControlHandler";
-import {ArmStatesEnum, IControlPanelUpdateBlock} from "../domain/entity/control-session/control-panel-data";
+import { WsHandler } from "./WsHandler";
+import { IFirmwareVersionView } from "../../ws/FirmwareVersionConfig";
+import { ControlPanelSessionCommands, WsMethod } from "../domain/constants/ws-connection/ws-commands";
+import { ErrorHandler } from "../utils/errors/ErrorHandler";
+import { WsControlHandler } from "./WsControlHandler";
+import { ArmStatesEnum, IControlPanelUpdateBlock } from "../domain/entity/control-session/control-panel-data";
 
 export class Updater {
     static async currentVersion(wsInstance: WsHandler, serialNumber: number) {
