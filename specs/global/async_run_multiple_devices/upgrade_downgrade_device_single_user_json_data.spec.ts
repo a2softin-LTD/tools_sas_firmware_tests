@@ -62,9 +62,9 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
         const totalTestStartTime: number = moment().valueOf();
 
         // 1. Getting test user data
-        for (const serialNumber of DEVICES_DEC) {
-            await deviceUpdater(request, serialNumber, userData[0].cycle, indexDevice);
-        }
+        await Promise.all(DEVICES_DEC.map(serialNumber =>
+            deviceUpdater(request, serialNumber, userData[0].cycle, indexDevice)));
+
         console.log(`Overall test finished at ${moment().format('LTS')}`);
 
         const totalTestFinishTime: number = moment().valueOf();
@@ -115,8 +115,9 @@ async function deviceUpdater(request: APIRequestContext, serialNumber: number, c
         // @ts-ignore
         wsUrl = buildPanelWsUrl(insideGetHostnameData.result);
         wsInstance = new WsHandler(wsUrl, JwtToken);
-        oldVersion = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
-        singleTestInfo.versionFromTo[indexVersion] = (await Updater.currentVersion(wsInstance, serialNumber)).slice(3);
+        const initialData = await Updater.currentVersion(wsInstance, serialNumber);
+        oldVersion = initialData.slice(3);
+        singleTestInfo.versionFromTo[indexVersion] = oldVersion;
 
         const state: PanelParsedInfo = await wsInstance.createSocket(serialNumber);
         // const initialSessionState: PanelUpdateBLock = state.create;
