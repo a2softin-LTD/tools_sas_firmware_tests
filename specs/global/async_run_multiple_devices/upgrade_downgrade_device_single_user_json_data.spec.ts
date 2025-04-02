@@ -46,7 +46,6 @@ let singleTestInfo: ReportModel = {
     connectionChannel: "",
     upgradeIterationAmount: 0,
 };
-let indexDevice: number = 0;
 let indexVersion: number = 0;
 let testDuration: number = 0;
 
@@ -62,8 +61,11 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
         const totalTestStartTime: number = moment().valueOf();
 
         // 1. Getting test user data
-        await Promise.allSettled(DEVICES_DEC.map(serialNumber =>
-            deviceUpdater(request, serialNumber, userData[0].cycle, indexDevice))
+        await Promise.allSettled(DEVICES_DEC.map((serialNumber, indexDevice) => {
+                Timeouts.pause(1000);
+                deviceUpdater(request, serialNumber, userData[0].cycle, indexDevice);
+                Timeouts.pause(1000);
+        })
         );
 
         console.log(`Overall test finished at ${moment().format('LTS')}`);
@@ -91,6 +93,8 @@ test.describe('[MPX] Automate firmware upgrade/downgrade testing for MPX (Single
 });
 
 async function deviceUpdater(request: APIRequestContext, serialNumber: number, cycleAmount: number, deviceIndex) {
+    await Timeouts.pause(1000 * (deviceIndex + 1));
+
     try {
         for (let cycle: number = 0; cycle < cycleAmount; cycle++) {
             singleTestInfo.serialNumberHex = DEVICES_HEX[deviceIndex]; // serial convert to hex
@@ -177,7 +181,6 @@ async function deviceUpdater(request: APIRequestContext, serialNumber: number, c
             singleTestInfo.testFinishTime = moment().format('LTS');
             singleTestInfo.testDurationInSeconds = Math.round(100 * (moment().valueOf() - testDuration) / 1000) / 100;
             expect(ERROR).toEqual('');
-            indexDevice++;
             indexVersion = 0;
             overallTestInfo.push(singleTestInfo);
             console.log(`Test finished at ${moment().format('LTS')}`);

@@ -8,11 +8,15 @@ import { ArmStatesEnum, IControlPanelUpdateBlock } from "../domain/entity/contro
 export class Updater {
     static async currentVersion(wsInstance: WsHandler, serialNumber: number) {
         const initialData = await wsInstance.createSocket(serialNumber);
+        let currentVersion: string = '';
         try {
-            return initialData['create']['panelSettings']['version'];
+            currentVersion = initialData['create']['panelSettings']['version'];
+            //wsInstance.close();
         } catch(e) {
-            return initialData['update']['panelSettings']['version'];
+            currentVersion = initialData['update']['panelSettings']['version'];
+            //wsInstance.close();
         }
+        return currentVersion;
     }
 
     static async update(wsInstance: WsHandler, serialNumber: number, allowedVersionConfig: IFirmwareVersionView) {
