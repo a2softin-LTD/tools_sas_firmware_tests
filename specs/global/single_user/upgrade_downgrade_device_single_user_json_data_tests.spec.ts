@@ -6,7 +6,7 @@ import { ReportModel } from "../../../models/ReportModel";
 import { singleUserSingleDeviceUpdater } from "../../../utils/updaterTools";
 import moment = require("moment");
 
-test('#1 Device. [SAS MPX] positive: Success upgrade device/devices', { tag: '@sas_upgrade_async_single_user_multiple_devices_json' }, async ({request}) => {
+test('#1 Device. [SAS MPX] positive: Success upgrade device/devices', async ({request}) => {
     const userData = getConfigurationFromFile();
     const DEVICES_DEC: number[] = userData[0].deviceIdsHex.map(e => PanelConvertersUtil.serialToDec(e));
 
@@ -46,7 +46,7 @@ test('#1 Device. [SAS MPX] positive: Success upgrade device/devices', { tag: '@s
     );
 });
 
-test('#2 Device. [SAS MPX] positive: Success upgrade device/devices', { tag: '@sas_upgrade_async_single_user_multiple_devices_json' }, async ({request}) => {
+test('#2 Device. [SAS MPX] positive: Success upgrade device/devices', async ({request}) => {
     const userData = getConfigurationFromFile();
     const DEVICES_DEC: number[] = userData[0].deviceIdsHex.map(e => PanelConvertersUtil.serialToDec(e));
 

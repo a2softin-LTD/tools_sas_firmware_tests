@@ -11,7 +11,7 @@ const defaultConfig: PlaywrightTestConfig = {
         ['html', { outputFolder: 'playwright-report', open: 'never' }],
         ['junit', { outputFile: 'test-results/test-results.xml' }],
     ],
-    workers: process.env.CI ? 1 : 2,
+    workers: process.env.CI ? 1 : 1,
     testMatch: /.*\.spec\.ts/,
     fullyParallel: true,
 
