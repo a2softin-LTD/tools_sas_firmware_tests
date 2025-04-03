@@ -6,7 +6,7 @@
       "passwordEncryptMD5": "8af3982673455323883c06fa59d2872a"
     },
     "versions": [
-      "http://95.67.118.186:29034/fw/xx_77_16/mpx_ua_dev.ebin",
+      "http://95.67.118.186:29034/fw/xx_77_03/mpx_ua_dev.ebin",
       "http://95.67.118.186:29034/fw/xx_78_01/mpx_ua_dev.ebin"
     ],
     "deviceIdsHex": [
@@ -23,7 +23,7 @@
       "passwordEncryptMD5": "8af3982673455323883c06fa59d2872a"
     },
     "versions": [
-      "http://95.67.118.186:29034/fw/xx_77_16/mpx_ua_dev.ebin",
+      "http://95.67.118.186:29034/fw/xx_77_03/mpx_ua_dev.ebin",
       "http://95.67.118.186:29034/fw/xx_78_01/mpx_ua_dev.ebin"
     ],
     "deviceIdsHex": [
