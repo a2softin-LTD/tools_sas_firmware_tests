@@ -21,7 +21,7 @@ let reactions: PanelReactionsDto[];
 let userObject: any;
 let deviceIdHex: string;
 
-test('1. Create N relay reactions', { tag: '@sas_reactions_async_single_user_single_device_json' }, async ({ request }) => {
+test('1. Create N relay reactions', { tag: '@sas_reactions_async_single_user_single_device_create_json' }, async ({ request }) => {
     console.log('TEST STARTED');
     console.log('Test started at ' + moment().format('LTS'));
     
@@ -113,7 +113,7 @@ test('1. Create N relay reactions', { tag: '@sas_reactions_async_single_user_sin
 const generateTestDeleteReaction = (userObject, deviceIdHex) => {
     return `
 
-test('2. Remove all relay reactions', {tag: '@sas_reactions_async_single_user_single_device_json'}, async ({ request }) => {
+test('2. Remove all relay reactions', {tag: '@sas_reactions_async_single_user_single_device_delete_json'}, async ({ request }) => {
     // 1. Getting user data
     userObject = JSON.parse('${JSON.stringify(userObject)}');
     deviceIdHex = '${deviceIdHex}';
