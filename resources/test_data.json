@@ -15,7 +15,7 @@
     ],
     "cycle": 1,
     "retries": 1,
-    "reactions": [1, 1]
+    "reactions": [2, 3]
   },
   {
     "user": {
@@ -32,6 +32,6 @@
     ],
     "cycle": 1,
     "retries": 1,
-    "reactions": [1]
+    "reactions": [11]
   }
 ]

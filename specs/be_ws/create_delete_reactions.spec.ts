@@ -34,7 +34,7 @@ test.describe('[MPX] CRUD new reactions for MPX with Ethernet channel on the HUB
         JwtToken = await Auth.getAccessToken(
             config.loginUrl,
             request,
-            TestDataProvider.SimpleUserZajac,
+            TestDataProvider.SimpleUserCI,
         );
         commandIndex++;
 

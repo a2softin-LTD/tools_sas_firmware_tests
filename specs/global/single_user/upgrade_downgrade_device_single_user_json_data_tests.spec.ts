@@ -28,7 +28,7 @@ test('#1 Device. [SAS MPX] positive: Success upgrade device/devices', async ({re
     );
 
     console.log(testResults);
-    console.log(`Overall test finished at ${moment().format('LTS')}`);
+    console.log(`Test finished at ${moment().format('LTS')}`);
 
     const totalTestFinishTime: number = moment().valueOf();
     const testDate: string = moment().format('YYYY-MM-DD');

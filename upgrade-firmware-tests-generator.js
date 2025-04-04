@@ -17,6 +17,7 @@ test('[MPX] #${testNumber++}. Device="${deviceIdHex}" - success upgrade a device
     const deviceIdDec: number = PanelConvertersUtil.serialToDec(deviceIdHex);
         
     console.log("I. TEST PROGRESS");
+    console.log('Test started at ' + moment().format('LTS'));
     console.log();
 
     const totalTestStartTime: number = moment().valueOf();
@@ -30,6 +31,9 @@ test('[MPX] #${testNumber++}. Device="${deviceIdHex}" - success upgrade a device
         userObject.cycle,
         deviceIdDec,
     );
+    
+    console.log('Test finished at ' + moment().format('LTS'));
+    console.log();
             
     const totalTestFinishTime: number = moment().valueOf();
     const testDate: string = moment().format('YYYY-MM-DD');
@@ -54,10 +58,10 @@ testData.forEach((userObject, index) => {
         const fileName = `upgrade-firmware-test-${index++ + 1}-${userObject["user"].email.replace(/[^a-zA-Z]/g, "")}.spec.ts`;
         const testContent = `
 import { test } from "@playwright/test";
-import { PanelConvertersUtil } from "../../../src/utils/converters/panel-converters.util";
-import { reports } from "../../../src/utils/reports";
-import { ReportModel } from "../../../models/ReportModel";
-import { singleUserSingleDeviceUpdater } from "../../../utils/updaterTools";
+import { PanelConvertersUtil } from "../../../../src/utils/converters/panel-converters.util";
+import { reports } from "../../../../src/utils/reports";
+import { ReportModel } from "../../../../models/ReportModel";
+import { singleUserSingleDeviceUpdater } from "../../../../utils/updaterTools";
 import moment = require("moment");
     
         ${generateTest(userObject, deviceIdHex)};
